@@ -5,23 +5,20 @@
  */
 package com.onlineteaching.servlets;
 
-import com.onlineteaching.dao.UserDAO;
-import com.onlineteaching.entities.User;
-import com.onlineteaching.helper.ConnectionProvider;
+import com.onlineteaching.entities.Message;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author LeeBen
  */
-@MultipartConfig
-public class RegisterServlet extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,26 +34,19 @@ public class RegisterServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
-//            fetch all form data
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            String name = request.getParameter("name");
-            String gender = request.getParameter("gender");
-            String IUCode = request.getParameter("IUCode");
-            String department = request.getParameter("department");
-            String email = request.getParameter("email");
-//            create user object and set all data to that object
-            User user = new User(username, password, name, gender, IUCode, department, email);
-
-//            create a user dao object
-            UserDAO dao = new UserDAO(ConnectionProvider.getConnection());
-            if (dao.saveUser(user)) {
-//                 save
-                out.println("done");
-            } else {
-                out.println("error");
-            }
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LogoutServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            HttpSession s = request.getSession();
+            s.removeAttribute("currentUser");
+            Message m = new Message("Logout successful!","success","alert-success");
+            s.setAttribute("msg", m);
+            response.sendRedirect("Login.jsp");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

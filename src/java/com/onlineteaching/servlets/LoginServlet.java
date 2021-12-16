@@ -6,6 +6,7 @@
 package com.onlineteaching.servlets;
 
 import com.onlineteaching.dao.UserDAO;
+import com.onlineteaching.entities.Message;
 import com.onlineteaching.entities.User;
 import com.onlineteaching.helper.ConnectionProvider;
 import java.io.IOException;
@@ -52,7 +53,11 @@ public class LoginServlet extends HttpServlet {
             if (u == null) {
                 //login....
 //                    error///
-                out.println("Invalid Details.. try again");
+//                out.println("Invalid Details.. try again");
+                Message msg = new Message("Incorrect username or password","error","alert-danger");
+                HttpSession s = request.getSession();
+                s.setAttribute("msg", msg);
+                response.sendRedirect("Login.jsp");
             } else {
                 //login
 //                success////

@@ -3,6 +3,7 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import com.onlineteaching.entities.User;
 
 public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
@@ -32,7 +33,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
     try {
       response.setContentType("text/html;charset=UTF-8");
       pageContext = _jspxFactory.getPageContext(this, request, response,
-      			null, true, 8192, true);
+      			"error_page.jsp", true, 8192, true);
       _jspx_page_context = pageContext;
       application = pageContext.getServletContext();
       config = pageContext.getServletConfig();
@@ -44,11 +45,21 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+
+    User user = (User)session.getAttribute("currentUser");
+    if(user==null){
+        response.sendRedirect("Login.jsp");
+    }
+    
+
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<html lang=\"en\" dir=\"ltr\">\n");
       out.write("    <head>\n");
       out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
-      out.write("        <title>Home page</title>\n");
+      out.write("        <title>Welcome to IU Online Teaching Management</title>\n");
       out.write("        <!--<title> Drop Down Sidebar Menu | CodingLab </title>-->\n");
       out.write("        <link rel=\"stylesheet\" href=\"css/home.css?v=0\">\n");
       out.write("        <!-- Boxiocns CDN Link -->\n");
@@ -59,7 +70,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <div class=\"sidebar close\">\n");
       out.write("            <div class=\"logo-details\">\n");
       out.write("                <i class='bx bxl-c-plus-plus'></i>\n");
-      out.write("                <span class=\"logo_name\">CodingLab</span>\n");
+      out.write("                <span class=\"logo_name\">IU OTM</span>\n");
       out.write("            </div>\n");
       out.write("            <ul class=\"nav-links\">\n");
       out.write("                <li>\n");
@@ -167,8 +178,12 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                            <img src=\"img/frontImg.png\" alt=\"profileImg\">\n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"name-job\">\n");
-      out.write("                            <div class=\"profile_name\">Lê Quốc Vũ</div>\n");
-      out.write("                            <div class=\"job\">Web Desginer</div>\n");
+      out.write("                            <div class=\"profile_name\">");
+      out.print( user.getName());
+      out.write("</div>\n");
+      out.write("                            <div class=\"job\">");
+      out.print( user.getIUCode() );
+      out.write("</div>\n");
       out.write("                        </div>\n");
       out.write("                        <i class='bx bx-log-out' ></i>\n");
       out.write("                    </div>\n");
@@ -178,7 +193,26 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <section class=\"home-section\">\n");
       out.write("            <div class=\"home-content\">\n");
       out.write("                <i class='bx bx-menu' ></i>\n");
-      out.write("                <span class=\"text\"></span>\n");
+      out.write("                <span class=\"text\">\n");
+      out.write("                    Welcome ");
+      out.print( user.getName());
+      out.write("\n");
+      out.write("                    ");
+      out.print( user.getUsername() );
+      out.write("\n");
+      out.write("                    ");
+      out.print( user.getPassword() );
+      out.write("\n");
+      out.write("                    ");
+      out.print( user.getGender() );
+      out.write("\n");
+      out.write("                    ");
+      out.print( user.getDepartment() );
+      out.write("\n");
+      out.write("                    ");
+      out.print( user.getEmail() );
+      out.write("\n");
+      out.write("                </span>\n");
       out.write("            </div>\n");
       out.write("        </section>\n");
       out.write("        <script>\n");

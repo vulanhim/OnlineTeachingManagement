@@ -6,11 +6,11 @@
 <%@page import="com.onlineteaching.entities.User"%>
 <%@page errorPage="error_page.jsp"%>
 <%
-    User user = (User)session.getAttribute("currentUser");
-    if(user==null){
+    User user = (User) session.getAttribute("currentUser");
+    if (user == null) {
         response.sendRedirect("Login.jsp");
     }
-    
+
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -20,7 +20,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to IU Online Teaching Management</title>
         <!--<title> Drop Down Sidebar Menu | CodingLab </title>-->
-        <link rel="stylesheet" href="css/home.css?v=0">
+        <link rel="stylesheet" href="css/home.css?v=1">
         <!-- Boxiocns CDN Link -->
         <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -138,9 +138,11 @@
                         </div>
                         <div class="name-job">
                             <div class="profile_name"><%= user.getName()%></div>
-                            <div class="job"><%= user.getIUCode() %></div>
+                            <div class="job"><%= user.getIUCode()%></div>
                         </div>
-                        <i class='bx bx-log-out' ></i>
+                        <a href="LogoutServlet">
+                            <i class='bx bx-log-out' ></i>
+                        </a>
                     </div>
                 </li>
             </ul>
@@ -150,11 +152,21 @@
                 <i class='bx bx-menu' ></i>
                 <span class="text">
                     Welcome <%= user.getName()%>
-                    <%= user.getUsername() %>
-                    <%= user.getPassword() %>
-                    <%= user.getGender() %>
-                    <%= user.getDepartment() %>
-                    <%= user.getEmail() %>
+                </span>
+                <span class="text">
+                    <%= user.getUsername()%>
+                </span>
+                <span class="text">
+                    <%= user.getPassword()%>
+                </span>
+                <span class="text">
+                    <%= user.getGender()%>
+                </span>
+                <span class="text">
+                    <%= user.getDepartment()%>
+                </span>
+                <span class="text">
+                    <%= user.getEmail()%>
                 </span>
             </div>
         </section>
