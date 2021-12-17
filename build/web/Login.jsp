@@ -11,11 +11,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>IU Online Teaching Management</title>
-        <script src="https://kit.fontawesome.com/7c428afa8c.js" crossorigin="anonymous"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--css-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel = "stylesheet" href = "css/login.css?v=1">
+        <script src="https://kit.fontawesome.com/7c428afa8c.js" crossorigin="anonymous"></script>
+
     </head>
     <body>
         <div class="container">
@@ -133,10 +134,10 @@
                         data: form,
                         success: function (data, textStatus, jqXHR) {
                             console.log(data)
-                            
+
                             $("#submit-btn").show();
                             $("#loader").hide();
-                            
+
                             if (data.trim() === 'done')
                             {
                                 swal("Registered successfully..Please login!")
@@ -148,7 +149,7 @@
 
                                 swal("Account already exists");
                             }
-                            
+
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             console.log(data)

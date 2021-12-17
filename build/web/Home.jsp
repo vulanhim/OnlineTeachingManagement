@@ -19,13 +19,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to IU Online Teaching Management</title>
-        <!--<title> Drop Down Sidebar Menu | CodingLab </title>-->
-        <link rel="stylesheet" href="css/home.css?v=1">
         <!-- Boxiocns CDN Link -->
         <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--css-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/home.css?v=1">
+        <script src="https://kit.fontawesome.com/7c428afa8c.js" crossorigin="anonymous"></script>
     </head>
     <body>
+        <!--navbar-->
         <div class="sidebar close">
             <div class="logo-details">
                 <i class='bx bxl-c-plus-plus'></i>
@@ -38,7 +42,7 @@
                         <span class="link_name">Dashboard</span>
                     </a>
                     <ul class="sub-menu blank">
-                        <li><a class="link_name" href="#">Category</a></li>
+                        <li><a class="link_name" href="#">Dashboard</a></li>
                     </ul>
                 </li>
                 <li>
@@ -134,7 +138,10 @@
                 <li>
                     <div class="profile-details">
                         <div class="profile-content">
-                            <img src="img/frontImg.png" alt="profileImg">
+                            <a href="#!" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                <img src="img/<%= user.getProfile()%>" alt="profileImg">
+                            </a>
+
                         </div>
                         <div class="name-job">
                             <div class="profile_name"><%= user.getName()%></div>
@@ -147,9 +154,60 @@
                 </li>
             </ul>
         </div>
+        <!--end of navbar-->
+
+        <!--profile modal-->
+
+        <!--end of profile modal-->
+
         <section class="home-section">
             <div class="home-content">
                 <i class='bx bx-menu' ></i>
+                <!-- Modal -->
+                <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="ModalLabel">Profile</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container text-center">
+                                    <img src="img/<%= user.getProfile()%>" class="img-fluid" style="border-radius: 50%;max-width: 150px ">
+                                    <h5 class="modal-title mt-3" id="exampleModalLabel"><%= user.getName()%></h5>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Username:</th>
+                                                <td><%= user.getUsername()%></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Gender:</th>
+                                                <td><%= user.getGender()%></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Department:</th>
+                                                <td><%= user.getDepartment()%></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Email:</th>
+                                                <td><%= user.getEmail()%></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Registered on:</th>
+                                                <td><%= user.getDateTime()%></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <span class="text">
                     Welcome <%= user.getName()%>
                 </span>
@@ -185,5 +243,13 @@
                 sidebar.classList.toggle("close");
             });
         </script>
+
+        <!--javascripts-->
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="js/myjs.js?v=0" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     </body>
 </html>
