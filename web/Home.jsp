@@ -3,6 +3,7 @@
     Created on : Nov 25, 2021, 11:02:03 PM
     Author     : LeeBen
 --%>
+<%@page import="com.onlineteaching.entities.Message"%>
 <%@page import="com.onlineteaching.entities.User"%>
 <%@page errorPage="error_page.jsp"%>
 <%
@@ -156,13 +157,23 @@
         </div>
         <!--end of navbar-->
 
-        <!--profile modal-->
-
-        <!--end of profile modal-->
-
         <section class="home-section">
             <div class="home-content">
+                <%
+                    Message m = (Message) session.getAttribute("msg");
+                    if (m != null) {
+                %>
+                <div class="alert <%=m.getCssClass()%> d-flex align-items-center" role="alert">
+                    <%=m.getContent()%>
+                </div>
+                <%
+                        session.removeAttribute("msg");
+                    }
+                %>
                 <i class='bx bx-menu' ></i>
+
+                <!--profile modal-->
+
                 <!-- Modal -->
                 <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -175,56 +186,87 @@
                                 <div class="container text-center">
                                     <img src="img/<%= user.getProfile()%>" class="img-fluid" style="border-radius: 50%;max-width: 150px ">
                                     <h5 class="modal-title mt-3" id="exampleModalLabel"><%= user.getName()%></h5>
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">Username:</th>
-                                                <td><%= user.getUsername()%></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Gender:</th>
-                                                <td><%= user.getGender()%></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Department:</th>
-                                                <td><%= user.getDepartment()%></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Email:</th>
-                                                <td><%= user.getEmail()%></td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">Registered on:</th>
-                                                <td><%= user.getDateTime()%></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div id="profile-details">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">Username:</th>
+                                                    <td><%= user.getUsername()%></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Gender:</th>
+                                                    <td><%= user.getGender()%></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">IUCode:</th>
+                                                    <td><%= user.getIUCode()%></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Department:</th>
+                                                    <td><%= user.getDepartment()%></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Email:</th>
+                                                    <td><%= user.getEmail()%></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Registered on:</th>
+                                                    <td><%= user.getDateTime()%></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--profile edit-->
+                                    <div id="profile-edit" style="display: none;">
+                                        <form action="EditServlet" method="post" enctype="multipart/form-data">
+                                            <table class="table">
+                                                <tr>
+                                                    <th scope="row">Name:</th>
+                                                    <td><input type="text" class="form-control" name="name" value="<%= user.getName()%>"</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Email:</th>
+                                                    <td><input type="email" class="form-control" name="email" value="<%= user.getEmail()%>"</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Gender:</th>
+                                                    <td><input type="text" class="form-control" name="gender" value="<%= user.getGender()%>"</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">IUCode:</th>
+                                                    <td><input type="text" class="form-control" name="IUCode" value="<%= user.getIUCode()%>"</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Department:</th>
+                                                    <td><input type="text" class="form-control" name="department" value="<%= user.getDepartment()%>"</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Password:</th>
+                                                    <td><input type="password" class="form-control" name="password" value="<%= user.getPassword()%>"</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">Change profile picture:</th>
+                                                    <td><input type="file" class="form-control" name="profile"</td>
+                                                </tr>
+                                            </table>
+                                            <div class="container">
+                                                <button type="submit" class="btn btn-outline-primary">Save</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!--end of profile modal-->
+
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Edit</button>
+                                <button id="edit-profile-btn" type="button" class="btn btn-primary">Edit</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <span class="text">
-                    Welcome <%= user.getName()%>
-                </span>
-                <span class="text">
-                    <%= user.getUsername()%>
-                </span>
-                <span class="text">
-                    <%= user.getPassword()%>
-                </span>
-                <span class="text">
-                    <%= user.getGender()%>
-                </span>
-                <span class="text">
-                    <%= user.getDepartment()%>
-                </span>
-                <span class="text">
-                    <%= user.getEmail()%>
+                    Welcome <%= user.getName()%>!
                 </span>
             </div>
         </section>
@@ -251,5 +293,24 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script src="js/myjs.js?v=0" type="text/javascript"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                let editStatus = false;
+                $('#edit-profile-btn').click(function () {
+                    if (editStatus === false) {
+                        $("#profile-details").hide();
+                        $("#profile-edit").show();
+                        editStatus = true;
+                        $(this).text("Back");
+                    } else {
+                        $("#profile-details").show();
+                        $("#profile-edit").hide();
+                        editStatus = false;
+                        $(this).text("Edit");
+                    }
+                });
+
+            });
+        </script>
     </body>
 </html>

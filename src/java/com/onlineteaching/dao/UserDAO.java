@@ -42,18 +42,19 @@ public class UserDAO {
         }
         return f;
     }
+
     //get user by username and password
-    public User getUserByUsernameAndPassword(String username, String password){
+    public User getUserByUsernameAndPassword(String username, String password) {
         User user = null;
         try {
             String query = "select * from OnlineTeaching.dbo.users where username=? and password=?";
             PreparedStatement pstmt = con.prepareStatement(query);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
-            
+
             ResultSet set = pstmt.executeQuery();
-            
-            if(set.next()){
+
+            if (set.next()) {
                 user = new User();
                 //data from db
                 String name = set.getString("name");
@@ -72,7 +73,29 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return user;
+    }
+
+    public boolean updateUser(User user) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.users set name=?,password=?,gender=?,IUCode=?,department=?,email=?,profile=? where userID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setString(1, user.getName());
+            p.setString(2, user.getPassword());
+            p.setString(3, user.getGender());
+            p.setString(4, user.getIUCode());
+            p.setString(5, user.getDepartment());
+            p.setString(6, user.getEmail());
+            p.setString(7, user.getProfile());
+            p.setInt(8, user.getUserID());
+
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 }
