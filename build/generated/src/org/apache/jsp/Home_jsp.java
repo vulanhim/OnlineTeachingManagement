@@ -3,6 +3,11 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import java.util.ArrayList;
+import com.onlineteaching.entities.Department;
+import com.onlineteaching.dao.PostDAO;
+import com.onlineteaching.helper.ConnectionProvider;
+import com.onlineteaching.entities.Message;
 import com.onlineteaching.entities.User;
 
 public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
@@ -42,6 +47,11 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
       out.write("\n");
       out.write("\n");
       out.write("\n");
@@ -203,15 +213,33 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        </div>\n");
       out.write("        <!--end of navbar-->\n");
       out.write("\n");
-      out.write("        <!--profile modal-->\n");
-      out.write("\n");
-      out.write("        <!--end of profile modal-->\n");
-      out.write("\n");
       out.write("        <section class=\"home-section\">\n");
       out.write("            <div class=\"home-content\">\n");
+      out.write("                ");
+
+                    Message m = (Message) session.getAttribute("msg");
+                    if (m != null) {
+                
+      out.write("\n");
+      out.write("                <div class=\"alert ");
+      out.print(m.getCssClass());
+      out.write(" d-flex align-items-center\" role=\"alert\">\n");
+      out.write("                    ");
+      out.print(m.getContent());
+      out.write("\n");
+      out.write("                </div>\n");
+      out.write("                ");
+
+                        session.removeAttribute("msg");
+                    }
+                
+      out.write("\n");
       out.write("                <i class='bx bx-menu' ></i>\n");
+      out.write("\n");
+      out.write("                <!--profile modal-->\n");
+      out.write("\n");
       out.write("                <!-- Modal -->\n");
-      out.write("                <div class=\"modal fade\" id=\"profileModal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n");
+      out.write("                <div class=\"modal fade\" id=\"profileModal\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n");
       out.write("                    <div class=\"modal-dialog\">\n");
       out.write("                        <div class=\"modal-content\">\n");
       out.write("                            <div class=\"modal-header\">\n");
@@ -265,12 +293,6 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.print( user.getDateTime());
       out.write("</td>\n");
       out.write("                                                </tr>\n");
-      out.write("                                                <tr>\n");
-      out.write("                                                    <th scope=\"row\">Registered on:</th>\n");
-      out.write("                                                    <td>");
-      out.print( user.getUserID());
-      out.write("</td>\n");
-      out.write("                                                </tr>\n");
       out.write("                                            </tbody>\n");
       out.write("                                        </table>\n");
       out.write("                                    </div>\n");
@@ -292,9 +314,15 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                                </tr>\n");
       out.write("                                                <tr>\n");
       out.write("                                                    <th scope=\"row\">Gender:</th>\n");
-      out.write("                                                    <td><input type=\"text\" class=\"form-control\" name=\"gender\" value=\"");
+      out.write("                                                    <td>\n");
+      out.write("                                                        <select class=\"form-control\" aria-label=\"Default select example\" name=\"gender\">\n");
+      out.write("                                                            <option selected>");
       out.print( user.getGender());
-      out.write("\"</td>\n");
+      out.write("</option>\n");
+      out.write("                                                            <option value=\"Male\">Male</option>\n");
+      out.write("                                                            <option value=\"Female\">Female</option>\n");
+      out.write("                                                        </select>\n");
+      out.write("                                                    </td>\n");
       out.write("                                                </tr>\n");
       out.write("                                                <tr>\n");
       out.write("                                                    <th scope=\"row\">IUCode:</th>\n");
@@ -304,9 +332,31 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                                </tr>\n");
       out.write("                                                <tr>\n");
       out.write("                                                    <th scope=\"row\">Department:</th>\n");
-      out.write("                                                    <td><input type=\"text\" class=\"form-control\" name=\"department\" value=\"");
+      out.write("                                                    <td>\n");
+      out.write("                                                        <select class=\"form-control\" aria-label=\"Default select example\" name=\"department\">\n");
+      out.write("                                                            <option selected>");
       out.print( user.getDepartment());
-      out.write("\"</td>\n");
+      out.write("</option>\n");
+      out.write("                                                            ");
+
+                                                                PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
+                                                                ArrayList<Department> list = postd.getAllDepartment();
+                                                                for(Department d:list){
+                                                            
+      out.write("\n");
+      out.write("                                                            <option value=\"");
+      out.print( d.getDepartmentName());
+      out.write('"');
+      out.write('>');
+      out.print( d.getDepartmentName());
+      out.write("</option>\n");
+      out.write("                                                            ");
+
+                                                                }
+                                                            
+      out.write("\n");
+      out.write("                                                        </select>\n");
+      out.write("                                                    </td>\n");
       out.write("                                                </tr>\n");
       out.write("                                                <tr>\n");
       out.write("                                                    <th scope=\"row\">Password:</th>\n");
@@ -316,20 +366,22 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                                </tr>\n");
       out.write("                                                <tr>\n");
       out.write("                                                    <th scope=\"row\">Change profile picture:</th>\n");
-      out.write("                                                    <td><input type=\"file\" class=\"form-control\" name=\"profile\"</td>\n");
+      out.write("                                                    <td><input type=\"file\" class=\"form-control\" name=\"profile\" value=\"");
+      out.print( user.getProfile());
+      out.write("\"</td>\n");
       out.write("                                                </tr>\n");
       out.write("                                            </table>\n");
-      out.write("                                                <div class=\"container\">\n");
-      out.write("                                                    <button type=\"submit\" class=\"btn btn-outline-primary\">Save</button>\n");
-      out.write("                                                </div>\n");
+      out.write("                                            <div class=\"container\">\n");
+      out.write("                                                <button type=\"submit\" class=\"btn btn-outline-primary\">Save</button>\n");
+      out.write("                                            </div>\n");
       out.write("                                        </form>\n");
       out.write("                                    </div>\n");
-      out.write("\n");
+      out.write("                                    <!--end of profile modal-->\n");
       out.write("\n");
       out.write("                                </div>\n");
       out.write("                            </div>\n");
       out.write("                            <div class=\"modal-footer\">\n");
-      out.write("                                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button>\n");
+      out.write("                                <button id=\"close-profile-btn\" type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button>\n");
       out.write("                                <button id=\"edit-profile-btn\" type=\"button\" class=\"btn btn-primary\">Edit</button>\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
@@ -338,32 +390,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                <span class=\"text\">\n");
       out.write("                    Welcome ");
       out.print( user.getName());
-      out.write("\n");
-      out.write("                </span>\n");
-      out.write("                <span class=\"text\">\n");
-      out.write("                    ");
-      out.print( user.getUsername());
-      out.write("\n");
-      out.write("                </span>\n");
-      out.write("                <span class=\"text\">\n");
-      out.write("                    ");
-      out.print( user.getPassword());
-      out.write("\n");
-      out.write("                </span>\n");
-      out.write("                <span class=\"text\">\n");
-      out.write("                    ");
-      out.print( user.getGender());
-      out.write("\n");
-      out.write("                </span>\n");
-      out.write("                <span class=\"text\">\n");
-      out.write("                    ");
-      out.print( user.getDepartment());
-      out.write("\n");
-      out.write("                </span>\n");
-      out.write("                <span class=\"text\">\n");
-      out.write("                    ");
-      out.print( user.getEmail());
-      out.write("\n");
+      out.write("!\n");
       out.write("                </span>\n");
       out.write("            </div>\n");
       out.write("        </section>\n");
@@ -404,6 +431,14 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                        $(\"#profile-edit\").hide();\n");
       out.write("                        editStatus = false;\n");
       out.write("                        $(this).text(\"Edit\");\n");
+      out.write("                    }\n");
+      out.write("                });\n");
+      out.write("                $('#close-profile-btn').click(function () {\n");
+      out.write("                    if (editStatus === true) {\n");
+      out.write("                        $(\"#profile-details\").show();\n");
+      out.write("                        $(\"#profile-edit\").hide();\n");
+      out.write("                        $('#edit-profile-btn').text(\"Edit\");\n");
+      out.write("                        editStatus = false;\n");
       out.write("                    }\n");
       out.write("                });\n");
       out.write("\n");

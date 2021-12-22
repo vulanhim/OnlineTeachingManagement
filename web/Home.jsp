@@ -3,6 +3,10 @@
     Created on : Nov 25, 2021, 11:02:03 PM
     Author     : LeeBen
 --%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.onlineteaching.entities.Department"%>
+<%@page import="com.onlineteaching.dao.PostDAO"%>
+<%@page import="com.onlineteaching.helper.ConnectionProvider"%>
 <%@page import="com.onlineteaching.entities.Message"%>
 <%@page import="com.onlineteaching.entities.User"%>
 <%@page errorPage="error_page.jsp"%>
@@ -175,7 +179,7 @@
                 <!--profile modal-->
 
                 <!-- Modal -->
-                <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="profileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -230,7 +234,13 @@
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">Gender:</th>
-                                                    <td><input type="text" class="form-control" name="gender" value="<%= user.getGender()%>"</td>
+                                                    <td>
+                                                        <select class="form-control" aria-label="Default select example" name="gender">
+                                                            <option selected><%= user.getGender()%></option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                        </select>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">IUCode:</th>
@@ -238,7 +248,20 @@
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">Department:</th>
-                                                    <td><input type="text" class="form-control" name="department" value="<%= user.getDepartment()%>"</td>
+                                                    <td>
+                                                        <select class="form-control" aria-label="Default select example" name="department">
+                                                            <option selected><%= user.getDepartment()%></option>
+                                                            <%
+                                                                PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
+                                                                ArrayList<Department> list = postd.getAllDepartment();
+                                                                for(Department d:list){
+                                                            %>
+                                                            <option value="<%= d.getDepartmentName()%>"><%= d.getDepartmentName()%></option>
+                                                            <%
+                                                                }
+                                                            %>
+                                                        </select>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">Password:</th>
@@ -246,7 +269,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">Change profile picture:</th>
-                                                    <td><input type="file" class="form-control" name="profile"</td>
+                                                    <td><input type="file" class="form-control" name="profile" value="<%= user.getProfile()%>"</td>
                                                 </tr>
                                             </table>
                                             <div class="container">
@@ -259,7 +282,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button id="close-profile-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button id="edit-profile-btn" type="button" class="btn btn-primary">Edit</button>
                             </div>
                         </div>
@@ -307,6 +330,14 @@
                         $("#profile-edit").hide();
                         editStatus = false;
                         $(this).text("Edit");
+                    }
+                });
+                $('#close-profile-btn').click(function () {
+                    if (editStatus === true) {
+                        $("#profile-details").show();
+                        $("#profile-edit").hide();
+                        $('#edit-profile-btn').text("Edit");
+                        editStatus = false;
                     }
                 });
 
