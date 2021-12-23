@@ -113,14 +113,14 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                </li>\n");
       out.write("                <li>\n");
       out.write("                    <div class=\"iocn-link\">\n");
-      out.write("                        <a href=\"#\">\n");
+      out.write("                        <a href=\"#!\" data-bs-toggle=\"modal\" data-bs-target=\"#add-post-modal\">\n");
       out.write("                            <i class='bx bx-book-alt' ></i>\n");
       out.write("                            <span class=\"link_name\">Posts</span>\n");
       out.write("                        </a>\n");
       out.write("                        <i class='bx bxs-chevron-down arrow' ></i>\n");
       out.write("                    </div>\n");
       out.write("                    <ul class=\"sub-menu\">\n");
-      out.write("                        <li><a class=\"link_name\" href=\"#\">Posts</a></li>\n");
+      out.write("                        <li><a class=\"link_name\" href=\"#!\" data-bs-toggle=\"modal\" data-bs-target=\"#add-post-modal\">Posts</a></li>\n");
       out.write("                        <li><a href=\"#\">Web Design</a></li>\n");
       out.write("                        <li><a href=\"#\">Login Form</a></li>\n");
       out.write("                        <li><a href=\"#\">Card Design</a></li>\n");
@@ -341,7 +341,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
 
                                                                 PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
                                                                 ArrayList<Department> list = postd.getAllDepartment();
-                                                                for(Department d:list){
+                                                                for (Department d : list) {
                                                             
       out.write("\n");
       out.write("                                                            <option value=\"");
@@ -376,8 +376,6 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                            </div>\n");
       out.write("                                        </form>\n");
       out.write("                                    </div>\n");
-      out.write("                                    <!--end of profile modal-->\n");
-      out.write("\n");
       out.write("                                </div>\n");
       out.write("                            </div>\n");
       out.write("                            <div class=\"modal-footer\">\n");
@@ -387,6 +385,37 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                        </div>\n");
       out.write("                    </div>\n");
       out.write("                </div>\n");
+      out.write("                <!--end of profile modal-->\n");
+      out.write("\n");
+      out.write("                <!--post modal-->\n");
+      out.write("\n");
+      out.write("                <!-- Modal -->\n");
+      out.write("                <div class=\"modal fade\" id=\"add-post-modal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n");
+      out.write("                    <div class=\"modal-dialog\">\n");
+      out.write("                        <div class=\"modal-content\">\n");
+      out.write("                            <div class=\"modal-header\">\n");
+      out.write("                                <h5 class=\"modal-title\" id=\"exampleModalLabel\">Class information declaration</h5>\n");
+      out.write("                                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n");
+      out.write("                            </div>\n");
+      out.write("                            <div class=\"modal-body\">\n");
+      out.write("                                <form action=\"AddPostServlet\" method=\"post\">\n");
+      out.write("                                    <div class=\"form-group\">\n");
+      out.write("                                        <input type=\"text\" placeholder=\"Enter post Title\" class=\"form-control\"/>\n");
+      out.write("                                    </div>\n");
+      out.write("                                    <div class=\"form-group\">\n");
+      out.write("                                        <textarea class=\"form-control\" style=\"height: 200px\" placeholder=\"Enter your content\" ></textarea>\n");
+      out.write("                                    </div>\n");
+      out.write("                                </form>\n");
+      out.write("                            </div>\n");
+      out.write("                            <div class=\"modal-footer\">\n");
+      out.write("                                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button>\n");
+      out.write("                                <button type=\"button\" class=\"btn btn-primary\">Save changes</button>\n");
+      out.write("                            </div>\n");
+      out.write("                        </div>\n");
+      out.write("                    </div>\n");
+      out.write("                </div>\n");
+      out.write("\n");
+      out.write("                <!--end of post modal-->\n");
       out.write("                <span class=\"text\">\n");
       out.write("                    Welcome ");
       out.print( user.getName());

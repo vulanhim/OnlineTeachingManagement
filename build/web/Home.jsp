@@ -67,14 +67,14 @@
                 </li>
                 <li>
                     <div class="iocn-link">
-                        <a href="#">
+                        <a href="#!" data-bs-toggle="modal" data-bs-target="#add-post-modal">
                             <i class='bx bx-book-alt' ></i>
                             <span class="link_name">Posts</span>
                         </a>
                         <i class='bx bxs-chevron-down arrow' ></i>
                     </div>
                     <ul class="sub-menu">
-                        <li><a class="link_name" href="#">Posts</a></li>
+                        <li><a class="link_name" href="#!" data-bs-toggle="modal" data-bs-target="#add-post-modal">Posts</a></li>
                         <li><a href="#">Web Design</a></li>
                         <li><a href="#">Login Form</a></li>
                         <li><a href="#">Card Design</a></li>
@@ -254,7 +254,7 @@
                                                             <%
                                                                 PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
                                                                 ArrayList<Department> list = postd.getAllDepartment();
-                                                                for(Department d:list){
+                                                                for (Department d : list) {
                                                             %>
                                                             <option value="<%= d.getDepartmentName()%>"><%= d.getDepartmentName()%></option>
                                                             <%
@@ -277,8 +277,6 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <!--end of profile modal-->
-
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -288,6 +286,56 @@
                         </div>
                     </div>
                 </div>
+                <!--end of profile modal-->
+
+                <!--post modal-->
+
+                <!-- Modal -->
+                <div class="modal fade" id="add-post-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Class information declaration</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="AddPostServlet" method="post">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <select class="form-control" aria-label="Default select example" name="department">
+                                                    <option selected><%= user.getDepartment()%></option>
+                                                    <%
+                                                        for (Department d : list) {
+                                                    %>
+                                                    <option value="<%= d.getDepartmentName()%>"><%= d.getDepartmentName()%></option>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" placeholder="Enter your course" class="form-control"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" placeholder="Enter the week" class="form-control"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><textarea class="form-control" style="height: 200px" placeholder="Enter your content" ></textarea></td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--end of post modal-->
                 <span class="text">
                     Welcome <%= user.getName()%>!
                 </span>
