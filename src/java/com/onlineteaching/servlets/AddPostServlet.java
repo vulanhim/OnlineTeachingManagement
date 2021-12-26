@@ -5,7 +5,8 @@
  */
 package com.onlineteaching.servlets;
 
-import com.onlineteaching.dao.UserDAO;
+import com.onlineteaching.dao.PostDAO;
+import com.onlineteaching.entities.Post;
 import com.onlineteaching.entities.User;
 import com.onlineteaching.helper.ConnectionProvider;
 import java.io.IOException;
@@ -15,13 +16,14 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+@MultipartConfig
 /**
  *
  * @author LeeBen
  */
-@MultipartConfig
-public class RegisterServlet extends HttpServlet {
+public class AddPostServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,19 +40,19 @@ public class RegisterServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
 
-//            fetch all form data
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            String name = request.getParameter("name");
-//            create user object and set all data to that object
-            User user = new User(username, password, name);
+            int courseID = Integer.parseInt(request.getParameter("courseID"));
+            int pWeek = Integer.parseInt(request.getParameter("pWeek"));
+            String pContent = request.getParameter("pContent");
+            //getting current userID
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("currentUser");
 
-//            create a user dao object
-            UserDAO dao = new UserDAO(ConnectionProvider.getConnection());
-            if (dao.saveUser(user)) {
-//                 save
+            Post p = new Post(courseID, pWeek, pContent, user.getUserID());
+            PostDAO dao = new PostDAO(ConnectionProvider.getConnection());
+            if(dao.savePost(p)){
                 out.println("done");
-            } else {
+            }
+            else{
                 out.println("error");
             }
         }

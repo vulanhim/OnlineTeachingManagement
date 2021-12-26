@@ -25,15 +25,11 @@ public class UserDAO {
         boolean f = false;
         try {
             //user --> database
-            String query = "insert into OnlineTeaching.dbo.users(username,password,name,gender,IUCode,department,email) values (?,?,?,?,?,?,?)";
+            String query = "insert into OnlineTeaching.dbo.users(username,password,name) values (?,?,?)";
             PreparedStatement pstmt = this.con.prepareStatement(query);
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getGender());
-            pstmt.setString(5, user.getIUCode());
-            pstmt.setString(6, user.getDepartment());
-            pstmt.setString(7, user.getEmail());
 
             pstmt.executeUpdate();
             f = true;

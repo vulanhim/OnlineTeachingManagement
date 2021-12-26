@@ -3,6 +3,8 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import java.util.List;
+import com.onlineteaching.entities.Course;
 import java.util.ArrayList;
 import com.onlineteaching.entities.Department;
 import com.onlineteaching.dao.PostDAO;
@@ -47,6 +49,8 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
+      out.write("\n");
+      out.write("\n");
       out.write("\n");
       out.write("\n");
       out.write("\n");
@@ -340,8 +344,8 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                                            ");
 
                                                                 PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
-                                                                ArrayList<Department> list = postd.getAllDepartment();
-                                                                for (Department d : list) {
+                                                                ArrayList<Department> listd = postd.getAllDepartment();
+                                                                for (Department d : listd) {
                                                             
       out.write("\n");
       out.write("                                                            <option value=\"");
@@ -398,18 +402,49 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n");
       out.write("                            </div>\n");
       out.write("                            <div class=\"modal-body\">\n");
-      out.write("                                <form action=\"AddPostServlet\" method=\"post\">\n");
-      out.write("                                    <div class=\"form-group\">\n");
-      out.write("                                        <input type=\"text\" placeholder=\"Enter post Title\" class=\"form-control\"/>\n");
+      out.write("                                <form id=\"add-post-form\" action=\"AddPostServlet\" method=\"post\">\n");
+      out.write("                                    <table class=\"table\">\n");
+      out.write("                                        <tr>\n");
+      out.write("                                            <td>\n");
+      out.write("                                                <select class=\"form-control\" aria-label=\"Default select example\" name=\"courseID\">\n");
+      out.write("                                                    <option selected disabled>--Select your course--</option>\n");
+      out.write("                                                    ");
+
+                                                        PostDAO postc = new PostDAO(ConnectionProvider.getConnection());
+                                                        List<Course> listc = postc.getCourseByUserID(user.getUserID());
+                                                        for (Course c : listc) {
+                                                    
+      out.write("\n");
+      out.write("                                                    <option value=\"");
+      out.print( c.getCourseID());
+      out.write('"');
+      out.write('>');
+      out.print( c.getCourseName());
+      out.write(" - ");
+      out.print( c.getWeekDay());
+      out.write(" - group ");
+      out.print( c.getGroup());
+      out.write("</option>\n");
+      out.write("                                                    ");
+
+                                                        }
+                                                    
+      out.write("\n");
+      out.write("                                                </select>\n");
+      out.write("                                            </td>\n");
+      out.write("                                        </tr>\n");
+      out.write("                                        <tr>\n");
+      out.write("                                            <td><input name=\"pWeek\" type=\"text\" placeholder=\"Enter the week\" class=\"form-control\"/></td>\n");
+      out.write("                                        </tr>\n");
+      out.write("                                        <tr>\n");
+      out.write("                                            <td><textarea name=\"pContent\" class=\"form-control\" style=\"height: 200px\" placeholder=\"Enter your content\" ></textarea></td>\n");
+      out.write("                                        </tr>\n");
+      out.write("                                    </table>\n");
+      out.write("                                    <div class=\"container text-center\">\n");
+      out.write("                                        <button type=\"submit\" class=\"btn btn-primary\">Post</button>\n");
       out.write("                                    </div>\n");
-      out.write("                                    <div class=\"form-group\">\n");
-      out.write("                                        <textarea class=\"form-control\" style=\"height: 200px\" placeholder=\"Enter your content\" ></textarea>\n");
-      out.write("                                    </div>\n");
+      out.write("\n");
       out.write("                                </form>\n");
-      out.write("                            </div>\n");
-      out.write("                            <div class=\"modal-footer\">\n");
-      out.write("                                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button>\n");
-      out.write("                                <button type=\"button\" class=\"btn btn-primary\">Save changes</button>\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                    </div>\n");
@@ -472,6 +507,31 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                });\n");
       out.write("\n");
       out.write("            });\n");
+      out.write("        </script>\n");
+      out.write("        <script>\n");
+      out.write("            $(document).ready(function (e) {\n");
+      out.write("                $('#add-post-form').on('submit', function (event) {\n");
+      out.write("                    event.preventDefault();\n");
+      out.write("                    console.log(\"you have clicked on submit\");\n");
+      out.write("                    let form = new FormData(this);\n");
+      out.write("\n");
+      out.write("//                   send post form to servlet\n");
+      out.write("                    $.ajax({\n");
+      out.write("                        url: \"AddPostServlet\",\n");
+      out.write("                        type: 'POST',\n");
+      out.write("                        data: form,\n");
+      out.write("                        success: function (data, textStatus, jqXHR) {\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("                        },\n");
+      out.write("                        error: function (jqXHR, textStatus, errorThrown) {\n");
+      out.write("\n");
+      out.write("                        },\n");
+      out.write("                        processData: false,\n");
+      out.write("                        contentType: false\n");
+      out.write("                    });\n");
+      out.write("                });\n");
+      out.write("            })\n");
       out.write("        </script>\n");
       out.write("    </body>\n");
       out.write("</html>\n");

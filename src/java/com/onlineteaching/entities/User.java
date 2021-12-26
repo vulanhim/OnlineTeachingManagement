@@ -48,6 +48,13 @@ public class User {
         this.department = department;
         this.email = email;
     }
+
+    public User(String username, String password, String name) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+    }
+    
     
     // getters and setters
 

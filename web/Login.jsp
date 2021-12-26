@@ -14,7 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!--css-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel = "stylesheet" href = "css/login.css?v=1">
+        <link rel = "stylesheet" href = "css/login.css?v=1.1">
         <script src="https://kit.fontawesome.com/7c428afa8c.js" crossorigin="anonymous"></script>
 
     </head>

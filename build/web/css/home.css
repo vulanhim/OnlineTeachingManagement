@@ -249,6 +249,12 @@ and open the template in the editor.
     font-size: 26px;
     font-weight: 600;
 }
+.swal-button {
+background-color: #1d1b31;
+}
+.swal-button:not([disabled]):hover{
+background-color: #11101d;
+}
 @media (max-width: 420px) {
     .sidebar.close .nav-links li .sub-menu{
         display: none;
