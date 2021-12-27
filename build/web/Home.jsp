@@ -32,7 +32,7 @@
 
         <!--css-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/home.css?v=1">
+        <link rel="stylesheet" href="css/home.css?">
         <script src="https://kit.fontawesome.com/7c428afa8c.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -188,7 +188,7 @@
                             <div class="col-md-4">
                                 <!--course-->
                                 <div class="list-group">
-                                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true" style="background: #1d1b31; border: none">
+                                    <a href="#" onclick="getPosts(0,<%=user.getUserID() %>)" class="list-group-item list-group-item-action active" aria-current="true" style="background: #1d1b31; border: none">
                                         Courses
                                     </a>
                                     <%
@@ -196,18 +196,23 @@
                                         List<Course> list1 = pd.getCourseByUserID(user.getUserID());
                                         for (Course cc : list1) {
                                     %>
-                                    <a href="#" class="list-group-item list-group-item-action"><%= cc.getCourseName()%> - <%= cc.getWeekDay()%> - group <%= cc.getGroup()%></a>
+                                    <a href="#" onclick="getPosts(<%=cc.getCourseID() %>,0)" class="list-group-item list-group-item-action"><%= cc.getCourseName()%> - <%= cc.getWeekDay()%> - group <%= cc.getGroup()%></a>
                                     <%
                                         }
                                     %>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
                             <!--second col-->
                             <div class="col-md-8">
                                 <!--post-->
+                                <div class="container text-center" id="loader">
+                                    <i class="fa fa-refresh fa-4x fa-spin"></i>
+                                    <h3 class="mt-2">Loading...</h3>
+                                </div>
+                                <div class="container-fluid" id="post-container">
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -458,6 +463,27 @@
                         contentType: false
                     });
                 });
+            });
+        </script>
+
+        <!--loading post using ajax-->
+        <script>
+            function getPosts(courseID, userID) {
+                $("#loader").show();
+                $('#post-container').hide();
+                $.ajax({
+                    url: "load_posts.jsp",
+                    data: {courseID: courseID,userID: userID},
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data);
+                        $("#loader").hide();
+                        $('#post-container').show();
+                        $('#post-container').html(data);
+                    }
+                });
+            }
+            $(document).ready(function (e) {
+                getPosts(0,<%=user.getUserID() %>,);
             });
         </script>
     </body>

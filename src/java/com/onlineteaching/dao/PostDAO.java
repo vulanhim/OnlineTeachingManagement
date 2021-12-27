@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,5 +99,72 @@ public class PostDAO {
             e.printStackTrace();
         }
         return f;
+    }
+    //get all the posts
+    public List<Post> getAllPosts(){
+        List<Post> list = new ArrayList<>();
+        //fetch all the posts
+        try {
+            PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post order by postID desc");
+            ResultSet set = p.executeQuery();
+            while(set.next()){
+                int postID = set.getInt("postID");
+                int courseID = set.getInt("courseID");
+                Timestamp pDate = set.getTimestamp("pDate");
+                int pWeek = set.getInt("pWeek");
+                String pContent = set.getString("pContent");
+                int isCheck = set.getInt("isCheck");
+                int userID = set.getInt("userID");
+                String checkBy = set.getString("checkBy");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+                list.add(post);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    public List<Post> getPostByCourseID(int courseID){
+        List<Post> list = new ArrayList<>();
+        //fetch all the posts of course
+        try {
+            PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where courseID=? order by postID desc");
+            p.setInt(1,courseID);
+            ResultSet set = p.executeQuery();
+            while(set.next()){
+                int postID = set.getInt("postID");
+                Timestamp pDate = set.getTimestamp("pDate");
+                int pWeek = set.getInt("pWeek");
+                String pContent = set.getString("pContent");
+                int isCheck = set.getInt("isCheck");
+                int userID = set.getInt("userID");
+                String checkBy = set.getString("checkBy");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+                list.add(post);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    public List<Post> getPostByUserID(int userID){
+        List<Post> list = new ArrayList<>();
+        //fetch all the posts of user
+        try {
+            PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where userID=? order by postID desc");
+            p.setInt(1,userID);
+            ResultSet set = p.executeQuery();
+            while(set.next()){
+                int postID = set.getInt("postID");
+                int courseID = set.getInt("courseID");
+                Timestamp pDate = set.getTimestamp("pDate");
+                int pWeek = set.getInt("pWeek");
+                String pContent = set.getString("pContent");
+                int isCheck = set.getInt("isCheck");
+                String checkBy = set.getString("checkBy");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+                list.add(post);
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
 }
