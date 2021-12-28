@@ -39,11 +39,13 @@
         <!--navbar-->
         <div class="sidebar close">
             <div class="logo-details">
-                <i class='bx bxl-c-plus-plus'></i>
+                <a href="Home.jsp">
+                    <i class='bx bxl-c-plus-plus'></i>
+                </a>
                 <span class="logo_name">IU OTM</span>
             </div>
             <ul class="nav-links">
-                <li>
+<!--                <li>
                     <a href="#">
                         <i class='bx bx-grid-alt' ></i>
                         <span class="link_name">Dashboard</span>
@@ -66,23 +68,23 @@
                         <li><a href="#">JavaScript</a></li>
                         <li><a href="#">PHP & MySQL</a></li>
                     </ul>
-                </li>
+                </li>-->
                 <li>
                     <div class="iocn-link">
                         <a href="#!" data-bs-toggle="modal" data-bs-target="#add-post-modal">
                             <i class='bx bx-book-alt' ></i>
                             <span class="link_name">Posts</span>
                         </a>
-                        <i class='bx bxs-chevron-down arrow' ></i>
+                        <!--<i class='bx bxs-chevron-down arrow' ></i>-->
                     </div>
                     <ul class="sub-menu">
                         <li><a class="link_name" href="#!" data-bs-toggle="modal" data-bs-target="#add-post-modal">Posts</a></li>
-                        <li><a href="#">Web Design</a></li>
+<!--                        <li><a href="#">Web Design</a></li>
                         <li><a href="#">Login Form</a></li>
-                        <li><a href="#">Card Design</a></li>
+                        <li><a href="#">Card Design</a></li>-->
                     </ul>
                 </li>
-                <li>
+<!--                <li>
                     <a href="#">
                         <i class='bx bx-pie-chart-alt-2' ></i>
                         <span class="link_name">Analytics</span>
@@ -141,7 +143,7 @@
                     <ul class="sub-menu blank">
                         <li><a class="link_name" href="#">Setting</a></li>
                     </ul>
-                </li>
+                </li>-->
                 <li>
                     <div class="profile-details">
                         <div class="profile-content">
@@ -188,7 +190,8 @@
                             <div class="col-md-4">
                                 <!--course-->
                                 <div class="list-group">
-                                    <a href="#" onclick="getPosts(0,<%=user.getUserID() %>)" class="list-group-item list-group-item-action active" aria-current="true" style="background: #1d1b31; border: none">
+                                    <!--<a href="#" onclick="getPosts(0,<%=user.getUserID()%>)" class="list-group-item list-group-item-action active" aria-current="true" style="background: #1d1b31; border: none">-->
+                                    <a class="list-group-item list-group-item-action active" aria-current="true" style="background: #1d1b31; border: none; font-weight: 500">
                                         Courses
                                     </a>
                                     <%
@@ -196,7 +199,16 @@
                                         List<Course> list1 = pd.getCourseByUserID(user.getUserID());
                                         for (Course cc : list1) {
                                     %>
-                                    <a href="#" onclick="getPosts(<%=cc.getCourseID() %>,0)" class="list-group-item list-group-item-action"><%= cc.getCourseName()%> - <%= cc.getWeekDay()%> - group <%= cc.getGroup()%></a>
+                                    <a href="#" onclick="getPosts(<%=cc.getCourseID()%>, 0, this)" class=" c-link list-group-item list-group-item-action" style="border-color: #d2d1d6">
+                                        <%= cc.getCourseName()%> - <%= cc.getWeekDay()%> - group <%= cc.getGroup()%>
+                                        <%
+                                            if (cc.getLab() == 1) {
+                                        %>
+                                        - Lab
+                                        <%
+                                            }
+                                        %>
+                                    </a>
                                     <%
                                         }
                                     %>
@@ -356,7 +368,16 @@
                                                 List<Course> listc = postc.getCourseByUserID(user.getUserID());
                                                 for (Course c : listc) {
                                             %>
-                                            <option value="<%= c.getCourseID()%>"><%= c.getCourseName()%> - <%= c.getWeekDay()%> - group <%= c.getGroup()%></option>
+                                            <option value="<%= c.getCourseID()%>">
+                                                <%= c.getCourseName()%> - <%= c.getWeekDay()%> - group <%= c.getGroup()%>
+                                                <%
+                                                    if (c.getLab() == 1) {
+                                                %>
+                                                - Lab
+                                                <%
+                                                    }
+                                                %>
+                                            </option>
                                             <%
                                                 }
                                             %>
@@ -468,22 +489,27 @@
 
         <!--loading post using ajax-->
         <script>
-            function getPosts(courseID, userID) {
+            function getPosts(courseID, userID, temp) {
                 $("#loader").show();
-                $('#post-container').hide();
+                $(".c-link").removeClass('active');
+                $(".c-link").css({"background-color": "white", "font-weight": "400"});
                 $.ajax({
                     url: "load_posts.jsp",
-                    data: {courseID: courseID,userID: userID},
+                    data: {courseID: courseID, userID: userID},
                     success: function (data, textStatus, jqXHR) {
                         console.log(data);
                         $("#loader").hide();
                         $('#post-container').show();
                         $('#post-container').html(data);
+                        $(temp).addClass('text-black active');
+                        $(temp).css({"background-color": "#d2d1d6","font-weight": "600"});
                     }
                 });
             }
             $(document).ready(function (e) {
-                getPosts(0,<%=user.getUserID() %>,);
+                $("#loader").hide();
+                $('#post-container').hide();
+//                getPosts(0,<%=user.getUserID()%>, );
             });
         </script>
     </body>
