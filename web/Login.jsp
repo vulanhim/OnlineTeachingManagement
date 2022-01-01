@@ -4,7 +4,15 @@
     Author     : LeeBen
 --%>
 
+<%@page import="com.onlineteaching.entities.User"%>
 <%@page import="com.onlineteaching.entities.Message"%>
+<%
+    User user = (User) session.getAttribute("currentUser");
+    if (user != null) {
+        response.sendRedirect("Home.jsp");
+    }
+
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

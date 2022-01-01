@@ -61,7 +61,7 @@ public class UserDAO {
                 user.setPassword(set.getString("password"));
                 user.setGender(set.getString("gender"));
                 user.setIUCode(set.getString("IUCode"));
-                user.setDepartment(set.getString("department"));
+                user.setDepartmentID(set.getInt("departmentID"));
                 user.setEmail(set.getString("email"));
                 user.setProfile(set.getString("profile"));
                 user.setDateTime(set.getTimestamp("rdate"));
@@ -76,13 +76,13 @@ public class UserDAO {
     public boolean updateUser(User user) {
         boolean f = false;
         try {
-            String query = "update OnlineTeaching.dbo.users set name=?,password=?,gender=?,IUCode=?,department=?,email=?,profile=? where userID=?";
+            String query = "update OnlineTeaching.dbo.users set name=?,password=?,gender=?,IUCode=?,departmentID=?,email=?,profile=? where userID=?";
             PreparedStatement p = con.prepareStatement(query);
             p.setString(1, user.getName());
             p.setString(2, user.getPassword());
             p.setString(3, user.getGender());
             p.setString(4, user.getIUCode());
-            p.setString(5, user.getDepartment());
+            p.setInt(5, user.getDepartmentID());
             p.setString(6, user.getEmail());
             p.setString(7, user.getProfile());
             p.setInt(8, user.getUserID());

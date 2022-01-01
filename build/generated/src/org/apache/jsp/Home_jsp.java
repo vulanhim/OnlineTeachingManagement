@@ -87,11 +87,13 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <!--navbar-->\n");
       out.write("        <div class=\"sidebar close\">\n");
       out.write("            <div class=\"logo-details\">\n");
-      out.write("                <i class='bx bxl-c-plus-plus'></i>\n");
+      out.write("                <a href=\"Home.jsp\">\n");
+      out.write("                    <i class='bx bxl-c-plus-plus'></i>\n");
+      out.write("                </a>\n");
       out.write("                <span class=\"logo_name\">IU OTM</span>\n");
       out.write("            </div>\n");
       out.write("            <ul class=\"nav-links\">\n");
-      out.write("                <li>\n");
+      out.write("<!--                <li>\n");
       out.write("                    <a href=\"#\">\n");
       out.write("                        <i class='bx bx-grid-alt' ></i>\n");
       out.write("                        <span class=\"link_name\">Dashboard</span>\n");
@@ -114,23 +116,23 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                        <li><a href=\"#\">JavaScript</a></li>\n");
       out.write("                        <li><a href=\"#\">PHP & MySQL</a></li>\n");
       out.write("                    </ul>\n");
-      out.write("                </li>\n");
+      out.write("                </li>-->\n");
       out.write("                <li>\n");
       out.write("                    <div class=\"iocn-link\">\n");
       out.write("                        <a href=\"#!\" data-bs-toggle=\"modal\" data-bs-target=\"#add-post-modal\">\n");
       out.write("                            <i class='bx bx-book-alt' ></i>\n");
       out.write("                            <span class=\"link_name\">Posts</span>\n");
       out.write("                        </a>\n");
-      out.write("                        <i class='bx bxs-chevron-down arrow' ></i>\n");
+      out.write("                        <!--<i class='bx bxs-chevron-down arrow' ></i>-->\n");
       out.write("                    </div>\n");
       out.write("                    <ul class=\"sub-menu\">\n");
       out.write("                        <li><a class=\"link_name\" href=\"#!\" data-bs-toggle=\"modal\" data-bs-target=\"#add-post-modal\">Posts</a></li>\n");
-      out.write("                        <li><a href=\"#\">Web Design</a></li>\n");
+      out.write("<!--                        <li><a href=\"#\">Web Design</a></li>\n");
       out.write("                        <li><a href=\"#\">Login Form</a></li>\n");
-      out.write("                        <li><a href=\"#\">Card Design</a></li>\n");
+      out.write("                        <li><a href=\"#\">Card Design</a></li>-->\n");
       out.write("                    </ul>\n");
       out.write("                </li>\n");
-      out.write("                <li>\n");
+      out.write("<!--                <li>\n");
       out.write("                    <a href=\"#\">\n");
       out.write("                        <i class='bx bx-pie-chart-alt-2' ></i>\n");
       out.write("                        <span class=\"link_name\">Analytics</span>\n");
@@ -189,7 +191,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    <ul class=\"sub-menu blank\">\n");
       out.write("                        <li><a class=\"link_name\" href=\"#\">Setting</a></li>\n");
       out.write("                    </ul>\n");
-      out.write("                </li>\n");
+      out.write("                </li>-->\n");
       out.write("                <li>\n");
       out.write("                    <div class=\"profile-details\">\n");
       out.write("                        <div class=\"profile-content\">\n");
@@ -252,9 +254,10 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                            <div class=\"col-md-4\">\n");
       out.write("                                <!--course-->\n");
       out.write("                                <div class=\"list-group\">\n");
-      out.write("                                    <a href=\"#\" onclick=\"getPosts(0,");
-      out.print(user.getUserID() );
-      out.write(")\" class=\"list-group-item list-group-item-action active\" aria-current=\"true\" style=\"background: #1d1b31; border: none\">\n");
+      out.write("                                    <!--<a href=\"#\" onclick=\"getPosts(0,");
+      out.print(user.getUserID());
+      out.write(")\" class=\"list-group-item list-group-item-action active\" aria-current=\"true\" style=\"background: #1d1b31; border: none\">-->\n");
+      out.write("                                    <a class=\"list-group-item list-group-item-action active\" aria-current=\"true\" style=\"background: #1d1b31; border: none; font-weight: 500\">\n");
       out.write("                                        Courses\n");
       out.write("                                    </a>\n");
       out.write("                                    ");
@@ -265,14 +268,27 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
                                     
       out.write("\n");
       out.write("                                    <a href=\"#\" onclick=\"getPosts(");
-      out.print(cc.getCourseID() );
-      out.write(",0)\" class=\"list-group-item list-group-item-action\">");
+      out.print(cc.getCourseID());
+      out.write(", 0, this)\" class=\" c-link list-group-item list-group-item-action\" style=\"border-color: #d2d1d6\">\n");
+      out.write("                                        ");
       out.print( cc.getCourseName());
       out.write(" - ");
       out.print( cc.getWeekDay());
       out.write(" - group ");
       out.print( cc.getGroup());
-      out.write("</a>\n");
+      out.write("\n");
+      out.write("                                        ");
+
+                                            if (cc.getLab() == 1) {
+                                        
+      out.write("\n");
+      out.write("                                        - Lab\n");
+      out.write("                                        ");
+
+                                            }
+                                        
+      out.write("\n");
+      out.write("                                    </a>\n");
       out.write("                                    ");
 
                                         }
@@ -341,9 +357,16 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                        </tr>\n");
       out.write("                                        <tr>\n");
       out.write("                                            <th scope=\"row\">Department:</th>\n");
-      out.write("                                            <td>");
-      out.print( user.getDepartment());
-      out.write("</td>\n");
+      out.write("                                            <td>\n");
+      out.write("                                                ");
+
+                                                        PostDAO pdd = new PostDAO(ConnectionProvider.getConnection());
+                                                    
+      out.write("\n");
+      out.write("                                                ");
+      out.print( pdd.getDepartmentByDepartmentID(user.getDepartmentID()).getDepartmentName());
+      out.write("\n");
+      out.write("                                            </td>\n");
       out.write("                                        </tr>\n");
       out.write("                                        <tr>\n");
       out.write("                                            <th scope=\"row\">Email:</th>\n");
@@ -397,9 +420,9 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                        <tr>\n");
       out.write("                                            <th scope=\"row\">Department:</th>\n");
       out.write("                                            <td>\n");
-      out.write("                                                <select class=\"form-control\" aria-label=\"Default select example\" name=\"department\">\n");
+      out.write("                                                <select class=\"form-control\" aria-label=\"Default select example\" name=\"departmentID\">\n");
       out.write("                                                    <option selected>");
-      out.print( user.getDepartment());
+      out.print( pdd.getDepartmentByDepartmentID(user.getDepartmentID()).getDepartmentName());
       out.write("</option>\n");
       out.write("                                                    ");
 
@@ -409,7 +432,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
                                                     
       out.write("\n");
       out.write("                                                    <option value=\"");
-      out.print( d.getDepartmentName());
+      out.print( d.getDepartmentID());
       out.write('"');
       out.write('>');
       out.print( d.getDepartmentName());
@@ -477,14 +500,26 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                                            <option value=\"");
       out.print( c.getCourseID());
-      out.write('"');
-      out.write('>');
+      out.write("\">\n");
+      out.write("                                                ");
       out.print( c.getCourseName());
       out.write(" - ");
       out.print( c.getWeekDay());
       out.write(" - group ");
       out.print( c.getGroup());
-      out.write("</option>\n");
+      out.write("\n");
+      out.write("                                                ");
+
+                                                    if (c.getLab() == 1) {
+                                                
+      out.write("\n");
+      out.write("                                                - Lab\n");
+      out.write("                                                ");
+
+                                                    }
+                                                
+      out.write("\n");
+      out.write("                                            </option>\n");
       out.write("                                            ");
 
                                                 }
@@ -511,7 +546,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        </div>\n");
       out.write("\n");
       out.write("        <!--end of post modal-->\n");
-      out.write("\n");
+      out.write("        \n");
       out.write("        <script>\n");
       out.write("            let arrow = document.querySelectorAll(\".arrow\");\n");
       out.write("            for (var i = 0; i < arrow.length; i++) {\n");
@@ -598,24 +633,29 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("        <!--loading post using ajax-->\n");
       out.write("        <script>\n");
-      out.write("            function getPosts(courseID, userID) {\n");
+      out.write("            function getPosts(courseID, userID, temp) {\n");
       out.write("                $(\"#loader\").show();\n");
-      out.write("                $('#post-container').hide();\n");
+      out.write("                $(\".c-link\").removeClass('active');\n");
+      out.write("                $(\".c-link\").css({\"background-color\": \"white\", \"font-weight\": \"400\"});\n");
       out.write("                $.ajax({\n");
       out.write("                    url: \"load_posts.jsp\",\n");
-      out.write("                    data: {courseID: courseID,userID: userID},\n");
+      out.write("                    data: {courseID: courseID, userID: userID},\n");
       out.write("                    success: function (data, textStatus, jqXHR) {\n");
       out.write("                        console.log(data);\n");
       out.write("                        $(\"#loader\").hide();\n");
       out.write("                        $('#post-container').show();\n");
       out.write("                        $('#post-container').html(data);\n");
+      out.write("                        $(temp).addClass('text-black active');\n");
+      out.write("                        $(temp).css({\"background-color\": \"#d2d1d6\",\"font-weight\": \"600\"});\n");
       out.write("                    }\n");
       out.write("                });\n");
       out.write("            }\n");
       out.write("            $(document).ready(function (e) {\n");
-      out.write("                getPosts(0,");
-      out.print(user.getUserID() );
-      out.write(",);\n");
+      out.write("                $(\"#loader\").hide();\n");
+      out.write("                $('#post-container').hide();\n");
+      out.write("//                getPosts(0,");
+      out.print(user.getUserID());
+      out.write(", );\n");
       out.write("            });\n");
       out.write("        </script>\n");
       out.write("    </body>\n");

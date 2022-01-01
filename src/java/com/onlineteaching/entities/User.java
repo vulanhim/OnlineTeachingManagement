@@ -19,19 +19,19 @@ public class User {
     private String name;
     private String gender;
     private String IUCode;
-    private String department;
+    private int departmentID;
     private String email;
     private String profile;
     private Timestamp dateTime;
 
-    public User(int userID, String username, String password, String name, String gender, String IUCode, String department, String email, Timestamp dateTime) {
+    public User(int userID, String username, String password, String name, String gender, String IUCode, int departmentID, String email, Timestamp dateTime) {
         this.userID = userID;
         this.username = username;
         this.password = password;
         this.name = name;
         this.gender = gender;
         this.IUCode = IUCode;
-        this.department = department;
+        this.departmentID = departmentID;
         this.email = email;
         this.dateTime = dateTime;
     }
@@ -39,13 +39,13 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String name, String gender, String IUCode, String department, String email) {
+    public User(String username, String password, String name, String gender, String IUCode, int departmentID, String email) {
         this.username = username;
         this.password = password;
         this.name = name;
         this.gender = gender;
         this.IUCode = IUCode;
-        this.department = department;
+        this.departmentID = departmentID;
         this.email = email;
     }
 
@@ -106,12 +106,12 @@ public class User {
         this.IUCode = IUCode;
     }
 
-    public String getDepartment() {
-        return department;
+    public int getDepartmentID() {
+        return departmentID;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentID(int departmentID) {
+        this.departmentID = departmentID;
     }
 
     public String getEmail() {

@@ -53,7 +53,7 @@ public class PostDAO {
         List<Course> list = new ArrayList<>();
 
         try {
-            String query = "select * from OnlineTeaching.dbo.courses where userID =?";
+            String query = "select * from OnlineTeaching.dbo.courses where userID =? and isDelete=0";
             PreparedStatement pstmt = con.prepareStatement(query);
             pstmt.setInt(1, userID);
             ResultSet set = pstmt.executeQuery();
@@ -105,7 +105,7 @@ public class PostDAO {
         List<Post> list = new ArrayList<>();
         //fetch all the posts
         try {
-            PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post order by postID desc");
+            PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where isDelete=0 order by postID desc");
             ResultSet set = p.executeQuery();
             while(set.next()){
                 int postID = set.getInt("postID");
@@ -127,7 +127,7 @@ public class PostDAO {
         List<Post> list = new ArrayList<>();
         //fetch all the posts of course
         try {
-            PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where courseID=? order by postID desc");
+            PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where courseID=? and isDelete=0 order by postID desc");
             p.setInt(1,courseID);
             ResultSet set = p.executeQuery();
             while(set.next()){
@@ -149,7 +149,7 @@ public class PostDAO {
         List<Post> list = new ArrayList<>();
         //fetch all the posts of user
         try {
-            PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where userID=? order by postID desc");
+            PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where userID=? and isDelete=0 order by postID desc");
             p.setInt(1,userID);
             ResultSet set = p.executeQuery();
             while(set.next()){
@@ -166,5 +166,54 @@ public class PostDAO {
         } catch (Exception e) {
         }
         return list;
+    }
+    public Department getDepartmentByDepartmentID(int departmentID) {
+        Department dep = null;
+        try {
+            String query = "select * from OnlineTeaching.dbo.department where departmentID=?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, departmentID);
+            ResultSet set = pstmt.executeQuery();
+            if (set.next()) {
+                dep = new Department();
+                //data from db
+                // set to user object
+                dep.setDepartmentID(set.getInt("departmentID"));
+                dep.setDepartmentName(set.getString("departmentName"));
+                dep.setDepartmentNameAbb(set.getString("departmentNameAbb"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dep;
+    }
+    public boolean deletePostByPostID(int postID) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.post set isDelete=1 where postID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setInt(1, postID);
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
+    public boolean updatePost(int postID, String pContent) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.post set pContent=?,isCheck=0 where postID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setString(1, pContent);
+            p.setInt(2, postID);
+
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 }

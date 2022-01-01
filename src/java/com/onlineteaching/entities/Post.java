@@ -21,6 +21,7 @@ public class Post {
     private int isCheck;
     private int userID;
     private String checkBy;
+    private int isDelete;
 
     public Post() {
     }
@@ -105,6 +106,14 @@ public class Post {
 
     public void setCheckBy(String checkBy) {
         this.checkBy = checkBy;
+    }
+
+    public int getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(int isDelete) {
+        this.isDelete = isDelete;
     }
     
     
