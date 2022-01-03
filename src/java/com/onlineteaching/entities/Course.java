@@ -65,6 +65,10 @@ public class Course {
         this.userID = userID;
     }
 
+    public Course() {
+    }
+    
+
     public int getCourseID() {
         return courseID;
     }

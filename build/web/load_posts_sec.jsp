@@ -1,3 +1,5 @@
+<%@page import="com.onlineteaching.entities.Course"%>
+<%@page import="com.onlineteaching.dao.UserDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="com.onlineteaching.entities.Post"%>
 <%@page import="com.onlineteaching.dao.PostDAO"%>
@@ -7,8 +9,11 @@
         PostDAO d = new PostDAO(ConnectionProvider.getConnection());
         int courseID = Integer.parseInt(request.getParameter("courseID"));
         int userID = Integer.parseInt(request.getParameter("userID"));
+        int departmentID = Integer.parseInt(request.getParameter("departmentID"));
         List<Post> posts = null;
-        if (courseID == 0) {
+        if (courseID == 0 && userID == 0) {
+            posts = d.getAllPostsByDepartmentID(departmentID);
+        } else if (courseID == 0 && departmentID == 0) {
             posts = d.getPostByUserID(userID);
         } else {
             posts = d.getPostByCourseID(courseID);
@@ -16,15 +21,38 @@
 
         for (Post p : posts) {
     %>
-    <div class="col-md-6 mt-2">
+    <div class="col-md-4 mt-2">
         <div class="card">
-            <div class="card-header" style="background: #d2d1d6;">
-                <div style="float: left">
-                    <b>Week <%= p.getpWeek()%></b>
+            <div class="card-header text-center" style="background: #d2d1d6;">
+                <div>
+                    <b>
+                        <%= d.getCourseByCourseID(p.getCourseID()).getCourseName()%>
+                        - <%= d.getCourseByCourseID(p.getCourseID()).getWeekDay()%>
+                        - group <%= d.getCourseByCourseID(p.getCourseID()).getGroup()%>
+                        <%
+                            if (d.getCourseByCourseID(p.getCourseID()).getLab() == 1) {
+                        %>
+                        - Lab
+                        <%
+                            }
+                        %>
+                    </b>
                 </div>
                 <div style="float: right">
-                    <i><%= p.getpDate().toLocaleString()%></i>
+                        <%= d.getCourseByCourseID(p.getCourseID()).getInstructor()%>
                 </div>
+
+            </div>
+            <div class="card-header text-center">
+                <div style="float: left">
+                    Week <%= p.getpWeek()%>
+                </div>
+                <div style="float: right">
+                <i>
+                    <%= p.getpDate().toLocaleString()%>
+                </i>
+                </div>
+                
             </div>
             <div class="card-body" style="background: #f8f9fa;">
                 <p><%= p.getpContent()%></p>
@@ -40,12 +68,9 @@
                 <%
                     }
                 %>
-                <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePostModal" data-bs-whatever="<%=p.getPostID()%>" style="float: right; margin:1px">
-                    <i class="fa fa-trash-alt"></i>
-                </a>
                 <a class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editPostModal" data-bs-whatever="<%=p.getPostID()%>" style="float: right; margin:1px">
-                    <i class="fa fa-edit"></i>
-                    Edit
+                    <i class="fa fa-check"></i>
+                    Check
                 </a>
             </div>
         </div>

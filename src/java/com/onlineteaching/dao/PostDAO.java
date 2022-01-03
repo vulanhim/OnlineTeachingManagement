@@ -216,4 +216,61 @@ public class PostDAO {
         }
         return f;
     }
+    
+    public List<Post> getAllPostsByDepartmentID(int departmentID){
+        List<Post> list = new ArrayList<>();
+        //fetch all the posts of user
+        try {
+            PreparedStatement p = con.prepareStatement("select postID, OnlineTeaching.dbo.post.courseID, pDate, pWeek, pContent, isCheck, OnlineTeaching.dbo.post.userID, checkBy from OnlineTeaching.dbo.post left join OnlineTeaching.dbo.courses on OnlineTeaching.dbo.courses.courseID = OnlineTeaching.dbo.post.courseID left join OnlineTeaching.dbo.department on OnlineTeaching.dbo.department.departmentID = OnlineTeaching.dbo.courses.departmentID where OnlineTeaching.dbo.courses.departmentID = ? and OnlineTeaching.dbo.post.isDelete = 0 and isCheck = 0 order by postID desc ");
+            p.setInt(1,departmentID);
+            ResultSet set = p.executeQuery();
+            while(set.next()){
+                int postID = set.getInt("postID");
+                int courseID = set.getInt("courseID");
+                Timestamp pDate = set.getTimestamp("pDate");
+                int pWeek = set.getInt("pWeek");
+                String pContent = set.getString("pContent");
+                int isCheck = set.getInt("isCheck");
+                int userID = set.getInt("userID");
+                String checkBy = set.getString("checkBy");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+                list.add(post);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+    public Course getCourseByCourseID(int courseID) {
+        Course course = null;
+        try {
+            String query = "select * from OnlineTeaching.dbo.courses where courseID=?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, courseID);
+            ResultSet set = pstmt.executeQuery();
+            if (set.next()) {
+                course = new Course();
+                //data from db
+                // set to user object
+                course.setCourseID(set.getInt("courseID"));
+                course.setCourseName(set.getString("courseName"));
+                course.setDepartmentID(set.getInt("departmentID"));
+                course.setCourseCode(set.getString("courseCode"));
+                course.setWeekDay(set.getString("weekDay"));
+                course.setRoom(set.getString("room"));
+                course.setInstructor(set.getString("instructor"));
+                course.setStartSlot(set.getInt("startSlot"));
+                course.setNumbersOfSlots(set.getInt("numbersOfSlots"));
+                course.setClassID(set.getString("classID"));
+                course.setSemester(set.getInt("semester"));
+                course.setSchoolYear(set.getInt("schoolYear"));
+                course.setGroup(set.getInt("group"));
+                course.setLab(set.getInt("lab"));
+                course.setHasLab(set.getInt("hasLab"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return course;
+    }
 }

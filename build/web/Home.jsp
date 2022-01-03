@@ -84,6 +84,17 @@
                                                 <li><a href="#">Card Design</a></li>-->
                     </ul>
                 </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="Manage.jsp">
+                            <i class="fas fa-book"></i>
+                            <span class="link_name">Manage</span>
+                        </a>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="Manage.jsp">Manage</a></li>
+                    </ul>
+                </li>
                 <!--                <li>
                                     <a href="#">
                                         <i class='bx bx-pie-chart-alt-2' ></i>
@@ -313,7 +324,7 @@
                                             <th scope="row">Department:</th>
                                             <td>
                                                 <select class="form-control" aria-label="Default select example" name="departmentID">
-                                                    <option selected><%= pdd.getDepartmentByDepartmentID(user.getDepartmentID()).getDepartmentName()%></option>
+                                                    <option selected value="<%= user.getDepartmentID()%>"><%= pdd.getDepartmentByDepartmentID(user.getDepartmentID()).getDepartmentName()%></option>
                                                     <%
                                                         PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
                                                         ArrayList<Department> listd = postd.getAllDepartment();

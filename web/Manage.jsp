@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Home
-    Created on : Nov 25, 2021, 11:02:03 PM
+    Document   : Manage
+    Created on : Jan 3, 2022, 2:22:45 AM
     Author     : LeeBen
 --%>
 <%@page import="java.util.List"%>
@@ -19,13 +19,12 @@
     }
 
 %>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome to IU Online Teaching Management</title>
+        <title>Manage Courses</title>
         <!-- Boxiocns CDN Link -->
         <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,45 +44,6 @@
                 <span class="logo_name">IU OTM</span>
             </div>
             <ul class="nav-links">
-                <!--                <li>
-                                    <a href="#">
-                                        <i class='bx bx-grid-alt' ></i>
-                                        <span class="link_name">Dashboard</span>
-                                    </a>
-                                    <ul class="sub-menu blank">
-                                        <li><a class="link_name" href="#">Dashboard</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <div class="iocn-link">
-                                        <a href="#">
-                                            <i class='bx bx-collection' ></i>
-                                            <span class="link_name">Category</span>
-                                        </a>
-                                        <i class='bx bxs-chevron-down arrow' ></i>
-                                    </div>
-                                    <ul class="sub-menu">
-                                        <li><a class="link_name" href="#">Category</a></li>
-                                        <li><a href="#">HTML & CSS</a></li>
-                                        <li><a href="#">JavaScript</a></li>
-                                        <li><a href="#">PHP & MySQL</a></li>
-                                    </ul>
-                                </li>-->
-                <li>
-                    <div class="iocn-link">
-                        <a href="#!" data-bs-toggle="modal" data-bs-target="#add-post-modal">
-                            <i class='bx bx-book-alt' ></i>
-                            <span class="link_name">Posts</span>
-                        </a>
-                        <!--<i class='bx bxs-chevron-down arrow' ></i>-->
-                    </div>
-                    <ul class="sub-menu">
-                        <li><a class="link_name" href="#!" data-bs-toggle="modal" data-bs-target="#add-post-modal">Posts</a></li>
-                        <!--                        <li><a href="#">Web Design</a></li>
-                                                <li><a href="#">Login Form</a></li>
-                                                <li><a href="#">Card Design</a></li>-->
-                    </ul>
-                </li>
                 <li>
                     <div class="iocn-link">
                         <a href="Manage.jsp">
@@ -95,66 +55,6 @@
                         <li><a class="link_name" href="Manage.jsp">Manage</a></li>
                     </ul>
                 </li>
-                <!--                <li>
-                                    <a href="#">
-                                        <i class='bx bx-pie-chart-alt-2' ></i>
-                                        <span class="link_name">Analytics</span>
-                                    </a>
-                                    <ul class="sub-menu blank">
-                                        <li><a class="link_name" href="#">Analytics</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class='bx bx-line-chart' ></i>
-                                        <span class="link_name">Chart</span>
-                                    </a>
-                                    <ul class="sub-menu blank">
-                                        <li><a class="link_name" href="#">Chart</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <div class="iocn-link">
-                                        <a href="#">
-                                            <i class='bx bx-plug' ></i>
-                                            <span class="link_name">Plugins</span>
-                                        </a>
-                                        <i class='bx bxs-chevron-down arrow' ></i>
-                                    </div>
-                                    <ul class="sub-menu">
-                                        <li><a class="link_name" href="#">Plugins</a></li>
-                                        <li><a href="#">UI Face</a></li>
-                                        <li><a href="#">Pigments</a></li>
-                                        <li><a href="#">Box Icons</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class='bx bx-compass' ></i>
-                                        <span class="link_name">Explore</span>
-                                    </a>
-                                    <ul class="sub-menu blank">
-                                        <li><a class="link_name" href="#">Explore</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class='bx bx-history'></i>
-                                        <span class="link_name">History</span>
-                                    </a>
-                                    <ul class="sub-menu blank">
-                                        <li><a class="link_name" href="#">History</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class='bx bx-cog' ></i>
-                                        <span class="link_name">Setting</span>
-                                    </a>
-                                    <ul class="sub-menu blank">
-                                        <li><a class="link_name" href="#">Setting</a></li>
-                                    </ul>
-                                </li>-->
                 <li>
                     <div class="profile-details">
                         <div class="profile-content">
@@ -197,37 +97,18 @@
                 <main>
                     <div class="container">
                         <div class="row mt-4">
-                            <!--first col-->
-                            <div class="col-md-4">
                                 <!--course-->
                                 <div class="list-group">
-                                    <!--<a href="#" onclick="getPosts(0,<%=user.getUserID()%>)" class="list-group-item list-group-item-action active" aria-current="true" style="background: #1d1b31; border: none">-->
-                                    <a class="list-group-item list-group-item-action active" aria-current="true" style="background: #1d1b31; border: none; font-weight: 500">
-                                        Courses
+                                    
+                                    <a href="#" onclick="getPosts(0, 0, <%= user.getDepartmentID()%>, this)" class=" c-link list-group-item list-group-item-action" style="border-color: #d2d1d6">
+                                        bu
                                     </a>
-                                    <%
-                                        PostDAO pd = new PostDAO(ConnectionProvider.getConnection());
-                                        List<Course> list1 = pd.getCourseByUserID(user.getUserID());
-                                        for (Course cc : list1) {
-                                    %>
-                                    <a href="#" onclick="getPosts(<%=cc.getCourseID()%>, 0, this)" class=" c-link list-group-item list-group-item-action" style="border-color: #d2d1d6">
-                                        <%= cc.getCourseName()%> - <%= cc.getWeekDay()%> - group <%= cc.getGroup()%>
-                                        <%
-                                            if (cc.getLab() == 1) {
-                                        %>
-                                        - Lab
-                                        <%
-                                            }
-                                        %>
-                                    </a>
-                                    <%
-                                        }
-                                    %>
+                                    
                                 </div>
                             </div>
 
                             <!--second col-->
-                            <div class="col-md-8">
+                            <div class="row-mt-4">
                                 <!--post-->
                                 <div class="container text-center" id="loader">
                                     <i class="fa fa-refresh fa-4x fa-spin"></i>
@@ -238,7 +119,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
                 </main>
             </div>
@@ -418,7 +298,7 @@
         </div>
 
         <!--end of post modal-->
-        
+
         <script>
             let arrow = document.querySelectorAll(".arrow");
             for (var i = 0; i < arrow.length; i++) {
@@ -469,49 +349,16 @@
 
             });
         </script>
-        <script>
-            $(document).ready(function (e) {
-                $('#add-post-form').on('submit', function (event) {
-                    event.preventDefault();
-                    console.log("you have clicked on submit");
-                    let form = new FormData(this);
-
-//                   send post form to servlet
-                    $.ajax({
-                        url: "AddPostServlet",
-                        type: 'POST',
-                        data: form,
-                        success: function (data, textStatus, jqXHR) {
-                            console.log(data);
-                            if (data.trim() === "done") {
-                                swal("Post successful!", "Move to home page...", "success")
-                                        .then((value) => {
-                                            window.location = "Home.jsp";
-                                        });
-                            } else {
-                                swal("Error!", "Something went wrong! Try again", "error");
-                            }
-
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            swal("Error!", "Something went wrong! Try again", "error");
-                        },
-                        processData: false,
-                        contentType: false
-                    });
-                });
-            });
-        </script>
 
         <!--loading post using ajax-->
         <script>
-            function getPosts(courseID, userID, temp) {
+            function getPosts(courseID, userID, departmentID, temp) {
                 $("#loader").show();
                 $(".c-link").removeClass('active');
                 $(".c-link").css({"background-color": "white", "font-weight": "400"});
                 $.ajax({
-                    url: "load_posts.jsp",
-                    data: {courseID: courseID, userID: userID},
+                    url: "load_posts_sec.jsp",
+                    data: {courseID: courseID, userID: userID, departmentID: departmentID},
                     success: function (data, textStatus, jqXHR) {
                         console.log(data);
                         $("#loader").hide();
@@ -525,7 +372,7 @@
             $(document).ready(function (e) {
                 $("#loader").hide();
                 $('#post-container').hide();
-//                getPosts(0,<%=user.getUserID()%>, );
+                getPosts(0, 0, <%= user.getDepartmentID()%>, );
             });
         </script>
     </body>

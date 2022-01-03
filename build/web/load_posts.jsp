@@ -18,8 +18,13 @@
     %>
     <div class="col-md-6 mt-2">
         <div class="card">
-            <div class="card-body" style="background: #d2d1d6;">
-                <b>Week <%= p.getpWeek()%></b>
+            <div class="card-header" style="background: #d2d1d6;">
+                <div style="float: left">
+                    <b>Week <%= p.getpWeek()%></b>
+                </div>
+                <div style="float: right">
+                    <i><%= p.getpDate().toLocaleString()%></i>
+                </div>
             </div>
             <div class="card-body" style="background: #f8f9fa;">
                 <p><%= p.getpContent()%></p>
@@ -38,7 +43,7 @@
                 <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePostModal" data-bs-whatever="<%=p.getPostID()%>" style="float: right; margin:1px">
                     <i class="fa fa-trash-alt"></i>
                 </a>
-                <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editPostModal" data-bs-whatever="<%=p.getPostID()%>" style="float: right; margin:1px">
+                <a class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editPostModal" data-bs-whatever="<%=p.getPostID()%>" style="float: right; margin:1px">
                     <i class="fa fa-edit"></i>
                     Edit
                 </a>

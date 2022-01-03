@@ -63,7 +63,14 @@ public class LoginServlet extends HttpServlet {
 //                success////
                 HttpSession s = request.getSession();
                 s.setAttribute("currentUser", u);
-                response.sendRedirect("Home.jsp");
+                String job = u.getUsername();
+                if(job.equals("tmlinh")){
+                    response.sendRedirect("Manage.jsp");
+                }
+                else{
+                    response.sendRedirect("Home.jsp");
+                }
+                
             }
             out.println("</body>");
             out.println("</html>");
