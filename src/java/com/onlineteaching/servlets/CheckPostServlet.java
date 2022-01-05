@@ -5,23 +5,18 @@
  */
 package com.onlineteaching.servlets;
 
-import com.onlineteaching.dao.UserDAO;
-import com.onlineteaching.entities.Message;
-import com.onlineteaching.entities.User;
-import com.onlineteaching.helper.ConnectionProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author LeeBen
  */
-public class LoginServlet extends HttpServlet {
+public class CheckPostServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,38 +35,11 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet CheckPostServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            //login
-            //fetch username and password from request
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-
-            UserDAO dao = new UserDAO(ConnectionProvider.getConnection());
-            User u = dao.getUserByUsernameAndPassword(username, password);
-            if (u == null) {
-                //login....
-//                    error///
-//                out.println("Invalid Details.. try again");
-                Message msg = new Message("Incorrect username or password","error","alert-danger");
-                HttpSession s = request.getSession();
-                s.setAttribute("msg", msg);
-                response.sendRedirect("Login.jsp");
-            } else {
-                //login
-//                success////
-                HttpSession s = request.getSession();
-                s.setAttribute("currentUser", u);
-                int job = u.getRole();
-                if(job == 1){
-                    response.sendRedirect("Manage.jsp");
-                }
-                else{
-                    response.sendRedirect("Home.jsp");
-                }
-                
-            }
+            
+            
             out.println("</body>");
             out.println("</html>");
         }

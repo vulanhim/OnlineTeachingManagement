@@ -24,6 +24,10 @@
         <servlet-name>EditPostServlet</servlet-name>
         <servlet-class>com.onlineteaching.servlets.EditPostServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CheckPostServlet</servlet-name>
+        <servlet-class>com.onlineteaching.servlets.CheckPostServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>EditPostServlet</servlet-name>
         <url-pattern>/EditPostServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckPostServlet</servlet-name>
+        <url-pattern>/CheckPostServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -17,6 +17,9 @@
     if (user == null) {
         response.sendRedirect("Login.jsp");
     }
+    else if (user.getRole()==0){
+        response.sendRedirect("Home.jsp");
+    }
 
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

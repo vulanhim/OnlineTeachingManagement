@@ -23,6 +23,7 @@ public class User {
     private String email;
     private String profile;
     private Timestamp dateTime;
+    private int role;
 
     public User(int userID, String username, String password, String name, String gender, String IUCode, int departmentID, String email, Timestamp dateTime) {
         this.userID = userID;
@@ -136,6 +137,14 @@ public class User {
 
     public void setDateTime(Timestamp dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
     
 }

@@ -65,6 +65,7 @@ public class UserDAO {
                 user.setEmail(set.getString("email"));
                 user.setProfile(set.getString("profile"));
                 user.setDateTime(set.getTimestamp("rdate"));
+                user.setRole(set.getInt("role"));
             }
         } catch (Exception e) {
             e.printStackTrace();

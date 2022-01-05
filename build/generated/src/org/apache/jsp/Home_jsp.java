@@ -61,7 +61,11 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
 
     User user = (User) session.getAttribute("currentUser");
+    String job = user.getUsername();
     if (user == null) {
+        response.sendRedirect("Login.jsp");
+    }
+    if( job.equals("dqphu")){
         response.sendRedirect("Login.jsp");
     }
 

@@ -17,6 +17,9 @@
     if (user == null) {
         response.sendRedirect("Login.jsp");
     }
+    else if (user.getRole()==1){
+        response.sendRedirect("Manage.jsp");
+    }
 
 %>
 
@@ -82,17 +85,6 @@
                         <!--                        <li><a href="#">Web Design</a></li>
                                                 <li><a href="#">Login Form</a></li>
                                                 <li><a href="#">Card Design</a></li>-->
-                    </ul>
-                </li>
-                <li>
-                    <div class="iocn-link">
-                        <a href="Manage.jsp">
-                            <i class="fas fa-book"></i>
-                            <span class="link_name">Manage</span>
-                        </a>
-                    </div>
-                    <ul class="sub-menu">
-                        <li><a class="link_name" href="Manage.jsp">Manage</a></li>
                     </ul>
                 </li>
                 <!--                <li>
