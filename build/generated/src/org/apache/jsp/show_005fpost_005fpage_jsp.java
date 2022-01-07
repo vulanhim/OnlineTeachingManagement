@@ -3,16 +3,16 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
-import java.util.List;
 import com.onlineteaching.entities.Course;
+import com.onlineteaching.entities.Post;
+import com.onlineteaching.entities.Message;
+import com.onlineteaching.dao.PostDAO;
 import java.util.ArrayList;
 import com.onlineteaching.entities.Department;
-import com.onlineteaching.dao.PostDAO;
 import com.onlineteaching.helper.ConnectionProvider;
-import com.onlineteaching.entities.Message;
 import com.onlineteaching.entities.User;
 
-public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class show_005fpost_005fpage_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -64,18 +64,27 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
     if (user == null) {
         response.sendRedirect("Login.jsp");
     }
-    else if (user.getRole()==0){
-        response.sendRedirect("Home.jsp");
-    }
 
 
-      out.write("\n");
+      out.write('\n');
+    int postID = Integer.parseInt(request.getParameter("postID"));
+    PostDAO postdao = new PostDAO(ConnectionProvider.getConnection());
+    Post post = postdao.getPostByPostID(postID);
+    Course course = postdao.getCourseByCourseID(post.getCourseID());
+
+      out.write("    \n");
       out.write("\n");
       out.write("<!DOCTYPE html>\n");
-      out.write("<html lang=\"en\" dir=\"ltr\">\n");
+      out.write("<html>\n");
       out.write("    <head>\n");
       out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
-      out.write("        <title>Manage Courses</title>\n");
+      out.write("        <title>");
+      out.print(course.getCourseName());
+      out.write(" - Week ");
+      out.print(post.getpWeek());
+      out.write(" - ");
+      out.print(course.getInstructor());
+      out.write("</title>\n");
       out.write("        <!-- Boxiocns CDN Link -->\n");
       out.write("        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>\n");
       out.write("        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
@@ -136,11 +145,6 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <section class=\"home-section\">\n");
       out.write("            <div class=\"home-content\">\n");
       out.write("                <i class='bx bx-menu' ></i>\n");
-      out.write("                <span class=\"text\">\n");
-      out.write("                    Welcome ");
-      out.print( user.getName());
-      out.write("!\n");
-      out.write("                </span>\n");
       out.write("                ");
 
                     Message m = (Message) session.getAttribute("msg");
@@ -163,35 +167,41 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                <!--main body of the page-->\n");
       out.write("                <main>\n");
       out.write("                    <div class=\"container\">\n");
-      out.write("                        <div class=\"row mt-4\">\n");
-      out.write("                                <!--course-->\n");
-      out.write("                                <div class=\"list-group\">\n");
-      out.write("                                    \n");
-      out.write("                                    <a href=\"#\" onclick=\"getPosts(0, 0, ");
-      out.print( user.getDepartmentID());
-      out.write(", this)\" class=\" c-link list-group-item list-group-item-action\" style=\"border-color: #d2d1d6\">\n");
-      out.write("                                        bu\n");
-      out.write("                                    </a>\n");
-      out.write("                                    \n");
-      out.write("                                </div>\n");
-      out.write("                            </div>\n");
       out.write("\n");
-      out.write("                            <!--second col-->\n");
-      out.write("                            <div class=\"row-mt-4\">\n");
-      out.write("                                <!--post-->\n");
-      out.write("                                <div class=\"container text-center\" id=\"loader\">\n");
-      out.write("                                    <i class=\"fa fa-refresh fa-4x fa-spin\"></i>\n");
-      out.write("                                    <h3 class=\"mt-2\">Loading...</h3>\n");
-      out.write("                                </div>\n");
-      out.write("                                <div class=\"container-fluid\" id=\"post-container\">\n");
+      out.write("                        <div class=\"card row mt-2\">\n");
+      out.write("                            <div class=\"card-header text-center\">\n");
+      out.write("                                <b>Course:</b> ");
+      out.print(course.getCourseName());
       out.write("\n");
-      out.write("                                </div>\n");
+      out.write("                                - <b>Course Code:</b> ");
+      out.print(course.getCourseCode());
+      out.write(" group ");
+      out.print(course.getGroup());
+      out.write("\n");
+      out.write("                                ");
+
+                                    if (course.getLab() == 1) {
+                                
+      out.write("\n");
+      out.write("                                 lab group ");
+      out.print(course.getHasLab());
+      out.write("\n");
+      out.write("                                ");
+
+                                    }
+                                
+      out.write("\n");
+      out.write("                                - <b>Instructor:</b> ");
+      out.print(course.getInstructor());
+      out.write("\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
+      out.write("                    </div>\n");
       out.write("\n");
       out.write("                </main>\n");
       out.write("            </div>\n");
       out.write("        </section>\n");
+      out.write("\n");
       out.write("\n");
       out.write("\n");
       out.write("        <!--profile modal-->\n");
@@ -355,79 +365,6 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        </div>\n");
       out.write("        <!--end of profile modal-->\n");
       out.write("\n");
-      out.write("        <!--post modal-->\n");
-      out.write("\n");
-      out.write("        <!-- Modal -->\n");
-      out.write("        <div class=\"modal fade\" id=\"add-post-modal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n");
-      out.write("            <div class=\"modal-dialog\">\n");
-      out.write("                <div class=\"modal-content\">\n");
-      out.write("                    <div class=\"modal-header\">\n");
-      out.write("                        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Class information declaration</h5>\n");
-      out.write("                        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n");
-      out.write("                    </div>\n");
-      out.write("                    <div class=\"modal-body\">\n");
-      out.write("                        <form id=\"add-post-form\" action=\"AddPostServlet\" method=\"post\">\n");
-      out.write("                            <table class=\"table\">\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td>\n");
-      out.write("                                        <select class=\"form-control\" aria-label=\"Default select example\" name=\"courseID\">\n");
-      out.write("                                            <option selected disabled>--Select your course--</option>\n");
-      out.write("                                            ");
-
-                                                PostDAO postc = new PostDAO(ConnectionProvider.getConnection());
-                                                List<Course> listc = postc.getCourseByUserID(user.getUserID());
-                                                for (Course c : listc) {
-                                            
-      out.write("\n");
-      out.write("                                            <option value=\"");
-      out.print( c.getCourseID());
-      out.write("\">\n");
-      out.write("                                                ");
-      out.print( c.getCourseName());
-      out.write(" - ");
-      out.print( c.getWeekDay());
-      out.write(" - group ");
-      out.print( c.getGroup());
-      out.write("\n");
-      out.write("                                                ");
-
-                                                    if (c.getLab() == 1) {
-                                                
-      out.write("\n");
-      out.write("                                                - Lab\n");
-      out.write("                                                ");
-
-                                                    }
-                                                
-      out.write("\n");
-      out.write("                                            </option>\n");
-      out.write("                                            ");
-
-                                                }
-                                            
-      out.write("\n");
-      out.write("                                        </select>\n");
-      out.write("                                    </td>\n");
-      out.write("                                </tr>\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td><input name=\"pWeek\" type=\"text\" placeholder=\"Enter the week\" class=\"form-control\"/></td>\n");
-      out.write("                                </tr>\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td><textarea name=\"pContent\" class=\"form-control\" style=\"height: 200px\" placeholder=\"Enter your content\" ></textarea></td>\n");
-      out.write("                                </tr>\n");
-      out.write("                            </table>\n");
-      out.write("                            <div class=\"container text-center\">\n");
-      out.write("                                <button type=\"submit\" class=\"btn btn-primary\">Post</button>\n");
-      out.write("                            </div>\n");
-      out.write("\n");
-      out.write("                        </form>\n");
-      out.write("                    </div>\n");
-      out.write("                </div>\n");
-      out.write("            </div>\n");
-      out.write("        </div>\n");
-      out.write("\n");
-      out.write("        <!--end of post modal-->\n");
-      out.write("\n");
       out.write("        <script>\n");
       out.write("            let arrow = document.querySelectorAll(\".arrow\");\n");
       out.write("            for (var i = 0; i < arrow.length; i++) {\n");
@@ -443,7 +380,6 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                sidebar.classList.toggle(\"close\");\n");
       out.write("            });\n");
       out.write("        </script>\n");
-      out.write("\n");
       out.write("        <!--javascripts-->\n");
       out.write("\n");
       out.write("        <script src=\"https://code.jquery.com/jquery-3.6.0.min.js\" integrity=\"sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=\" crossorigin=\"anonymous\"></script>\n");
@@ -451,6 +387,7 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p\" crossorigin=\"anonymous\"></script>\n");
       out.write("        <script src=\"js/myjs.js?v=0\" type=\"text/javascript\"></script>\n");
       out.write("        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js\"></script>\n");
+      out.write("\n");
       out.write("        <script>\n");
       out.write("            $(document).ready(function () {\n");
       out.write("                let editStatus = false;\n");
@@ -476,34 +413,6 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    }\n");
       out.write("                });\n");
       out.write("\n");
-      out.write("            });\n");
-      out.write("        </script>\n");
-      out.write("\n");
-      out.write("        <!--loading post using ajax-->\n");
-      out.write("        <script>\n");
-      out.write("            function getPosts(courseID, userID, departmentID, temp) {\n");
-      out.write("                $(\"#loader\").show();\n");
-      out.write("                $(\".c-link\").removeClass('active');\n");
-      out.write("                $(\".c-link\").css({\"background-color\": \"white\", \"font-weight\": \"400\"});\n");
-      out.write("                $.ajax({\n");
-      out.write("                    url: \"load_posts_sec.jsp\",\n");
-      out.write("                    data: {courseID: courseID, userID: userID, departmentID: departmentID},\n");
-      out.write("                    success: function (data, textStatus, jqXHR) {\n");
-      out.write("                        console.log(data);\n");
-      out.write("                        $(\"#loader\").hide();\n");
-      out.write("                        $('#post-container').show();\n");
-      out.write("                        $('#post-container').html(data);\n");
-      out.write("                        $(temp).addClass('text-black active');\n");
-      out.write("                        $(temp).css({\"background-color\": \"#d2d1d6\", \"font-weight\": \"600\"});\n");
-      out.write("                    }\n");
-      out.write("                });\n");
-      out.write("            }\n");
-      out.write("            $(document).ready(function (e) {\n");
-      out.write("                $(\"#loader\").hide();\n");
-      out.write("                $('#post-container').hide();\n");
-      out.write("                getPosts(0, 0, ");
-      out.print( user.getDepartmentID());
-      out.write(", );\n");
       out.write("            });\n");
       out.write("        </script>\n");
       out.write("    </body>\n");

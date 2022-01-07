@@ -22,7 +22,7 @@ public class ConnectionProvider {
 
                 //create a connection..
                 con = DriverManager.
-                        getConnection("jdbc:sqlserver://localhost:1433;databaseName=OnlineTeaching;user=ben;password=ben1");
+                        getConnection("jdbc:sqlserver://localhost:1433;databaseName=OnlineTeaching;user=ben;password=ben");
 
             }
 

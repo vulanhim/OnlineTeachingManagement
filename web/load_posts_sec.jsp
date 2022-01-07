@@ -41,9 +41,8 @@
                 <div style="float: right">
                     <%= d.getCourseByCourseID(p.getCourseID()).getInstructor()%>
                 </div>
-
             </div>
-            <div class="card-header text-center">
+            <div class="card-body" style="background: #f8f9fa;">
                 <div style="float: left">
                     Week <%= p.getpWeek()%>
                 </div>
@@ -52,10 +51,6 @@
                         <%= p.getpDate().toLocaleString()%>
                     </i>
                 </div>
-
-            </div>
-            <div class="card-body" style="background: #f8f9fa;">
-                <p><%= p.getpContent()%></p>
             </div>
             <div class="card-footer">
                 <%
@@ -72,10 +67,10 @@
                     <tr>
                         <td><input name="postID" type="hidden" value="<%= p.getPostID()%>" class="form-control"/></td>
                     </tr>
-                        <button type="submit" class="btn btn-dark btn-sm" style="float: right; margin:1px">
-                            <i class="far fa-eye"></i>
-                            Show
-                        </button>
+                    <button type="submit" class="btn btn-dark btn-sm" style="float: right; margin:1px">
+                        <i class="far fa-eye"></i>
+                        More
+                    </button>
                 </form>
             </div>
         </div>

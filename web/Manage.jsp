@@ -16,8 +16,7 @@
     User user = (User) session.getAttribute("currentUser");
     if (user == null) {
         response.sendRedirect("Login.jsp");
-    }
-    else if (user.getRole()==0){
+    } else if (user.getRole() == 0) {
         response.sendRedirect("Home.jsp");
     }
 
@@ -100,28 +99,28 @@
                 <main>
                     <div class="container">
                         <div class="row mt-4">
-                                <!--course-->
-                                <div class="list-group">
-                                    
-                                    <a href="#" onclick="getPosts(0, 0, <%= user.getDepartmentID()%>, this)" class=" c-link list-group-item list-group-item-action" style="border-color: #d2d1d6">
-                                        bu
-                                    </a>
-                                    
-                                </div>
-                            </div>
+                            <!--course-->
+                            <div class="list-group">
 
-                            <!--second col-->
-                            <div class="row-mt-4">
-                                <!--post-->
-                                <div class="container text-center" id="loader">
-                                    <i class="fa fa-refresh fa-4x fa-spin"></i>
-                                    <h3 class="mt-2">Loading...</h3>
-                                </div>
-                                <div class="container-fluid" id="post-container">
+                                <a href="#" onclick="getPosts(0, 0, <%= user.getDepartmentID()%>, this)" class=" c-link list-group-item list-group-item-action" style="border-color: #d2d1d6">
+                                    bu
+                                </a>
 
-                                </div>
                             </div>
                         </div>
+
+                        <!--second col-->
+                        <div class="row-mt-4">
+                            <!--post-->
+                            <div class="container text-center" id="loader">
+                                <i class="fa fa-refresh fa-4x fa-spin"></i>
+                                <h3 class="mt-2">Loading...</h3>
+                            </div>
+                            <div class="container-fluid" id="post-container">
+
+                            </div>
+                        </div>
+                    </div>
 
                 </main>
             </div>
@@ -244,63 +243,6 @@
             </div>
         </div>
         <!--end of profile modal-->
-
-        <!--post modal-->
-
-        <!-- Modal -->
-        <div class="modal fade" id="add-post-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Class information declaration</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="add-post-form" action="AddPostServlet" method="post">
-                            <table class="table">
-                                <tr>
-                                    <td>
-                                        <select class="form-control" aria-label="Default select example" name="courseID">
-                                            <option selected disabled>--Select your course--</option>
-                                            <%
-                                                PostDAO postc = new PostDAO(ConnectionProvider.getConnection());
-                                                List<Course> listc = postc.getCourseByUserID(user.getUserID());
-                                                for (Course c : listc) {
-                                            %>
-                                            <option value="<%= c.getCourseID()%>">
-                                                <%= c.getCourseName()%> - <%= c.getWeekDay()%> - group <%= c.getGroup()%>
-                                                <%
-                                                    if (c.getLab() == 1) {
-                                                %>
-                                                - Lab
-                                                <%
-                                                    }
-                                                %>
-                                            </option>
-                                            <%
-                                                }
-                                            %>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input name="pWeek" type="text" placeholder="Enter the week" class="form-control"/></td>
-                                </tr>
-                                <tr>
-                                    <td><textarea name="pContent" class="form-control" style="height: 200px" placeholder="Enter your content" ></textarea></td>
-                                </tr>
-                            </table>
-                            <div class="container text-center">
-                                <button type="submit" class="btn btn-primary">Post</button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--end of post modal-->
 
         <script>
             let arrow = document.querySelectorAll(".arrow");

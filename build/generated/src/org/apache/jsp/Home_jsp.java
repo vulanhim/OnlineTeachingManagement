@@ -61,12 +61,11 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
 
     User user = (User) session.getAttribute("currentUser");
-    String job = user.getUsername();
     if (user == null) {
         response.sendRedirect("Login.jsp");
     }
-    if( job.equals("dqphu")){
-        response.sendRedirect("Login.jsp");
+    else if (user.getRole()==1){
+        response.sendRedirect("Manage.jsp");
     }
 
 
@@ -134,17 +133,6 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                        <!--                        <li><a href=\"#\">Web Design</a></li>\n");
       out.write("                                                <li><a href=\"#\">Login Form</a></li>\n");
       out.write("                                                <li><a href=\"#\">Card Design</a></li>-->\n");
-      out.write("                    </ul>\n");
-      out.write("                </li>\n");
-      out.write("                <li>\n");
-      out.write("                    <div class=\"iocn-link\">\n");
-      out.write("                        <a href=\"Manage.jsp\">\n");
-      out.write("                            <i class=\"fas fa-book\"></i>\n");
-      out.write("                            <span class=\"link_name\">Manage</span>\n");
-      out.write("                        </a>\n");
-      out.write("                    </div>\n");
-      out.write("                    <ul class=\"sub-menu\">\n");
-      out.write("                        <li><a class=\"link_name\" href=\"Manage.jsp\">Manage</a></li>\n");
       out.write("                    </ul>\n");
       out.write("                </li>\n");
       out.write("                <!--                <li>\n");

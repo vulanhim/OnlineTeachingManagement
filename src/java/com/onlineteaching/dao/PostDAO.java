@@ -11,10 +11,13 @@ import com.onlineteaching.entities.Post;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -100,14 +103,15 @@ public class PostDAO {
         }
         return f;
     }
+
     //get all the posts
-    public List<Post> getAllPosts(){
+    public List<Post> getAllPosts() {
         List<Post> list = new ArrayList<>();
         //fetch all the posts
         try {
             PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where isDelete=0 order by postID desc");
             ResultSet set = p.executeQuery();
-            while(set.next()){
+            while (set.next()) {
                 int postID = set.getInt("postID");
                 int courseID = set.getInt("courseID");
                 Timestamp pDate = set.getTimestamp("pDate");
@@ -123,14 +127,15 @@ public class PostDAO {
         }
         return list;
     }
-    public List<Post> getPostByCourseID(int courseID){
+
+    public List<Post> getPostByCourseID(int courseID) {
         List<Post> list = new ArrayList<>();
         //fetch all the posts of course
         try {
             PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where courseID=? and isDelete=0 order by postID desc");
-            p.setInt(1,courseID);
+            p.setInt(1, courseID);
             ResultSet set = p.executeQuery();
-            while(set.next()){
+            while (set.next()) {
                 int postID = set.getInt("postID");
                 Timestamp pDate = set.getTimestamp("pDate");
                 int pWeek = set.getInt("pWeek");
@@ -145,14 +150,15 @@ public class PostDAO {
         }
         return list;
     }
-    public List<Post> getPostByUserID(int userID){
+
+    public List<Post> getPostByUserID(int userID) {
         List<Post> list = new ArrayList<>();
         //fetch all the posts of user
         try {
             PreparedStatement p = con.prepareStatement("select * from OnlineTeaching.dbo.post where userID=? and isDelete=0 order by postID desc");
-            p.setInt(1,userID);
+            p.setInt(1, userID);
             ResultSet set = p.executeQuery();
-            while(set.next()){
+            while (set.next()) {
                 int postID = set.getInt("postID");
                 int courseID = set.getInt("courseID");
                 Timestamp pDate = set.getTimestamp("pDate");
@@ -167,6 +173,7 @@ public class PostDAO {
         }
         return list;
     }
+
     public Department getDepartmentByDepartmentID(int departmentID) {
         Department dep = null;
         try {
@@ -188,6 +195,7 @@ public class PostDAO {
 
         return dep;
     }
+
     public boolean deletePostByPostID(int postID) {
         boolean f = false;
         try {
@@ -201,6 +209,7 @@ public class PostDAO {
         }
         return f;
     }
+
     public boolean updatePost(int postID, String pContent) {
         boolean f = false;
         try {
@@ -216,15 +225,15 @@ public class PostDAO {
         }
         return f;
     }
-    
-    public List<Post> getAllPostsByDepartmentID(int departmentID){
+
+    public List<Post> getAllPostsByDepartmentID(int departmentID) {
         List<Post> list = new ArrayList<>();
         //fetch all the posts of user
         try {
             PreparedStatement p = con.prepareStatement("select postID, OnlineTeaching.dbo.post.courseID, pDate, pWeek, pContent, isCheck, OnlineTeaching.dbo.post.userID, checkBy from OnlineTeaching.dbo.post left join OnlineTeaching.dbo.courses on OnlineTeaching.dbo.courses.courseID = OnlineTeaching.dbo.post.courseID left join OnlineTeaching.dbo.department on OnlineTeaching.dbo.department.departmentID = OnlineTeaching.dbo.courses.departmentID where OnlineTeaching.dbo.courses.departmentID = ? and OnlineTeaching.dbo.post.isDelete = 0 and isCheck = 0 order by postID desc ");
-            p.setInt(1,departmentID);
+            p.setInt(1, departmentID);
             ResultSet set = p.executeQuery();
-            while(set.next()){
+            while (set.next()) {
                 int postID = set.getInt("postID");
                 int courseID = set.getInt("courseID");
                 Timestamp pDate = set.getTimestamp("pDate");
@@ -240,6 +249,7 @@ public class PostDAO {
         }
         return list;
     }
+
     public Course getCourseByCourseID(int courseID) {
         Course course = null;
         try {
@@ -272,5 +282,42 @@ public class PostDAO {
         }
 
         return course;
+    }
+
+    public Post getPostByPostID(int postID) {
+        Post post = null;
+        try {
+            String q = "select * from OnlineTeaching.dbo.post where postID=?";
+            PreparedStatement p = this.con.prepareStatement(q);
+            p.setInt(1, postID);
+            ResultSet set = p.executeQuery();
+            if(set.next()){
+                int courseID = set.getInt("courseID");
+                Timestamp pDate = set.getTimestamp("pDate");
+                int pWeek = set.getInt("pWeek");
+                String pContent = set.getString("pContent");
+                int isCheck = set.getInt("isCheck");
+                int userID = set.getInt("userID");
+                String checkBy = set.getString("checkBy");
+                post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return post;
+    }
+    public boolean checkPost(int postID, String checkBy) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.post set isCheck=1,checkBy=? where postID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setString(1, checkBy);
+            p.setInt(2, postID);
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 }
