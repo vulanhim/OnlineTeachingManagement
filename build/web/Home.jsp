@@ -17,6 +17,9 @@
     if (user == null) {
         response.sendRedirect("Login.jsp");
     }
+    else if (user.getRole()==3){
+        response.sendRedirect("admin.jsp");
+    }
     else if (user.getRole()==1){
         response.sendRedirect("Manage.jsp");
     }
@@ -203,11 +206,11 @@
                                         for (Course cc : list1) {
                                     %>
                                     <a href="#" onclick="getPosts(<%=cc.getCourseID()%>, 0, this)" class=" c-link list-group-item list-group-item-action" style="border-color: #d2d1d6">
-                                        <%= cc.getCourseName()%> - <%= cc.getWeekDay()%> - group <%= cc.getGroup()%>
+                                        <%= cc.getCourseName()%> - <%= cc.getWeekDay()%> - Group <%= cc.getGroup()%>
                                         <%
                                             if (cc.getLab() == 1) {
                                         %>
-                                        - Lab
+                                        - Lab group <%= cc.getHasLab()%>
                                         <%
                                             }
                                         %>
@@ -377,11 +380,11 @@
                                                 for (Course c : listc) {
                                             %>
                                             <option value="<%= c.getCourseID()%>">
-                                                <%= c.getCourseName()%> - <%= c.getWeekDay()%> - group <%= c.getGroup()%>
+                                                <%= c.getCourseName()%> - <%= c.getWeekDay()%> - Group <%= c.getGroup()%>
                                                 <%
                                                     if (c.getLab() == 1) {
                                                 %>
-                                                - Lab
+                                                - Lab group <%=c.getHasLab()%>
                                                 <%
                                                     }
                                                 %>

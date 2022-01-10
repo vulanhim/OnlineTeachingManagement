@@ -277,7 +277,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.print( cc.getCourseName());
       out.write(" - ");
       out.print( cc.getWeekDay());
-      out.write(" - group ");
+      out.write(" - Group ");
       out.print( cc.getGroup());
       out.write("\n");
       out.write("                                        ");
@@ -285,7 +285,9 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
                                             if (cc.getLab() == 1) {
                                         
       out.write("\n");
-      out.write("                                        - Lab\n");
+      out.write("                                        - Lab group ");
+      out.print( cc.getHasLab());
+      out.write("\n");
       out.write("                                        ");
 
                                             }
@@ -511,7 +513,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.print( c.getCourseName());
       out.write(" - ");
       out.print( c.getWeekDay());
-      out.write(" - group ");
+      out.write(" - Group ");
       out.print( c.getGroup());
       out.write("\n");
       out.write("                                                ");
@@ -519,7 +521,9 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
                                                     if (c.getLab() == 1) {
                                                 
       out.write("\n");
-      out.write("                                                - Lab\n");
+      out.write("                                                - Lab group ");
+      out.print(c.getHasLab());
+      out.write("\n");
       out.write("                                                ");
 
                                                     }

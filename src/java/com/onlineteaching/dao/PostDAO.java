@@ -73,9 +73,9 @@ public class PostDAO {
                 String classID = set.getString("classID");
                 int semester = set.getInt("semester");
                 int schoolYear = set.getInt("schoolYear");
-                int group = set.getInt("group");
+                int group = set.getInt("groupClass");
                 int lab = set.getInt("lab");
-                int hasLab = set.getInt("hasLab");
+                int hasLab = set.getInt("labGroup");
 //                int userID = set.getInt("userID");
 
                 Course c = new Course(courseID, courseName, departmentID, courseCode, weekDay, room, instructor, startSlot, numbersOfSlots, classID, semester, schoolYear, group, lab, hasLab, userID);
@@ -273,9 +273,9 @@ public class PostDAO {
                 course.setClassID(set.getString("classID"));
                 course.setSemester(set.getInt("semester"));
                 course.setSchoolYear(set.getInt("schoolYear"));
-                course.setGroup(set.getInt("group"));
+                course.setGroup(set.getInt("groupClass"));
                 course.setLab(set.getInt("lab"));
-                course.setHasLab(set.getInt("hasLab"));
+                course.setHasLab(set.getInt("labGroup"));
             }
         } catch (Exception e) {
             e.printStackTrace();

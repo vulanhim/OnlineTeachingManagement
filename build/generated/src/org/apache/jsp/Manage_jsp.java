@@ -63,8 +63,7 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
     User user = (User) session.getAttribute("currentUser");
     if (user == null) {
         response.sendRedirect("Login.jsp");
-    }
-    else if (user.getRole()==0){
+    } else if (user.getRole() == 0) {
         response.sendRedirect("Home.jsp");
     }
 
@@ -75,7 +74,7 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<html lang=\"en\" dir=\"ltr\">\n");
       out.write("    <head>\n");
       out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
-      out.write("        <title>Manage Courses</title>\n");
+      out.write("        <title>Manage Posts</title>\n");
       out.write("        <!-- Boxiocns CDN Link -->\n");
       out.write("        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>\n");
       out.write("        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
@@ -104,6 +103,21 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    </div>\n");
       out.write("                    <ul class=\"sub-menu\">\n");
       out.write("                        <li><a class=\"link_name\" href=\"Manage.jsp\">Manage</a></li>\n");
+      out.write("                    </ul>\n");
+      out.write("                </li>\n");
+      out.write("                <li>\n");
+      out.write("                    <div class=\"iocn-link\">\n");
+      out.write("                        <a>\n");
+      out.write("                            <i class=\"fas fa-search\"></i>\n");
+      out.write("                            <span class=\"link_name\">Search</span>\n");
+      out.write("                        </a>\n");
+      out.write("                        <i class='bx bxs-chevron-down arrow' ></i>\n");
+      out.write("                    </div>\n");
+      out.write("                    <ul class=\"sub-menu\">\n");
+      out.write("                        <li><a class=\"link_name\">Search</a></li>\n");
+      out.write("                        <li><a href=\"Search.jsp\">by Instructor</a></li>\n");
+      out.write("                        <li><a href=\"#\">Login Form</a></li>\n");
+      out.write("                        <li><a href=\"#\">Card Design</a></li>\n");
       out.write("                    </ul>\n");
       out.write("                </li>\n");
       out.write("                <li>\n");
@@ -164,30 +178,30 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                <main>\n");
       out.write("                    <div class=\"container\">\n");
       out.write("                        <div class=\"row mt-4\">\n");
-      out.write("                                <!--course-->\n");
-      out.write("                                <div class=\"list-group\">\n");
-      out.write("                                    \n");
-      out.write("                                    <a href=\"#\" onclick=\"getPosts(0, 0, ");
+      out.write("                            <!--course-->\n");
+      out.write("                            <div class=\"list-group\">\n");
+      out.write("\n");
+      out.write("<!--                                <a href=\"#\" onclick=\"getPosts(0, 0, ");
       out.print( user.getDepartmentID());
       out.write(", this)\" class=\" c-link list-group-item list-group-item-action\" style=\"border-color: #d2d1d6\">\n");
-      out.write("                                        bu\n");
-      out.write("                                    </a>\n");
-      out.write("                                    \n");
-      out.write("                                </div>\n");
-      out.write("                            </div>\n");
+      out.write("                                    bu\n");
+      out.write("                                </a>-->\n");
       out.write("\n");
-      out.write("                            <!--second col-->\n");
-      out.write("                            <div class=\"row-mt-4\">\n");
-      out.write("                                <!--post-->\n");
-      out.write("                                <div class=\"container text-center\" id=\"loader\">\n");
-      out.write("                                    <i class=\"fa fa-refresh fa-4x fa-spin\"></i>\n");
-      out.write("                                    <h3 class=\"mt-2\">Loading...</h3>\n");
-      out.write("                                </div>\n");
-      out.write("                                <div class=\"container-fluid\" id=\"post-container\">\n");
-      out.write("\n");
-      out.write("                                </div>\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
+      out.write("\n");
+      out.write("                        <!--second col-->\n");
+      out.write("                        <div class=\"row-mt-4\">\n");
+      out.write("                            <!--post-->\n");
+      out.write("                            <div class=\"container text-center\" id=\"loader\">\n");
+      out.write("                                <i class=\"fa fa-refresh fa-4x fa-spin\"></i>\n");
+      out.write("                                <h3 class=\"mt-2\">Loading...</h3>\n");
+      out.write("                            </div>\n");
+      out.write("                            <div class=\"container-fluid\" id=\"post-container\">\n");
+      out.write("\n");
+      out.write("                            </div>\n");
+      out.write("                        </div>\n");
+      out.write("                    </div>\n");
       out.write("\n");
       out.write("                </main>\n");
       out.write("            </div>\n");
@@ -354,79 +368,6 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            </div>\n");
       out.write("        </div>\n");
       out.write("        <!--end of profile modal-->\n");
-      out.write("\n");
-      out.write("        <!--post modal-->\n");
-      out.write("\n");
-      out.write("        <!-- Modal -->\n");
-      out.write("        <div class=\"modal fade\" id=\"add-post-modal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n");
-      out.write("            <div class=\"modal-dialog\">\n");
-      out.write("                <div class=\"modal-content\">\n");
-      out.write("                    <div class=\"modal-header\">\n");
-      out.write("                        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Class information declaration</h5>\n");
-      out.write("                        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n");
-      out.write("                    </div>\n");
-      out.write("                    <div class=\"modal-body\">\n");
-      out.write("                        <form id=\"add-post-form\" action=\"AddPostServlet\" method=\"post\">\n");
-      out.write("                            <table class=\"table\">\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td>\n");
-      out.write("                                        <select class=\"form-control\" aria-label=\"Default select example\" name=\"courseID\">\n");
-      out.write("                                            <option selected disabled>--Select your course--</option>\n");
-      out.write("                                            ");
-
-                                                PostDAO postc = new PostDAO(ConnectionProvider.getConnection());
-                                                List<Course> listc = postc.getCourseByUserID(user.getUserID());
-                                                for (Course c : listc) {
-                                            
-      out.write("\n");
-      out.write("                                            <option value=\"");
-      out.print( c.getCourseID());
-      out.write("\">\n");
-      out.write("                                                ");
-      out.print( c.getCourseName());
-      out.write(" - ");
-      out.print( c.getWeekDay());
-      out.write(" - group ");
-      out.print( c.getGroup());
-      out.write("\n");
-      out.write("                                                ");
-
-                                                    if (c.getLab() == 1) {
-                                                
-      out.write("\n");
-      out.write("                                                - Lab\n");
-      out.write("                                                ");
-
-                                                    }
-                                                
-      out.write("\n");
-      out.write("                                            </option>\n");
-      out.write("                                            ");
-
-                                                }
-                                            
-      out.write("\n");
-      out.write("                                        </select>\n");
-      out.write("                                    </td>\n");
-      out.write("                                </tr>\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td><input name=\"pWeek\" type=\"text\" placeholder=\"Enter the week\" class=\"form-control\"/></td>\n");
-      out.write("                                </tr>\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td><textarea name=\"pContent\" class=\"form-control\" style=\"height: 200px\" placeholder=\"Enter your content\" ></textarea></td>\n");
-      out.write("                                </tr>\n");
-      out.write("                            </table>\n");
-      out.write("                            <div class=\"container text-center\">\n");
-      out.write("                                <button type=\"submit\" class=\"btn btn-primary\">Post</button>\n");
-      out.write("                            </div>\n");
-      out.write("\n");
-      out.write("                        </form>\n");
-      out.write("                    </div>\n");
-      out.write("                </div>\n");
-      out.write("            </div>\n");
-      out.write("        </div>\n");
-      out.write("\n");
-      out.write("        <!--end of post modal-->\n");
       out.write("\n");
       out.write("        <script>\n");
       out.write("            let arrow = document.querySelectorAll(\".arrow\");\n");

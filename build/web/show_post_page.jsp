@@ -61,6 +61,17 @@
                     </ul>
                 </li>
                 <li>
+                    <div class="iocn-link">
+                        <a href="Search.jsp">
+                            <i class="fas fa-search"></i>
+                            <span class="link_name">Search</span>
+                        </a>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="Search.jsp">Search</a></li>
+                    </ul>
+                </li>
+                <li>
                     <div class="profile-details">
                         <div class="profile-content">
                             <a href="#!" data-bs-toggle="modal" data-bs-target="#profileModal">
@@ -130,6 +141,21 @@
                                                 <div>
                                                     <b>Start slot:</b> <%=course.getStartSlot()%>
                                                     - <b>Numbers of slots:</b> <%=course.getNumbersOfSlots()%>
+                                                </div>
+                                                <div>
+                                                    <b>Semester:</b> <%=course.getSemester()%>
+                                                    - <b>School Year:</b>
+                                                    <%
+                                                        if (course.getSchoolYear() == 20212022) {
+                                                    %>
+                                                    2021-2022
+                                                    <%
+                                                    } else {
+                                                    %>
+                                                    <%=course.getSchoolYear()%>
+                                                    <%
+                                                        }
+                                                    %>
                                                 </div>
                                             </div>
                                             <div style= "padding: 15px">

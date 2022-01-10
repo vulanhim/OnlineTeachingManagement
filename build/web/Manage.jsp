@@ -26,7 +26,7 @@
 <html lang="en" dir="ltr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Manage Courses</title>
+        <title>Manage Posts</title>
         <!-- Boxiocns CDN Link -->
         <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,6 +55,21 @@
                     </div>
                     <ul class="sub-menu">
                         <li><a class="link_name" href="Manage.jsp">Manage</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a>
+                            <i class="fas fa-search"></i>
+                            <span class="link_name">Search</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow' ></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name">Search</a></li>
+                        <li><a href="Search.jsp">by Instructor</a></li>
+                        <li><a href="#">Login Form</a></li>
+                        <li><a href="#">Card Design</a></li>
                     </ul>
                 </li>
                 <li>
@@ -102,9 +117,9 @@
                             <!--course-->
                             <div class="list-group">
 
-                                <a href="#" onclick="getPosts(0, 0, <%= user.getDepartmentID()%>, this)" class=" c-link list-group-item list-group-item-action" style="border-color: #d2d1d6">
+<!--                                <a href="#" onclick="getPosts(0, 0, <%= user.getDepartmentID()%>, this)" class=" c-link list-group-item list-group-item-action" style="border-color: #d2d1d6">
                                     bu
-                                </a>
+                                </a>-->
 
                             </div>
                         </div>

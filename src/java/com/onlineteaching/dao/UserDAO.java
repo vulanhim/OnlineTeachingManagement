@@ -7,6 +7,8 @@ package com.onlineteaching.dao;
 
 import com.onlineteaching.entities.User;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -94,5 +96,31 @@ public class UserDAO {
             e.printStackTrace();
         }
         return f;
+    }
+    public List<User> getUserByDepartmentID(int departmentID) {
+        List<User> list = new ArrayList<>();
+
+        try {
+            String query = "select * from OnlineTeaching.dbo.users where departmentID=? and role=0";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, departmentID);
+            ResultSet set = pstmt.executeQuery();
+            while (set.next()) {
+                int userID = set.getInt("userID");
+                String username = set.getString("username");
+                String password = set.getString("password");
+                String name = set.getString("name");
+                String gender = set.getString("gender");
+                String IUCode = set.getString("IUCode");
+                String email = set.getString("email");
+                Timestamp dateTime = set.getTimestamp("rdate");
+
+                User user = new User(userID, username, password, name, gender, IUCode, departmentID, email, dateTime);
+                list.add(user);
+            }
+        } catch (Exception e) {
+        }
+
+        return list;
     }
 }
