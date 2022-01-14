@@ -64,13 +64,17 @@
                 </li>
                 <li>
                     <div class="iocn-link">
-                        <a href="Search.jsp">
+                        <a>
                             <i class="fas fa-search"></i>
-                            <span class="link_name">Search</span>
+                            <span class="link_name">View Post</span>
                         </a>
+                        <i class='bx bxs-chevron-down arrow' ></i>
                     </div>
                     <ul class="sub-menu">
-                        <li><a class="link_name" href="Search.jsp">Search</a></li>
+                        <li><a class="link_name">View Post</a></li>
+                        <li><a href="Search.jsp">by Instructor</a></li>
+<!--                        <li><a href="#">Login Form</a></li>
+                        <li><a href="#">Card Design</a></li>-->
                     </ul>
                 </li>
                 <li>

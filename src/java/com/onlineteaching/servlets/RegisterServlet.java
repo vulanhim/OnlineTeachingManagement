@@ -39,7 +39,7 @@ public class RegisterServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
 
 //            fetch all form data
-            String username = request.getParameter("username");
+            String username = request.getParameter("username").toLowerCase();
             String password = request.getParameter("password");
             String name = request.getParameter("name");
 //            create user object and set all data to that object

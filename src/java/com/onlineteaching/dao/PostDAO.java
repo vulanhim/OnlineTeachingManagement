@@ -90,12 +90,14 @@ public class PostDAO {
     public boolean savePost(Post p) {
         boolean f = false;
         try {
-            String q = "insert into OnlineTeaching.dbo.post(courseID,pWeek,pContent,userID) values(?,?,?,?)";
+            String q = "insert into OnlineTeaching.dbo.post(courseID,pWeek,pContent,userID,linkCourse,slide) values(?,?,?,?,?,?)";
             PreparedStatement pstmt = con.prepareStatement(q);
             pstmt.setInt(1, p.getCourseID());
             pstmt.setInt(2, p.getpWeek());
             pstmt.setString(3, p.getpContent());
             pstmt.setInt(4, p.getUserID());
+            pstmt.setString(5, p.getLinkCourse());
+            pstmt.setString(6, p.getSlide());
             pstmt.executeUpdate();
             f = true;
         } catch (Exception e) {
@@ -120,7 +122,9 @@ public class PostDAO {
                 int isCheck = set.getInt("isCheck");
                 int userID = set.getInt("userID");
                 String checkBy = set.getString("checkBy");
-                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+                String linkCourse = set.getString("linkCourse");
+                String slide = set.getString("slide");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
                 list.add(post);
             }
         } catch (Exception e) {
@@ -143,7 +147,9 @@ public class PostDAO {
                 int isCheck = set.getInt("isCheck");
                 int userID = set.getInt("userID");
                 String checkBy = set.getString("checkBy");
-                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+                String linkCourse = set.getString("linkCourse");
+                String slide = set.getString("slide");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
                 list.add(post);
             }
         } catch (Exception e) {
@@ -166,7 +172,9 @@ public class PostDAO {
                 String pContent = set.getString("pContent");
                 int isCheck = set.getInt("isCheck");
                 String checkBy = set.getString("checkBy");
-                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+                String linkCourse = set.getString("linkCourse");
+                String slide = set.getString("slide");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
                 list.add(post);
             }
         } catch (Exception e) {
@@ -210,13 +218,15 @@ public class PostDAO {
         return f;
     }
 
-    public boolean updatePost(int postID, String pContent) {
+    public boolean updatePost(int postID, String pContent, String linkCourse, String slide) {
         boolean f = false;
         try {
-            String query = "update OnlineTeaching.dbo.post set pContent=?,isCheck=0 where postID=?";
+            String query = "update OnlineTeaching.dbo.post set pContent=?,linkCourse=?,slide=?,isCheck=0 where postID=?";
             PreparedStatement p = con.prepareStatement(query);
             p.setString(1, pContent);
-            p.setInt(2, postID);
+            p.setString(2, linkCourse);
+            p.setString(3, slide);
+            p.setInt(4, postID);
 
             p.executeUpdate();
             f = true;
@@ -230,7 +240,7 @@ public class PostDAO {
         List<Post> list = new ArrayList<>();
         //fetch all the posts of user
         try {
-            PreparedStatement p = con.prepareStatement("select postID, OnlineTeaching.dbo.post.courseID, pDate, pWeek, pContent, isCheck, OnlineTeaching.dbo.post.userID, checkBy from OnlineTeaching.dbo.post left join OnlineTeaching.dbo.courses on OnlineTeaching.dbo.courses.courseID = OnlineTeaching.dbo.post.courseID left join OnlineTeaching.dbo.department on OnlineTeaching.dbo.department.departmentID = OnlineTeaching.dbo.courses.departmentID where OnlineTeaching.dbo.courses.departmentID = ? and OnlineTeaching.dbo.post.isDelete = 0 and isCheck = 0 order by postID desc ");
+            PreparedStatement p = con.prepareStatement("select postID, OnlineTeaching.dbo.post.courseID, pDate, pWeek, pContent, isCheck, OnlineTeaching.dbo.post.userID, checkBy, linkCourse, slide from OnlineTeaching.dbo.post left join OnlineTeaching.dbo.courses on OnlineTeaching.dbo.courses.courseID = OnlineTeaching.dbo.post.courseID left join OnlineTeaching.dbo.department on OnlineTeaching.dbo.department.departmentID = OnlineTeaching.dbo.courses.departmentID where OnlineTeaching.dbo.courses.departmentID = ? and OnlineTeaching.dbo.post.isDelete = 0 and isCheck = 0 order by postID ");
             p.setInt(1, departmentID);
             ResultSet set = p.executeQuery();
             while (set.next()) {
@@ -242,7 +252,9 @@ public class PostDAO {
                 int isCheck = set.getInt("isCheck");
                 int userID = set.getInt("userID");
                 String checkBy = set.getString("checkBy");
-                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+                String linkCourse = set.getString("linkCourse");
+                String slide = set.getString("slide");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
                 list.add(post);
             }
         } catch (Exception e) {
@@ -299,7 +311,9 @@ public class PostDAO {
                 int isCheck = set.getInt("isCheck");
                 int userID = set.getInt("userID");
                 String checkBy = set.getString("checkBy");
-                post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy);
+                String linkCourse = set.getString("linkCourse");
+                String slide = set.getString("slide");
+                post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -319,5 +333,39 @@ public class PostDAO {
             e.printStackTrace();
         }
         return f;
+    }
+    public List<Course> getCourseForStudentByUserID(int userID) {
+        List<Course> list = new ArrayList<>();
+
+        try {
+            String query = "select * from OnlineTeaching.dbo.courses left join OnlineTeaching.dbo.student on courses.courseID = student.courseID where student.userID = ? and OnlineTeaching.dbo.student.isDelete = 0";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, userID);
+            ResultSet set = pstmt.executeQuery();
+            while (set.next()) {
+                int courseID = set.getInt("courseID");
+                String courseName = set.getString("courseName");
+                int departmentID = set.getInt("departmentID");
+                String courseCode = set.getString("courseCode");
+                String weekDay = set.getString("weekDay");
+                String room = set.getString("room");
+                String instructor = set.getString("instructor");
+                int startSlot = set.getInt("startSlot");
+                int numbersOfSlots = set.getInt("numbersOfSlots");
+                String classID = set.getString("classID");
+                int semester = set.getInt("semester");
+                int schoolYear = set.getInt("schoolYear");
+                int group = set.getInt("groupClass");
+                int lab = set.getInt("lab");
+                int hasLab = set.getInt("labGroup");
+//                int userID = set.getInt("userID");
+
+                Course c = new Course(courseID, courseName, departmentID, courseCode, weekDay, room, instructor, startSlot, numbersOfSlots, classID, semester, schoolYear, group, lab, hasLab, userID);
+                list.add(c);
+            }
+        } catch (Exception e) {
+        }
+
+        return list;
     }
 }

@@ -22,6 +22,8 @@
         response.sendRedirect("Manage.jsp");
     } else if (user.getRole() == 0) {
         response.sendRedirect("Home.jsp");
+    } else if (user.getRole() == 2) {
+        response.sendRedirect("Student.jsp");
     }
     PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
     CourseDAO coursed = new CourseDAO(ConnectionProvider.getConnection());

@@ -63,7 +63,7 @@
                 <%
                     }
                 %>
-                <form target="_blank" rel="noopener noreferrer" action="show_post_page.jsp" method="post">
+                <form action="show_post_page.jsp" method="post">
                     <tr>
                         <td><input name="postID" type="hidden" value="<%= p.getPostID()%>" class="form-control"/></td>
                     </tr>

@@ -8,14 +8,18 @@ package com.onlineteaching.servlets;
 import com.onlineteaching.dao.PostDAO;
 import com.onlineteaching.entities.Message;
 import com.onlineteaching.helper.ConnectionProvider;
+import com.onlineteaching.helper.Helper;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 @MultipartConfig
 /**
@@ -40,15 +44,26 @@ public class EditPostServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             int postID = Integer.parseInt(request.getParameter("postID"));
             String pContent = request.getParameter("pContent");
+            String linkCourse = request.getParameter("linkCourse");
+            Part part = request.getPart("slide");
+            String slideName = part.getSubmittedFileName();
+            slideName = UUID.randomUUID().toString() + "_" + slideName;
+
             PostDAO dao = new PostDAO(ConnectionProvider.getConnection());
             HttpSession s = request.getSession();
-            boolean ans = dao.updatePost(postID,pContent);
-            if(ans){
-                out.println("Post Updated!");
+            boolean ans = dao.updatePost(postID, pContent, linkCourse, slideName);
+            if (ans) {
+                String path = request.getRealPath("/") + "slide" + File.separator + slideName;
+                if (Helper.saveFile(part.getInputStream(), path)) {
+                    out.println("Post Updated!");
                     Message msg = new Message("Post updated!", "success", "alert-success");
                     s.setAttribute("msg", msg);
-            }
-            else{
+                } else {
+                    out.println("Not updated");
+                    Message msg = new Message("Something went wrong..", "error", "alert-danger");
+                    s.setAttribute("msg", msg);
+                }
+            } else {
                 out.println("Not updated");
                 Message msg = new Message("Something went wrong..", "error", "alert-danger");
                 s.setAttribute("msg", msg);

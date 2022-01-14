@@ -32,6 +32,12 @@
         <servlet-name>AddCourseServlet</servlet-name>
         <servlet-class>com.onlineteaching.servlets.AddCourseServlet</servlet-class>
     </servlet>
+    <servlet>
+        <description>This servlet sends file to client</description>
+        <display-name>DownloadFileServlet</display-name>
+        <servlet-name>DownloadFileServlet</servlet-name>
+        <servlet-class>com.onlineteaching.servlets.DownloadFileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
@@ -63,6 +69,10 @@
     <servlet-mapping>
         <servlet-name>AddCourseServlet</servlet-name>
         <url-pattern>/AddCourseServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadFileServlet</servlet-name>
+        <url-pattern>/DownloadFileServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -13,6 +13,7 @@ import com.onlineteaching.helper.Helper;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -60,6 +61,7 @@ public class EditServlet extends HttpServlet {
             String email = request.getParameter("email");
             Part part = request.getPart("profile");
             String imageName = part.getSubmittedFileName();
+            imageName = UUID.randomUUID().toString() + "_" + imageName;
 
             //get the user from the session
             HttpSession s = request.getSession();

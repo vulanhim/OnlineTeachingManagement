@@ -6,17 +6,23 @@
 package com.onlineteaching.servlets;
 
 import com.onlineteaching.dao.PostDAO;
+import com.onlineteaching.entities.Message;
 import com.onlineteaching.entities.Post;
 import com.onlineteaching.entities.User;
 import com.onlineteaching.helper.ConnectionProvider;
+import com.onlineteaching.helper.Helper;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+
 
 @MultipartConfig
 /**
@@ -43,16 +49,27 @@ public class AddPostServlet extends HttpServlet {
             int courseID = Integer.parseInt(request.getParameter("courseID"));
             int pWeek = Integer.parseInt(request.getParameter("pWeek"));
             String pContent = request.getParameter("pContent");
+            String linkCourse = request.getParameter("linkCourse");
+            Part part = request.getPart("slide");
+            String slideName = part.getSubmittedFileName();
+            slideName = UUID.randomUUID().toString() + "_" + slideName;
+
             //getting current userID
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("currentUser");
-
-            Post p = new Post(courseID, pWeek, pContent, user.getUserID());
+            
+            Post p = new Post(courseID, pWeek, pContent, user.getUserID(), linkCourse, slideName);
+            
             PostDAO dao = new PostDAO(ConnectionProvider.getConnection());
-            if(dao.savePost(p)){
-                out.println("done");
-            }
-            else{
+            boolean ans = dao.savePost(p);
+            if (ans) {
+                String path = request.getRealPath("/") + "slide" + File.separator + p.getSlide();
+                if (Helper.saveFile(part.getInputStream(), path)) {
+                    out.println("done");
+                } else {
+                    out.println("error");
+                }
+            } else {
                 out.println("error");
             }
         }

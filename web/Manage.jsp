@@ -18,6 +18,10 @@
         response.sendRedirect("Login.jsp");
     } else if (user.getRole() == 0) {
         response.sendRedirect("Home.jsp");
+    } else if (user.getRole() == 2) {
+        response.sendRedirect("Student.jsp");
+    } else if (user.getRole() == 3) {
+        response.sendRedirect("admin.jsp");
     }
 
 %>
@@ -61,15 +65,15 @@
                     <div class="iocn-link">
                         <a>
                             <i class="fas fa-search"></i>
-                            <span class="link_name">Search</span>
+                            <span class="link_name">View Post</span>
                         </a>
                         <i class='bx bxs-chevron-down arrow' ></i>
                     </div>
                     <ul class="sub-menu">
-                        <li><a class="link_name">Search</a></li>
+                        <li><a class="link_name">View Post</a></li>
                         <li><a href="Search.jsp">by Instructor</a></li>
-                        <li><a href="#">Login Form</a></li>
-                        <li><a href="#">Card Design</a></li>
+<!--                        <li><a href="#">Login Form</a></li>
+                        <li><a href="#">Card Design</a></li>-->
                     </ul>
                 </li>
                 <li>

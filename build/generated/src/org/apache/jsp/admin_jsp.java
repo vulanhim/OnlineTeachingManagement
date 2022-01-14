@@ -3,6 +3,7 @@ package org.apache.jsp;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
+import com.onlineteaching.dao.CourseDAO;
 import java.util.List;
 import com.onlineteaching.entities.Course;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import com.onlineteaching.helper.ConnectionProvider;
 import com.onlineteaching.entities.Message;
 import com.onlineteaching.entities.User;
 
-public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class admin_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -59,18 +60,19 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
+      out.write("\n");
 
     User user = (User) session.getAttribute("currentUser");
     if (user == null) {
         response.sendRedirect("Login.jsp");
-    } else if (user.getRole() == 3) {
-        response.sendRedirect("admin.jsp");
     } else if (user.getRole() == 1) {
         response.sendRedirect("Manage.jsp");
-    } else if (user.getRole() == 2) {
-        response.sendRedirect("Student.jsp");
+    } else if (user.getRole() == 0) {
+        response.sendRedirect("Home.jsp");
     }
-
+    PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
+    CourseDAO coursed = new CourseDAO(ConnectionProvider.getConnection());
 
       out.write("\n");
       out.write("\n");
@@ -79,7 +81,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<html lang=\"en\" dir=\"ltr\">\n");
       out.write("    <head>\n");
       out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
-      out.write("        <title>Welcome to IU Online Teaching Management for Instructor</title>\n");
+      out.write("        <title>Welcome to IU Online Teaching Management</title>\n");
       out.write("        <!-- Boxiocns CDN Link -->\n");
       out.write("        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>\n");
       out.write("        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
@@ -88,6 +90,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3\" crossorigin=\"anonymous\">\n");
       out.write("        <link rel=\"stylesheet\" href=\"css/home.css?\">\n");
       out.write("        <script src=\"https://kit.fontawesome.com/7c428afa8c.js\" crossorigin=\"anonymous\"></script>\n");
+      out.write("        <link href='https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css' rel='stylesheet'>\n");
       out.write("    </head>\n");
       out.write("    <body>\n");
       out.write("        <!--navbar-->\n");
@@ -101,17 +104,20 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            <ul class=\"nav-links\">\n");
       out.write("                <li>\n");
       out.write("                    <div class=\"iocn-link\">\n");
-      out.write("                        <a href=\"#!\" data-bs-toggle=\"modal\" data-bs-target=\"#add-post-modal\">\n");
+      out.write("                        <a href=\"admin.jsp\">\n");
       out.write("                            <i class='bx bx-book-alt' ></i>\n");
-      out.write("                            <span class=\"link_name\">Posts</span>\n");
+      out.write("                            <span class=\"link_name\">Course</span>\n");
       out.write("                        </a>\n");
+      out.write("                        <i class='bx bxs-chevron-down arrow' ></i>\n");
       out.write("                    </div>\n");
       out.write("                    <ul class=\"sub-menu\">\n");
-      out.write("                        <li><a class=\"link_name\" href=\"#!\" data-bs-toggle=\"modal\" data-bs-target=\"#add-post-modal\">Posts</a></li>\n");
-      out.write("\n");
+      out.write("                        <li><a class=\"link_name\" href=\"admin.jsp\">Course</a></li>\n");
+      out.write("                        <li><a id=\"show-courses-btn\" style=\"cursor: pointer\">All Courses</a></li>\n");
+      out.write("                        <li><a id=\"add-course-btn\" style=\"cursor: pointer\">Add Course</a></li>\n");
+      out.write("                        <!--\n");
+      out.write("                           <li><a href=\"#\">Card Design</a></li>-->\n");
       out.write("                    </ul>\n");
       out.write("                </li>\n");
-      out.write("\n");
       out.write("                <li>\n");
       out.write("                    <div class=\"profile-details\">\n");
       out.write("                        <div class=\"profile-content\">\n");
@@ -167,72 +173,235 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
                 
       out.write("\n");
       out.write("                <!--main body of the page-->\n");
-      out.write("                <main>\n");
-      out.write("                    <div class=\"container\">\n");
-      out.write("                        <div class=\"row mt-4\">\n");
-      out.write("                            <!--first col-->\n");
-      out.write("                            <div class=\"col-md-4\">\n");
-      out.write("                                <!--course-->\n");
-      out.write("                                <div class=\"list-group\">\n");
-      out.write("                                    <!--<a href=\"#\" onclick=\"getPosts(0,");
-      out.print(user.getUserID());
-      out.write(")\" class=\"list-group-item list-group-item-action active\" aria-current=\"true\" style=\"background: #1d1b31; border: none\">-->\n");
-      out.write("                                    <a class=\"list-group-item list-group-item-action active\" aria-current=\"true\" style=\"background: #1d1b31; border: none; font-weight: 500\">\n");
-      out.write("                                        Courses\n");
-      out.write("                                    </a>\n");
-      out.write("                                    ");
+      out.write("                <table id=\"example\" class=\"table table-bordered\" style=\"margin: 20px\">\n");
+      out.write("                    <thead>\n");
+      out.write("                        <tr>\n");
+      out.write("                            <th scope=\"col\">CourseID</th>\n");
+      out.write("                            <th scope=\"col\">CourseName</th>\n");
+      out.write("                            <th scope=\"col\">DepartmentID</th>\n");
+      out.write("                            <th scope=\"col\">CourseCode</th>\n");
+      out.write("                            <th scope=\"col\">WeekDay</th>\n");
+      out.write("                            <th scope=\"col\">Room</th>\n");
+      out.write("                            <th scope=\"col\">Instructor</th>\n");
+      out.write("                            <th scope=\"col\">StartSlot</th>\n");
+      out.write("                            <th scope=\"col\">NumbersOfSlots</th>\n");
+      out.write("                            <th scope=\"col\">ClassID</th>\n");
+      out.write("                            <th scope=\"col\">Semester</th>\n");
+      out.write("                            <th scope=\"col\">SchoolYear</th>\n");
+      out.write("                            <th scope=\"col\">GroupClass</th>\n");
+      out.write("                            <th scope=\"col\">Lab</th>\n");
+      out.write("                            <th scope=\"col\">LabGroup</th>\n");
+      out.write("                            <th scope=\"col\">UserID</th>\n");
+      out.write("                        </tr>\n");
+      out.write("                    </thead>\n");
+      out.write("                    <tbody>\n");
+      out.write("                        ");
 
-                                        PostDAO pd = new PostDAO(ConnectionProvider.getConnection());
-                                        List<Course> list1 = pd.getCourseByUserID(user.getUserID());
-                                        for (Course cc : list1) {
-                                    
+                            ArrayList<Course> listc = coursed.getAllCourses();
+                            for (Course d : listc) {
+                        
       out.write("\n");
-      out.write("                                    <a href=\"#\" onclick=\"getPosts(");
-      out.print(cc.getCourseID());
-      out.write(", 0, this)\" class=\" c-link list-group-item list-group-item-action\" style=\"border-color: #d2d1d6\">\n");
-      out.write("                                        ");
-      out.print( cc.getCourseName());
-      out.write(" - ");
-      out.print( cc.getWeekDay());
-      out.write(" - Group ");
-      out.print( cc.getGroup());
-      out.write("\n");
-      out.write("                                        ");
+      out.write("                        <tr>\n");
+      out.write("                            <th scope=\"row\">");
+      out.print(d.getCourseID());
+      out.write("</th>\n");
+      out.write("                            <td>");
+      out.print(d.getCourseName());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getDepartmentID());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getCourseCode());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getWeekDay());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getRoom());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getInstructor());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getStartSlot());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getNumbersOfSlots());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getClassID());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getSemester());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getSchoolYear());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getGroup());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getLab());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getHasLab());
+      out.write("</td>\n");
+      out.write("                            <td>");
+      out.print(d.getUserID());
+      out.write("</td>\n");
+      out.write("                        </tr>\n");
+      out.write("                        ");
 
-                                            if (cc.getLab() == 1) {
-                                        
+                            }
+                        
       out.write("\n");
-      out.write("                                        - Lab group ");
-      out.print( cc.getHasLab());
-      out.write("\n");
-      out.write("                                        ");
+      out.write("                    </tbody>\n");
+      out.write("                </table>\n");
+      out.write("                <main class=\"my-form\" id=\"add-course\" style=\"display: none;\">\n");
+      out.write("                    <div class=\"cotainer\">\n");
+      out.write("                        <div class=\"row justify-content-center\">\n");
+      out.write("                            <div class=\"col-md-7\">\n");
+      out.write("                                <div class=\"card\">\n");
+      out.write("                                    <div class=\"card-header\">Add New Course</div>\n");
+      out.write("                                    <form id=\"add-course-form\" action=\"AddCourseServlet\" method=\"post\">\n");
+      out.write("                                        <div class=\"card-body\">\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Course Name</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"courseName\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Department</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <select class=\"form-control\" aria-label=\"Default select example\" name=\"departmentID\">\n");
+      out.write("                                                        <option selected disabled>---[Select Department]---</option>\n");
+      out.write("                                                        ");
 
-                                            }
-                                        
+                                                            ArrayList<Department> listd = postd.getAllDepartment();
+                                                            for (Department d : listd) {
+                                                        
       out.write("\n");
-      out.write("                                    </a>\n");
-      out.write("                                    ");
+      out.write("                                                        <option value=\"");
+      out.print( d.getDepartmentID());
+      out.write('"');
+      out.write('>');
+      out.print( d.getDepartmentName());
+      out.write("</option>\n");
+      out.write("                                                        ");
 
-                                        }
-                                    
+                                                            }
+                                                        
       out.write("\n");
-      out.write("                                </div>\n");
-      out.write("                            </div>\n");
-      out.write("\n");
-      out.write("                            <!--second col-->\n");
-      out.write("                            <div class=\"col-md-8\">\n");
-      out.write("                                <!--post-->\n");
-      out.write("                                <div class=\"container text-center\" id=\"loader\">\n");
-      out.write("                                    <i class=\"fa fa-refresh fa-4x fa-spin\"></i>\n");
-      out.write("                                    <h3 class=\"mt-2\">Loading...</h3>\n");
-      out.write("                                </div>\n");
-      out.write("                                <div class=\"container-fluid\" id=\"post-container\">\n");
-      out.write("\n");
+      out.write("                                                    </select>\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Course Code</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"courseCode\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Week Day</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <select class=\"form-control\" aria-label=\"Default select example\" name=\"weekDay\">\n");
+      out.write("                                                        <option selected disabled>---[Select Week Day]---</option>\n");
+      out.write("                                                        <option value=\"Monday\">Monday</option>\n");
+      out.write("                                                        <option value=\"Tuesday\">Tuesday</option>\n");
+      out.write("                                                        <option value=\"Wednesday\">Wednesday</option>\n");
+      out.write("                                                        <option value=\"Thursday\">Thursday</option>\n");
+      out.write("                                                        <option value=\"Friday\">Friday</option>\n");
+      out.write("                                                        <option value=\"Saturday\">Saturday</option>\n");
+      out.write("                                                        <option value=\"Sunday\">Sunday</option>\n");
+      out.write("                                                    </select>\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Room</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"room\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Instructor</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"instructor\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Start Slot</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"startSlot\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Numbers Of Slots</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"numbersOfSlots\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Class ID</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"classID\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Semester</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <select class=\"form-control\" aria-label=\"Default select example\" name=\"semester\">\n");
+      out.write("                                                        <option selected disabled>---[Select Semester]---</option>\n");
+      out.write("                                                        <option value=\"1\">1</option>\n");
+      out.write("                                                        <option value=\"2\">2</option>\n");
+      out.write("                                                        <option value=\"3\">3</option>\n");
+      out.write("                                                    </select>\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">School Year</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"schoolYear\" value=\"20212022\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Group</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"group\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Class Type</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <select id=\"lab-class-opt\" class=\"form-control\" aria-label=\"Default select example\" name=\"lab\">\n");
+      out.write("                                                        <option selected disabled>---[Select Class Type]---</option>\n");
+      out.write("                                                        <option value=\"0\">Theory Class</option>\n");
+      out.write("                                                        <option value=\"1\">Lab Class</option>\n");
+      out.write("                                                    </select>\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\" id=\"1\" style=\"display: none;\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">Lab Group</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"hasLab\" value=\"0\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div class=\"form-group row\">\n");
+      out.write("                                                <label class=\"col-md-4 col-form-label text-md-right\">User ID</label>\n");
+      out.write("                                                <div class=\"col-md-6\">\n");
+      out.write("                                                    <input type=\"text\" class=\"form-control\" name=\"userID\">\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                        </div>\n");
+      out.write("                                        <div class=\"card-body text-center\">\n");
+      out.write("                                            <button type=\"submit\" class=\"btn btn-dark\">Add</button>\n");
+      out.write("                                        </div>\n");
+      out.write("                                    </form>\n");
       out.write("                                </div>\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                    </div>\n");
-      out.write("\n");
       out.write("                </main>\n");
       out.write("            </div>\n");
       out.write("        </section>\n");
@@ -351,8 +520,6 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("</option>\n");
       out.write("                                                    ");
 
-                                                        PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
-                                                        ArrayList<Department> listd = postd.getAllDepartment();
                                                         for (Department d : listd) {
                                                     
       out.write("\n");
@@ -399,86 +566,6 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        </div>\n");
       out.write("        <!--end of profile modal-->\n");
       out.write("\n");
-      out.write("        <!--post modal-->\n");
-      out.write("\n");
-      out.write("        <!-- Modal -->\n");
-      out.write("        <div class=\"modal fade\" id=\"add-post-modal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n");
-      out.write("            <div class=\"modal-dialog\">\n");
-      out.write("                <div class=\"modal-content\">\n");
-      out.write("                    <div class=\"modal-header\">\n");
-      out.write("                        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Class information declaration</h5>\n");
-      out.write("                        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n");
-      out.write("                    </div>\n");
-      out.write("                    <div class=\"modal-body\">\n");
-      out.write("                        <form id=\"add-post-form\" action=\"AddPostServlet\" method=\"post\">\n");
-      out.write("                            <table class=\"table\">\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td>\n");
-      out.write("                                        <select class=\"form-control\" aria-label=\"Default select example\" name=\"courseID\">\n");
-      out.write("                                            <option selected disabled>--Select your course--</option>\n");
-      out.write("                                            ");
-
-                                                PostDAO postc = new PostDAO(ConnectionProvider.getConnection());
-                                                List<Course> listc = postc.getCourseByUserID(user.getUserID());
-                                                for (Course c : listc) {
-                                            
-      out.write("\n");
-      out.write("                                            <option value=\"");
-      out.print( c.getCourseID());
-      out.write("\">\n");
-      out.write("                                                ");
-      out.print( c.getCourseName());
-      out.write(" - ");
-      out.print( c.getWeekDay());
-      out.write(" - Group ");
-      out.print( c.getGroup());
-      out.write("\n");
-      out.write("                                                ");
-
-                                                    if (c.getLab() == 1) {
-                                                
-      out.write("\n");
-      out.write("                                                - Lab group ");
-      out.print(c.getHasLab());
-      out.write("\n");
-      out.write("                                                ");
-
-                                                    }
-                                                
-      out.write("\n");
-      out.write("                                            </option>\n");
-      out.write("                                            ");
-
-                                                }
-                                            
-      out.write("\n");
-      out.write("                                        </select>\n");
-      out.write("                                    </td>\n");
-      out.write("                                </tr>\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td><input name=\"pWeek\" type=\"text\" placeholder=\"Enter the week\" class=\"form-control\"/></td>\n");
-      out.write("                                </tr>\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td><textarea name=\"pContent\" class=\"form-control\" style=\"height: 200px\" placeholder=\"Enter your content\" ></textarea></td>\n");
-      out.write("                                </tr>\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td><input name=\"linkCourse\" type=\"text\" placeholder=\"Enter the class online link\" class=\"form-control\"/></td>\n");
-      out.write("                                </tr>\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td><input type=\"file\" class=\"form-control\" name=\"slide\" value=\"\"</td>\n");
-      out.write("                                </tr>\n");
-      out.write("                            </table>\n");
-      out.write("                            <div class=\"container text-center\">\n");
-      out.write("                                <button type=\"submit\" class=\"btn btn-primary\">Post</button>\n");
-      out.write("                            </div>\n");
-      out.write("\n");
-      out.write("                        </form>\n");
-      out.write("                    </div>\n");
-      out.write("                </div>\n");
-      out.write("            </div>\n");
-      out.write("        </div>\n");
-      out.write("\n");
-      out.write("        <!--end of post modal-->\n");
       out.write("\n");
       out.write("        <script>\n");
       out.write("            let arrow = document.querySelectorAll(\".arrow\");\n");
@@ -529,23 +616,31 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                });\n");
       out.write("\n");
       out.write("            });\n");
+      out.write("\n");
+      out.write("        </script>\n");
+      out.write("        <script>\n");
+      out.write("            $(function () {\n");
+      out.write("                $('#lab-class-opt').change(function () {\n");
+      out.write("                    $('#' + $(this).val()).show();\n");
+      out.write("                });\n");
+      out.write("            });\n");
       out.write("        </script>\n");
       out.write("        <script>\n");
       out.write("            $(document).ready(function (e) {\n");
-      out.write("                $('#add-post-form').on('submit', function (event) {\n");
+      out.write("                $('#add-course-form').on('submit', function (event) {\n");
       out.write("                    event.preventDefault();\n");
       out.write("                    console.log(\"you have clicked on submit\");\n");
       out.write("                    let form = new FormData(this);\n");
       out.write("\n");
       out.write("//                   send post form to servlet\n");
       out.write("                    $.ajax({\n");
-      out.write("                        url: \"AddPostServlet\",\n");
+      out.write("                        url: \"AddCourseServlet\",\n");
       out.write("                        type: 'POST',\n");
       out.write("                        data: form,\n");
       out.write("                        success: function (data, textStatus, jqXHR) {\n");
       out.write("                            console.log(data);\n");
       out.write("                            if (data.trim() === \"done\") {\n");
-      out.write("                                swal(\"Post successful!\", \"Move to home page...\", \"success\")\n");
+      out.write("                                swal(\"Add course successful!\", \"Move to home page...\", \"success\")\n");
       out.write("                                        .then((value) => {\n");
       out.write("                                            window.location = \"Home.jsp\";\n");
       out.write("                                        });\n");
@@ -563,32 +658,27 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                });\n");
       out.write("            });\n");
       out.write("        </script>\n");
-      out.write("\n");
-      out.write("        <!--loading post using ajax-->\n");
       out.write("        <script>\n");
-      out.write("            function getPosts(courseID, userID, temp) {\n");
-      out.write("                $(\"#loader\").show();\n");
-      out.write("                $(\".c-link\").removeClass('active');\n");
-      out.write("                $(\".c-link\").css({\"background-color\": \"white\", \"font-weight\": \"400\"});\n");
-      out.write("                $.ajax({\n");
-      out.write("                    url: \"load_posts.jsp\",\n");
-      out.write("                    data: {courseID: courseID, userID: userID},\n");
-      out.write("                    success: function (data, textStatus, jqXHR) {\n");
-      out.write("                        console.log(data);\n");
-      out.write("                        $(\"#loader\").hide();\n");
-      out.write("                        $('#post-container').show();\n");
-      out.write("                        $('#post-container').html(data);\n");
-      out.write("                        $(temp).addClass('text-black active');\n");
-      out.write("                        $(temp).css({\"background-color\": \"#d2d1d6\", \"font-weight\": \"600\"});\n");
+      out.write("            $(document).ready(function () {\n");
+      out.write("                $('#add-course-btn').click(function () {\n");
+      out.write("                    $(\"#add-course\").show();\n");
+      out.write("                });\n");
+      out.write("                $('#close-profile-btn').click(function () {\n");
+      out.write("                    if (editStatus === true) {\n");
+      out.write("                        $(\"#profile-details\").show();\n");
+      out.write("                        $(\"#profile-edit\").hide();\n");
+      out.write("                        $('#edit-profile-btn').text(\"Edit\");\n");
+      out.write("                        editStatus = false;\n");
       out.write("                    }\n");
       out.write("                });\n");
-      out.write("            }\n");
-      out.write("            $(document).ready(function (e) {\n");
-      out.write("                $(\"#loader\").hide();\n");
-      out.write("                $('#post-container').hide();\n");
-      out.write("//                getPosts(0,");
-      out.print(user.getUserID());
-      out.write(", );\n");
+      out.write("\n");
+      out.write("            });\n");
+      out.write("\n");
+      out.write("        </script>\n");
+      out.write("        <script src=\"https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js\"></script>\n");
+      out.write("        <script>\n");
+      out.write("            $(document).ready(function () {\n");
+      out.write("                $('#example').DataTable();\n");
       out.write("            });\n");
       out.write("        </script>\n");
       out.write("    </body>\n");

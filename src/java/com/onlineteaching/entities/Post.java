@@ -22,11 +22,13 @@ public class Post {
     private int userID;
     private String checkBy;
     private int isDelete;
+    private String linkCourse;
+    private String slide;
 
     public Post() {
     }
 
-    public Post(int postID, int courseID, Timestamp pDate, int pWeek, String pContent, int isCheck, int userID, String checkBy) {
+    public Post(int postID, int courseID, Timestamp pDate, int pWeek, String pContent, int isCheck, int userID, String checkBy, String linkCourse, String slide) {
         this.postID = postID;
         this.courseID = courseID;
         this.pDate = pDate;
@@ -35,13 +37,17 @@ public class Post {
         this.isCheck = isCheck;
         this.userID = userID;
         this.checkBy = checkBy;
+        this.linkCourse = linkCourse;
+        this.slide = slide;
     }
 
-    public Post(int courseID, int pWeek, String pContent, int userID) {
+    public Post(int courseID, int pWeek, String pContent, int userID, String linkCourse, String slide) {
         this.courseID = courseID;
         this.pWeek = pWeek;
         this.pContent = pContent;
         this.userID = userID;
+        this.linkCourse = linkCourse;
+        this.slide = slide;
     }
 
     public int getPostID() {
@@ -114,6 +120,22 @@ public class Post {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public String getLinkCourse() {
+        return linkCourse;
+    }
+
+    public void setLinkCourse(String linkCourse) {
+        this.linkCourse = linkCourse;
+    }
+
+    public String getSlide() {
+        return slide;
+    }
+
+    public void setSlide(String slide) {
+        this.slide = slide;
     }
     
     

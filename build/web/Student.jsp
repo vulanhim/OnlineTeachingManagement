@@ -1,37 +1,38 @@
 <%-- 
-    Document   : show_all_post_page
-    Created on : Jan 9, 2022, 2:08:31 AM
+    Document   : Student
+    Created on : Jan 14, 2022, 5:01:42 PM
     Author     : LeeBen
 --%>
 
 <%@page import="java.util.List"%>
 <%@page import="com.onlineteaching.entities.Course"%>
-<%@page import="com.onlineteaching.entities.Post"%>
-<%@page import="com.onlineteaching.entities.Message"%>
-<%@page import="com.onlineteaching.dao.PostDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.onlineteaching.entities.Department"%>
+<%@page import="com.onlineteaching.dao.PostDAO"%>
 <%@page import="com.onlineteaching.helper.ConnectionProvider"%>
+<%@page import="com.onlineteaching.entities.Message"%>
 <%@page import="com.onlineteaching.entities.User"%>
 <%@page errorPage="error_page.jsp"%>
 <%
     User user = (User) session.getAttribute("currentUser");
     if (user == null) {
         response.sendRedirect("Login.jsp");
+    } else if (user.getRole() == 3) {
+        response.sendRedirect("admin.jsp");
+    } else if (user.getRole() == 1) {
+        response.sendRedirect("Manage.jsp");
+    }else if (user.getRole() == 0) {
+        response.sendRedirect("Home.jsp");
     }
 
 %>
-<%    int courseID = Integer.parseInt(request.getParameter("courseID"));
-    PostDAO postdao = new PostDAO(ConnectionProvider.getConnection());
-    List<Post> post = postdao.getPostByCourseID(courseID);
-    Course course = postdao.getCourseByCourseID(courseID);
-%>    
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><%=course.getCourseName()%> - <%=course.getInstructor()%></title>
+        <title>Welcome to IU Online Teaching Management for Student</title>
         <!-- Boxiocns CDN Link -->
         <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,32 +52,19 @@
                 <span class="logo_name">IU OTM</span>
             </div>
             <ul class="nav-links">
-                <li>
+<!--                <li>
                     <div class="iocn-link">
-                        <a href="Manage.jsp">
-                            <i class="fas fa-book"></i>
-                            <span class="link_name">Manage</span>
+                        <a href="#!" data-bs-toggle="modal" data-bs-target="#add-post-modal">
+                            <i class='bx bx-book-alt' ></i>
+                            <span class="link_name">Posts</span>
                         </a>
                     </div>
                     <ul class="sub-menu">
-                        <li><a class="link_name" href="Manage.jsp">Manage</a></li>
+                        <li><a class="link_name" href="#!" data-bs-toggle="modal" data-bs-target="#add-post-modal">Posts</a></li>
+
                     </ul>
-                </li>
-                <li>
-                    <div class="iocn-link">
-                        <a>
-                            <i class="fas fa-search"></i>
-                            <span class="link_name">View Post</span>
-                        </a>
-                        <i class='bx bxs-chevron-down arrow' ></i>
-                    </div>
-                    <ul class="sub-menu">
-                        <li><a class="link_name">View Post</a></li>
-                        <li><a href="Search.jsp">by Instructor</a></li>
-<!--                        <li><a href="#">Login Form</a></li>
-                        <li><a href="#">Card Design</a></li>-->
-                    </ul>
-                </li>
+                </li>-->
+
                 <li>
                     <div class="profile-details">
                         <div class="profile-content">
@@ -101,6 +89,9 @@
         <section class="home-section">
             <div class="home-content">
                 <i class='bx bx-menu' ></i>
+                <span class="text">
+                    Welcome <%= user.getName()%>!
+                </span>
                 <%
                     Message m = (Message) session.getAttribute("msg");
                     if (m != null) {
@@ -115,90 +106,46 @@
                 <!--main body of the page-->
                 <main>
                     <div class="container">
-                        <div class="row my-4">
-                            <div class="col-md-8 offset-md-2">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row my-1" style="padding-left: 15px; padding-right: 15px;">
-                                            <div class="col-md-7" style="padding: 15px;">
-                                                <div>
-                                                    <b>Course:</b> <%=course.getCourseName()%>
-                                                </div>
-                                                <div>
-                                                    <b>Course Code:</b> <%=course.getCourseCode()%> Group <%=course.getGroup()%>
-                                                    <%
-                                                        if (course.getLab() == 1) {
-                                                    %>
-                                                    Lab group <%=course.getHasLab()%>
-                                                    <%
-                                                        }
-                                                    %>
-                                                </div>
-                                                <div>
-                                                    <b>Instructor:</b> <%=course.getInstructor()%>
-                                                </div>
-                                                <div>
-                                                    <b>Room:</b> <%=course.getRoom()%>
-                                                    - <b>Class:</b> <%=course.getClassID()%>
-                                                </div>
-                                                <div>
-                                                    <b>Week day:</b> <%=course.getWeekDay()%>
-                                                </div>
-                                                <div>
-                                                    <b>Start slot:</b> <%=course.getStartSlot()%>
-                                                    - <b>Numbers of slots:</b> <%=course.getNumbersOfSlots()%>
-                                                </div>
-                                                <div>
-                                                    <b>Semester:</b> <%=course.getSemester()%>
-                                                    - <b>School Year:</b>
-                                                    <%
-                                                        if (course.getSchoolYear() == 20212022) {
-                                                    %>
-                                                    2021-2022
-                                                    <%
-                                                    } else {
-                                                    %>
-                                                    <%=course.getSchoolYear()%>
-                                                    <%
-                                                        }
-                                                    %>
-                                                </div>
-                                            </div>
-                                            <%
-                                                for (Post p : post) {
-                                            %>
-                                            <div style= "padding: 15px; border: 3px solid #e2e2e2">
-                                                <div>
-                                                    Week <%=p.getpWeek()%>
-                                                    <i style="font-size: 14px; float: right">Posted on: <%=p.getpDate().toLocaleString()%> </i>
-                                                </div>
-                                                <hr>
-                                                <div style="font-size: 18px">
-                                                    <%=p.getpContent()%>
-                                                </div>
-                                                <%
-                                                    if (p.getIsCheck() == 1) {
-                                                %>
-                                                <a href="#!" class="btn btn-outline btn-sm" style="float: right">
-                                                    <i class="fa fa-user-check"></i>
-                                                    by <%= p.getCheckBy()%>
-                                                </a>
-                                                <%
-                                                    }
-                                                %>
-                                            </div>
+                        <div class="row mt-4">
+                            <!--first col-->
+                            <div class="col-md-4">
+                                <!--course-->
+                                <div class="list-group">
+                                    <!--<a href="#" onclick="getPosts(0,<%=user.getUserID()%>)" class="list-group-item list-group-item-action active" aria-current="true" style="background: #1d1b31; border: none">-->
+                                    <a class="list-group-item list-group-item-action active" aria-current="true" style="background: #1d1b31; border: none; font-weight: 500">
+                                        Courses
+                                    </a>
+                                    <%
+                                        PostDAO pd = new PostDAO(ConnectionProvider.getConnection());
+                                        List<Course> list1 = pd.getCourseForStudentByUserID(user.getUserID());
+                                        for (Course cc : list1) {
+                                    %>
+                                    <a href="#" onclick="getPosts(<%=cc.getCourseID()%>, 0, this)" class=" c-link list-group-item list-group-item-action" style="border-color: #d2d1d6">
+                                        <%= cc.getCourseName()%> - <%= cc.getWeekDay()%> - Group <%= cc.getGroup()%>
+                                        <%
+                                            if (cc.getLab() == 1) {
+                                        %>
+                                        - Lab group <%= cc.getHasLab()%>
+                                        <%
+                                            }
+                                        %>
+                                        - <%= cc.getInstructor()%>
+                                    </a>
+                                    <%
+                                        }
+                                    %>
+                                </div>
+                            </div>
 
-                                            <%
-                                                }
-                                            %>
+                            <!--second col-->
+                            <div class="col-md-8">
+                                <!--post-->
+                                <div class="container text-center" id="loader">
+                                    <i class="fa fa-refresh fa-4x fa-spin"></i>
+                                    <h3 class="mt-2">Loading...</h3>
+                                </div>
+                                <div class="container-fluid" id="post-container">
 
-
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-
-
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -207,7 +154,6 @@
                 </main>
             </div>
         </section>
-
 
 
         <!--profile modal-->
@@ -327,6 +273,66 @@
         </div>
         <!--end of profile modal-->
 
+        <!--post modal-->
+
+        <!-- Modal -->
+        <div class="modal fade" id="add-post-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Class information declaration</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-post-form" action="AddPostServlet" method="post">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <select class="form-control" aria-label="Default select example" name="courseID">
+                                            <option selected disabled>--Select your course--</option>
+                                            <%
+                                                PostDAO postc = new PostDAO(ConnectionProvider.getConnection());
+                                                List<Course> listc = postc.getCourseByUserID(user.getUserID());
+                                                for (Course c : listc) {
+                                            %>
+                                            <option value="<%= c.getCourseID()%>">
+                                                <%= c.getCourseName()%> - <%= c.getWeekDay()%> - Group <%= c.getGroup()%>
+                                                <%
+                                                    if (c.getLab() == 1) {
+                                                %>
+                                                - Lab group <%=c.getHasLab()%>
+                                                <%
+                                                    }
+                                                %>
+                                            </option>
+                                            <%
+                                                }
+                                            %>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input name="pWeek" type="text" placeholder="Enter the week" class="form-control"/></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea name="pContent" class="form-control" style="height: 200px" placeholder="Enter your content" ></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td><input name="linkCourse" type="text" placeholder="Enter the class online link" class="form-control"/></td>
+                                </tr>
+                            </table>
+                            <div class="container text-center">
+                                <button type="submit" class="btn btn-primary">Post</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end of post modal-->
+
         <script>
             let arrow = document.querySelectorAll(".arrow");
             for (var i = 0; i < arrow.length; i++) {
@@ -342,6 +348,7 @@
                 sidebar.classList.toggle("close");
             });
         </script>
+
         <!--javascripts-->
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -349,7 +356,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script src="js/myjs.js?v=0" type="text/javascript"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
         <script>
             $(document).ready(function () {
                 let editStatus = false;
@@ -379,20 +385,20 @@
         </script>
         <script>
             $(document).ready(function (e) {
-                $('#check-post-form').on('submit', function (event) {
+                $('#add-post-form').on('submit', function (event) {
                     event.preventDefault();
                     console.log("you have clicked on submit");
                     let form = new FormData(this);
 
 //                   send post form to servlet
                     $.ajax({
-                        url: "CheckPostServlet",
+                        url: "AddPostServlet",
                         type: 'POST',
                         data: form,
                         success: function (data, textStatus, jqXHR) {
                             console.log(data);
                             if (data.trim() === "done") {
-                                swal("Check post successful!", "Move to home page...", "success")
+                                swal("Post successful!", "Move to home page...", "success")
                                         .then((value) => {
                                             window.location = "Home.jsp";
                                         });
@@ -410,5 +416,32 @@
                 });
             });
         </script>
+
+        <!--loading post using ajax-->
+        <script>
+            function getPosts(courseID, userID, temp) {
+                $("#loader").show();
+                $(".c-link").removeClass('active');
+                $(".c-link").css({"background-color": "white", "font-weight": "400"});
+                $.ajax({
+                    url: "load_posts_student.jsp",
+                    data: {courseID: courseID, userID: userID},
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data);
+                        $("#loader").hide();
+                        $('#post-container').show();
+                        $('#post-container').html(data);
+                        $(temp).addClass('text-black active');
+                        $(temp).css({"background-color": "#d2d1d6", "font-weight": "600"});
+                    }
+                });
+            }
+            $(document).ready(function (e) {
+                $("#loader").hide();
+                $('#post-container').hide();
+//                getPosts(0,<%=user.getUserID()%>, );
+            });
+        </script>
     </body>
 </html>
+

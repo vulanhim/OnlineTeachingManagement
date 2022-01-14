@@ -12,7 +12,7 @@ import com.onlineteaching.helper.ConnectionProvider;
 import com.onlineteaching.entities.Message;
 import com.onlineteaching.entities.User;
 
-public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class Student_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -59,6 +59,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
 
     User user = (User) session.getAttribute("currentUser");
     if (user == null) {
@@ -67,8 +68,8 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
         response.sendRedirect("admin.jsp");
     } else if (user.getRole() == 1) {
         response.sendRedirect("Manage.jsp");
-    } else if (user.getRole() == 2) {
-        response.sendRedirect("Student.jsp");
+    }else if (user.getRole() == 0) {
+        response.sendRedirect("Home.jsp");
     }
 
 
@@ -79,7 +80,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<html lang=\"en\" dir=\"ltr\">\n");
       out.write("    <head>\n");
       out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
-      out.write("        <title>Welcome to IU Online Teaching Management for Instructor</title>\n");
+      out.write("        <title>Welcome to IU Online Teaching Management for Student</title>\n");
       out.write("        <!-- Boxiocns CDN Link -->\n");
       out.write("        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>\n");
       out.write("        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
@@ -99,7 +100,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                <span class=\"logo_name\">IU OTM</span>\n");
       out.write("            </div>\n");
       out.write("            <ul class=\"nav-links\">\n");
-      out.write("                <li>\n");
+      out.write("<!--                <li>\n");
       out.write("                    <div class=\"iocn-link\">\n");
       out.write("                        <a href=\"#!\" data-bs-toggle=\"modal\" data-bs-target=\"#add-post-modal\">\n");
       out.write("                            <i class='bx bx-book-alt' ></i>\n");
@@ -110,7 +111,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                        <li><a class=\"link_name\" href=\"#!\" data-bs-toggle=\"modal\" data-bs-target=\"#add-post-modal\">Posts</a></li>\n");
       out.write("\n");
       out.write("                    </ul>\n");
-      out.write("                </li>\n");
+      out.write("                </li>-->\n");
       out.write("\n");
       out.write("                <li>\n");
       out.write("                    <div class=\"profile-details\">\n");
@@ -183,7 +184,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                    ");
 
                                         PostDAO pd = new PostDAO(ConnectionProvider.getConnection());
-                                        List<Course> list1 = pd.getCourseByUserID(user.getUserID());
+                                        List<Course> list1 = pd.getCourseForStudentByUserID(user.getUserID());
                                         for (Course cc : list1) {
                                     
       out.write("\n");
@@ -209,6 +210,9 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
 
                                             }
                                         
+      out.write("\n");
+      out.write("                                        - ");
+      out.print( cc.getInstructor());
       out.write("\n");
       out.write("                                    </a>\n");
       out.write("                                    ");
@@ -464,9 +468,6 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                                <tr>\n");
       out.write("                                    <td><input name=\"linkCourse\" type=\"text\" placeholder=\"Enter the class online link\" class=\"form-control\"/></td>\n");
       out.write("                                </tr>\n");
-      out.write("                                <tr>\n");
-      out.write("                                    <td><input type=\"file\" class=\"form-control\" name=\"slide\" value=\"\"</td>\n");
-      out.write("                                </tr>\n");
       out.write("                            </table>\n");
       out.write("                            <div class=\"container text-center\">\n");
       out.write("                                <button type=\"submit\" class=\"btn btn-primary\">Post</button>\n");
@@ -571,7 +572,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                $(\".c-link\").removeClass('active');\n");
       out.write("                $(\".c-link\").css({\"background-color\": \"white\", \"font-weight\": \"400\"});\n");
       out.write("                $.ajax({\n");
-      out.write("                    url: \"load_posts.jsp\",\n");
+      out.write("                    url: \"load_posts_student.jsp\",\n");
       out.write("                    data: {courseID: courseID, userID: userID},\n");
       out.write("                    success: function (data, textStatus, jqXHR) {\n");
       out.write("                        console.log(data);\n");
@@ -593,6 +594,7 @@ public final class Home_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("        </script>\n");
       out.write("    </body>\n");
       out.write("</html>\n");
+      out.write("\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

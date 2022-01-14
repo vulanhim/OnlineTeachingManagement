@@ -62,13 +62,17 @@
                 </li>
                 <li>
                     <div class="iocn-link">
-                        <a href="Search.jsp">
+                        <a>
                             <i class="fas fa-search"></i>
-                            <span class="link_name">Search</span>
+                            <span class="link_name">View Post</span>
                         </a>
+                        <i class='bx bxs-chevron-down arrow' ></i>
                     </div>
                     <ul class="sub-menu">
-                        <li><a class="link_name" href="Search.jsp">Search</a></li>
+                        <li><a class="link_name">View Post</a></li>
+                        <li><a href="Search.jsp">by Instructor</a></li>
+<!--                        <li><a href="#">Login Form</a></li>
+                        <li><a href="#">Card Design</a></li>-->
                     </ul>
                 </li>
                 <li>
@@ -193,6 +197,14 @@
                                                 Check
                                             </button>
                                         </form>
+                                        <a target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="float: right; margin:1px" href="<%=post.getLinkCourse()%>">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            Join online class
+                                        </a>
+                                        <a class="btn btn-primary btn-sm" style="float: right; margin:1px" href="DownloadFileServlet?value=<%= post.getSlide()%>">
+                                            <i class="fas fa-file-pdf"></i>
+                                            Slide
+                                        </a>
                                     </div>
                                 </div>
                             </div>

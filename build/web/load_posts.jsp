@@ -29,6 +29,18 @@
             <div class="card-body" style="background: #f8f9fa;">
                 <p><%= p.getpContent()%></p>
             </div>
+            <%
+                if (p.getSlide() != null) {
+            %>
+            <div class="card-body" style="background: #f8f9fa;">
+                <a class="btn btn-primary btn-sm" style="float: right; margin:1px" href="DownloadFileServlet?value=<%= p.getSlide()%>">
+                    <i class="fas fa-file-pdf"></i>
+                    Slide
+                </a>
+            </div>
+            <%
+                }
+            %>
             <div class="card-footer">
                 <%
                     if (p.getIsCheck() == 1) {
@@ -46,6 +58,10 @@
                 <a class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editPostModal" data-bs-whatever="<%=p.getPostID()%>" style="float: right; margin:1px">
                     <i class="fa fa-edit"></i>
                     Edit
+                </a>
+                <a target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="float: right; margin:1px" href="<%=p.getLinkCourse()%>">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Join
                 </a>
             </div>
         </div>
@@ -74,6 +90,14 @@
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Content:</label>
                         <textarea class="form-control" name="pContent"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Online class link:</label>
+                        <input type="text" class="form-control" name="linkCourse">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Slide:</label>
+                        <input type="File" class="form-control" name="slide">
                     </div>
                     <hr>
                     <div class="container text-center">
