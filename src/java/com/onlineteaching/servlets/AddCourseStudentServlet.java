@@ -5,8 +5,7 @@
  */
 package com.onlineteaching.servlets;
 
-import com.onlineteaching.dao.PostDAO;
-import com.onlineteaching.entities.Message;
+import com.onlineteaching.dao.UserDAO;
 import com.onlineteaching.helper.ConnectionProvider;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,14 +14,12 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 @MultipartConfig
 /**
  *
  * @author LeeBen
  */
-public class DeletePostServlet extends HttpServlet {
+public class AddCourseStudentServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,23 +35,16 @@ public class DeletePostServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            int userID = Integer.parseInt(request.getParameter("userID"));
+            int courseID = Integer.parseInt(request.getParameter("courseID"));
             
-            int postID = Integer.parseInt(request.getParameter("postID"));
-            
-            PostDAO dao = new PostDAO(ConnectionProvider.getConnection());
-            HttpSession s = request.getSession();
-            boolean ans = dao.deletePostByPostID(postID);
-            if(ans){
-                out.println("Post Deleted!");
-                    Message msg = new Message("Post deleted!", "success", "alert-success");
-                    s.setAttribute("msg", msg);
+            UserDAO dao = new UserDAO(ConnectionProvider.getConnection());
+            if(dao.addCourseForStudent(userID, courseID)){
+                out.println("done");
             }
             else{
-                out.println("Not deleted");
-                Message msg = new Message("Something went wrong..", "error", "alert-danger");
-                s.setAttribute("msg", msg);
+                out.println("error");
             }
-            response.sendRedirect("Home.jsp");
         }
     }
 

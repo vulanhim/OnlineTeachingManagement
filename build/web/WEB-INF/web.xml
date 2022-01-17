@@ -38,6 +38,18 @@
         <servlet-name>DownloadFileServlet</servlet-name>
         <servlet-class>com.onlineteaching.servlets.DownloadFileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteCourseServlet</servlet-name>
+        <servlet-class>com.onlineteaching.servlets.DeleteCourseServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserRoleServlet</servlet-name>
+        <servlet-class>com.onlineteaching.servlets.UserRoleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddCourseStudentServlet</servlet-name>
+        <servlet-class>com.onlineteaching.servlets.AddCourseStudentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
@@ -73,6 +85,18 @@
     <servlet-mapping>
         <servlet-name>DownloadFileServlet</servlet-name>
         <url-pattern>/DownloadFileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCourseServlet</servlet-name>
+        <url-pattern>/DeleteCourseServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserRoleServlet</servlet-name>
+        <url-pattern>/UserRoleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCourseStudentServlet</servlet-name>
+        <url-pattern>/AddCourseStudentServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

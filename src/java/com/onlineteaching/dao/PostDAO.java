@@ -338,7 +338,7 @@ public class PostDAO {
         List<Course> list = new ArrayList<>();
 
         try {
-            String query = "select * from OnlineTeaching.dbo.courses left join OnlineTeaching.dbo.student on courses.courseID = student.courseID where student.userID = ? and OnlineTeaching.dbo.student.isDelete = 0";
+            String query = "select * from OnlineTeaching.dbo.courses left join OnlineTeaching.dbo.student on courses.courseID = student.courseID where student.userID = ? and OnlineTeaching.dbo.student.isDelete = 0 and OnlineTeaching.dbo.courses.isDelete = 0";
             PreparedStatement pstmt = con.prepareStatement(query);
             pstmt.setInt(1, userID);
             ResultSet set = pstmt.executeQuery();

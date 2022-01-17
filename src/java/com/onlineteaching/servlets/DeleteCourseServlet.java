@@ -5,6 +5,7 @@
  */
 package com.onlineteaching.servlets;
 
+import com.onlineteaching.dao.CourseDAO;
 import com.onlineteaching.dao.PostDAO;
 import com.onlineteaching.entities.Message;
 import com.onlineteaching.helper.ConnectionProvider;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author LeeBen
  */
-public class DeletePostServlet extends HttpServlet {
+public class DeleteCourseServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,21 +39,16 @@ public class DeletePostServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            int semester = Integer.parseInt(request.getParameter("semester"));
+            int schoolYear = Integer.parseInt(request.getParameter("schoolYear"));
             
-            int postID = Integer.parseInt(request.getParameter("postID"));
-            
-            PostDAO dao = new PostDAO(ConnectionProvider.getConnection());
-            HttpSession s = request.getSession();
-            boolean ans = dao.deletePostByPostID(postID);
+            CourseDAO dao = new CourseDAO(ConnectionProvider.getConnection());
+            boolean ans = dao.deleteCourse(semester,schoolYear);
             if(ans){
-                out.println("Post Deleted!");
-                    Message msg = new Message("Post deleted!", "success", "alert-success");
-                    s.setAttribute("msg", msg);
+                out.println("done");
             }
             else{
-                out.println("Not deleted");
-                Message msg = new Message("Something went wrong..", "error", "alert-danger");
-                s.setAttribute("msg", msg);
+                out.println("error");
             }
             response.sendRedirect("Home.jsp");
         }

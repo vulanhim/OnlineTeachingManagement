@@ -4,6 +4,7 @@
     Author     : LeeBen
 --%>
 
+<%@page import="com.onlineteaching.dao.UserDAO"%>
 <%@page import="com.onlineteaching.dao.CourseDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="com.onlineteaching.entities.Course"%>
@@ -27,6 +28,7 @@
     }
     PostDAO postd = new PostDAO(ConnectionProvider.getConnection());
     CourseDAO coursed = new CourseDAO(ConnectionProvider.getConnection());
+    UserDAO userd = new UserDAO(ConnectionProvider.getConnection());
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -57,18 +59,45 @@
             <ul class="nav-links">
                 <li>
                     <div class="iocn-link">
-                        <a href="admin.jsp">
-                            <i class='bx bx-book-alt' ></i>
+                        <a>
+                            <i class="fas fa-book"></i>
                             <span class="link_name">Course</span>
                         </a>
                         <i class='bx bxs-chevron-down arrow' ></i>
                     </div>
                     <ul class="sub-menu">
-                        <li><a class="link_name" href="admin.jsp">Course</a></li>
+                        <li><a class="link_name">Course</a></li>
                         <li><a id="show-courses-btn" style="cursor: pointer">All Courses</a></li>
-                        <li><a id="add-course-btn" style="cursor: pointer">Add Course</a></li>
-                        <!--
-                           <li><a href="#">Card Design</a></li>-->
+                        <li><a href="#!" data-bs-toggle="modal" data-bs-target="#add-course-modal">Add Course</a></li>
+                        <li><a href="#!" data-bs-toggle="modal" data-bs-target="#delete-course-modal">Delete Courses</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a>
+                            <i class="fas fa-users"></i>
+                            <span class="link_name">User</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow' ></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name">User</a></li>
+                        <li><a id="show-users-btn" style="cursor: pointer">All Users</a></li>
+                        <li><a href="#!" data-bs-toggle="modal" data-bs-target="#update-user-role-modal">User Access</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a>
+                            <i class="fas fa-user-graduate"></i>
+                            <span class="link_name">Student</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow' ></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name">Student</a></li>
+                        <li><a href="#!" data-bs-toggle="modal" data-bs-target="#add-course-student-modal">Add Course</a></li>
+                        <!--<li><a href="#!" data-bs-toggle="modal" data-bs-target="#delete-course-student-modal">Delete Course</a></li>-->
                     </ul>
                 </li>
                 <li>
@@ -110,194 +139,473 @@
                     }
                 %>
                 <!--main body of the page-->
-                <table id="example" class="table table-bordered" style="margin: 20px">
-                    <thead>
-                        <tr>
-                            <th scope="col">CourseID</th>
-                            <th scope="col">CourseName</th>
-                            <th scope="col">DepartmentID</th>
-                            <th scope="col">CourseCode</th>
-                            <th scope="col">WeekDay</th>
-                            <th scope="col">Room</th>
-                            <th scope="col">Instructor</th>
-                            <th scope="col">StartSlot</th>
-                            <th scope="col">NumbersOfSlots</th>
-                            <th scope="col">ClassID</th>
-                            <th scope="col">Semester</th>
-                            <th scope="col">SchoolYear</th>
-                            <th scope="col">GroupClass</th>
-                            <th scope="col">Lab</th>
-                            <th scope="col">LabGroup</th>
-                            <th scope="col">UserID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            ArrayList<Course> listc = coursed.getAllCourses();
-                            for (Course d : listc) {
-                        %>
-                        <tr>
-                            <th scope="row"><%=d.getCourseID()%></th>
-                            <td><%=d.getCourseName()%></td>
-                            <td><%=d.getDepartmentID()%></td>
-                            <td><%=d.getCourseCode()%></td>
-                            <td><%=d.getWeekDay()%></td>
-                            <td><%=d.getRoom()%></td>
-                            <td><%=d.getInstructor()%></td>
-                            <td><%=d.getStartSlot()%></td>
-                            <td><%=d.getNumbersOfSlots()%></td>
-                            <td><%=d.getClassID()%></td>
-                            <td><%=d.getSemester()%></td>
-                            <td><%=d.getSchoolYear()%></td>
-                            <td><%=d.getGroup()%></td>
-                            <td><%=d.getLab()%></td>
-                            <td><%=d.getHasLab()%></td>
-                            <td><%=d.getUserID()%></td>
-                        </tr>
-                        <%
-                            }
-                        %>
-                    </tbody>
-                </table>
-                <main class="my-form" id="add-course" style="display: none;">
+                <main class="my-form" id="show-all-courses" style="display: none;">
                     <div class="cotainer">
-                        <div class="row justify-content-center">
-                            <div class="col-md-7">
-                                <div class="card">
-                                    <div class="card-header">Add New Course</div>
-                                    <form id="add-course-form" action="AddCourseServlet" method="post">
-                                        <div class="card-body">
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Course Name</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="courseName">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Department</label>
-                                                <div class="col-md-6">
-                                                    <select class="form-control" aria-label="Default select example" name="departmentID">
-                                                        <option selected disabled>---[Select Department]---</option>
-                                                        <%
-                                                            ArrayList<Department> listd = postd.getAllDepartment();
-                                                            for (Department d : listd) {
-                                                        %>
-                                                        <option value="<%= d.getDepartmentID()%>"><%= d.getDepartmentName()%></option>
-                                                        <%
-                                                            }
-                                                        %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Course Code</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="courseCode">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Week Day</label>
-                                                <div class="col-md-6">
-                                                    <select class="form-control" aria-label="Default select example" name="weekDay">
-                                                        <option selected disabled>---[Select Week Day]---</option>
-                                                        <option value="Monday">Monday</option>
-                                                        <option value="Tuesday">Tuesday</option>
-                                                        <option value="Wednesday">Wednesday</option>
-                                                        <option value="Thursday">Thursday</option>
-                                                        <option value="Friday">Friday</option>
-                                                        <option value="Saturday">Saturday</option>
-                                                        <option value="Sunday">Sunday</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Room</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="room">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Instructor</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="instructor">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Start Slot</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="startSlot">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Numbers Of Slots</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="numbersOfSlots">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Class ID</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="classID">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Semester</label>
-                                                <div class="col-md-6">
-                                                    <select class="form-control" aria-label="Default select example" name="semester">
-                                                        <option selected disabled>---[Select Semester]---</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">School Year</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="schoolYear" value="20212022">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Group</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="group">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">Class Type</label>
-                                                <div class="col-md-6">
-                                                    <select id="lab-class-opt" class="form-control" aria-label="Default select example" name="lab">
-                                                        <option selected disabled>---[Select Class Type]---</option>
-                                                        <option value="0">Theory Class</option>
-                                                        <option value="1">Lab Class</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" id="1" style="display: none;">
-                                                <label class="col-md-4 col-form-label text-md-right">Lab Group</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="hasLab" value="0">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label text-md-right">User ID</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="form-control" name="userID">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-body text-center">
-                                            <button type="submit" class="btn btn-dark">Add</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        <table id="allCourses" class="display" style="margin: 20px">
+                            <thead>
+                                <tr>
+                                    <th scope="col">CourseID</th>
+                                    <th scope="col">CourseName</th>
+                                    <th scope="col">Department</th>
+                                    <th scope="col">CourseCode</th>
+                                    <th scope="col">WeekDay</th>
+                                    <th scope="col">Room</th>
+                                    <th scope="col">Instructor</th>
+                                    <th scope="col">StartSlot</th>
+                                    <th scope="col">NumbersOfSlots</th>
+                                    <th scope="col">ClassID</th>
+                                    <th scope="col">Semester</th>
+                                    <th scope="col">SchoolYear</th>
+                                    <th scope="col">GroupClass</th>
+                                    <th scope="col">Lab</th>
+                                    <th scope="col">LabGroup</th>
+                                    <th scope="col">UserID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                    ArrayList<Course> listc = coursed.getAllCourses();
+                                    for (Course d : listc) {
+                                %>
+                                <tr>
+                                    <th scope="row"><%=d.getCourseID()%></th>
+                                    <td><%=d.getCourseName()%></td>
+                                    <td>
+                                        <%= postd.getDepartmentByDepartmentID(d.getDepartmentID()).getDepartmentName()%>
+                                    </td>
+                                    <td><%=d.getCourseCode()%></td>
+                                    <td><%=d.getWeekDay()%></td>
+                                    <td><%=d.getRoom()%></td>
+                                    <td><%=d.getInstructor()%></td>
+                                    <td><%=d.getStartSlot()%></td>
+                                    <td><%=d.getNumbersOfSlots()%></td>
+                                    <td><%=d.getClassID()%></td>
+                                    <td><%=d.getSemester()%></td>
+                                    <td><%=d.getSchoolYear()%></td>
+                                    <td><%=d.getGroup()%></td>
+                                    <td><%=d.getLab()%></td>
+                                    <td><%=d.getHasLab()%></td>
+                                    <td><%=d.getUserID()%></td>
+                                </tr>
+                                <%
+                                    }
+                                %>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+                <main class="my-form" id="show-all-users" style="display: none;">
+                    <div class="cotainer">
+                        <table id="allCourses" class="display" style="margin: 20px">
+                            <thead>
+                                <tr>
+                                    <th scope="col">UserID</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Gender</th>
+                                    <th scope="col">IUCode</th>
+                                    <th scope="col">Department</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%
+                                    ArrayList<User> listu = userd.getAllUsers();
+                                    for (User u : listu) {
+                                %>
+                                <tr>
+                                    <th scope="row"><%=u.getUserID()%></th>
+                                    <td><%=u.getUsername()%></td>
+                                    <td><%=u.getName()%></td>
+                                    <td><%=u.getGender()%></td>
+                                    <td><%=u.getIUCode()%></td>
+                                    <td>
+                                        <%= postd.getDepartmentByDepartmentID(u.getDepartmentID()).getDepartmentName()%>
+                                    </td>
+                                    <td><%=u.getEmail()%></td>
+                                    <td>
+                                        <% if (u.getRole() == 0) {
+                                        %>
+                                        Teacher
+                                        <%
+                                            }
+                                        %>
+                                        <% if (u.getRole() == 1) {
+                                        %>
+                                        Faculty Secretary
+                                        <%
+                                            }
+                                        %>
+                                        <% if (u.getRole() == 2) {
+                                        %>
+                                        Student
+                                        <%
+                                            }
+                                        %>
+                                        <% if (u.getRole() == 3) {
+                                        %>
+                                        Admin
+                                        <%
+                                            }
+                                        %>
+                                    </td>
+                                </tr>
+                                <%
+                                    }
+                                %>
+                            </tbody>
+                        </table>
                     </div>
                 </main>
             </div>
         </section>
 
+        <!--add course modal-->
+
+        <!-- Modal -->
+        <div class="modal fade" id="add-course-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Course</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-course-form" action="AddCourseServlet" method="post">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Course Name</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="courseName">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Department</label>
+                                            <div class="col-md-7">
+                                                <select class="form-control" aria-label="Default select example" name="departmentID">
+                                                    <option selected disabled>---[Select Department]---</option>
+                                                    <%
+                                                        ArrayList<Department> listd = postd.getAllDepartment();
+                                                        for (Department d : listd) {
+                                                    %>
+                                                    <option value="<%= d.getDepartmentID()%>"><%= d.getDepartmentName()%></option>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Course Code</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="courseCode">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Week Day</label>
+                                            <div class="col-md-7">
+                                                <select class="form-control" aria-label="Default select example" name="weekDay">
+                                                    <option selected disabled>---[Select Week Day]---</option>
+                                                    <option value="Monday">Monday</option>
+                                                    <option value="Tuesday">Tuesday</option>
+                                                    <option value="Wednesday">Wednesday</option>
+                                                    <option value="Thursday">Thursday</option>
+                                                    <option value="Friday">Friday</option>
+                                                    <option value="Saturday">Saturday</option>
+                                                    <option value="Sunday">Sunday</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Room</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="room">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Instructor</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="instructor">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Start Slot</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="startSlot">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Numbers Of Slots</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="numbersOfSlots">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Class ID</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="classID">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Semester</label>
+                                            <div class="col-md-7">
+                                                <select class="form-control" aria-label="Default select example" name="semester">
+                                                    <option selected disabled>---[Select Semester]---</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">School Year</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="schoolYear" value="20212022">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Group</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="group">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Class Type</label>
+                                            <div class="col-md-7">
+                                                <select id="lab-class-opt" class="form-control" aria-label="Default select example" name="lab">
+                                                    <option selected disabled>---[Select Class Type]---</option>
+                                                    <option value="0">Theory Class</option>
+                                                    <option value="1">Lab Class</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="1" style="display: none;">
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Lab Group</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="hasLab" value="0">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">User ID</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="userID">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="container">
+                                <button type="submit" class="btn btn-dark" style="float: right">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end of add course modal-->
+        <!--delete course modal-->
+
+        <!-- Modal -->
+        <div class="modal fade" id="delete-course-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Courses</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="delete-courses-form" action="DeleteCourseServlet" method="post">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Semester</label>
+                                            <div class="col-md-7">
+                                                <select class="form-control" aria-label="Default select example" name="semester">
+                                                    <option selected disabled>---[Select Semester]---</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">School Year</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="schoolYear" value="20212022">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="container">
+                                <button type="submit" class="btn btn-dark" style="float: right">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end of delete course modal-->
+        <!--update user's role modal-->
+
+        <!-- Modal -->
+        <div class="modal fade" id="update-user-role-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">User Access</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="update-user-role-form" action="UserRoleServlet" method="post">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">UserID</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="userID" value="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Role</label>
+                                            <div class="col-md-7">
+                                                <select class="form-control" aria-label="Default select example" name="role">
+                                                    <option selected disabled>---[Select Role]---</option>
+                                                    <option value="0">Teacher</option>
+                                                    <option value="1">Faculty Secretary</option>
+                                                    <option value="2">Student</option>
+                                                    <option value="3">Admin</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="container">
+                                <button type="submit" class="btn btn-dark" style="float: right">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end of update user's role modal-->
+        <!--add course for student modal-->
+
+        <!-- Modal -->
+        <div class="modal fade" id="add-course-student-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Course for Student</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-course-student-form" action="AddCourseStudentServlet" method="post">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">UserID</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="userID" value="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">CourseID</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="courseID" value="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="container">
+                                <button type="submit" class="btn btn-dark" style="float: right">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end of add course for student modal-->
 
         <!--profile modal-->
 
@@ -466,13 +774,8 @@
             });
 
         </script>
-        <script>
-            $(function () {
-                $('#lab-class-opt').change(function () {
-                    $('#' + $(this).val()).show();
-                });
-            });
-        </script>
+
+        <!--add course-->
         <script>
             $(document).ready(function (e) {
                 $('#add-course-form').on('submit', function (event) {
@@ -507,26 +810,143 @@
             });
         </script>
         <script>
-            $(document).ready(function () {
-                $('#add-course-btn').click(function () {
-                    $("#add-course").show();
+            $(function () {
+                $('#lab-class-opt').change(function () {
+                    $('#' + $(this).val()).show();
                 });
-                $('#close-profile-btn').click(function () {
-                    if (editStatus === true) {
-                        $("#profile-details").show();
-                        $("#profile-edit").hide();
-                        $('#edit-profile-btn').text("Edit");
-                        editStatus = false;
-                    }
-                });
-
             });
-
         </script>
+
+
+        <!--show course/user button-->
+        <script>
+            $(document).ready(function () {
+                $('#show-courses-btn').click(function () {
+                    $("#show-all-courses").show();
+                    $("#show-all-users").hide();
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#show-users-btn').click(function () {
+                    $("#show-all-users").show();
+                    $("#show-all-courses").hide();
+                });
+            });
+        </script>
+
+
+        <!--show datatable-->
         <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <script>
             $(document).ready(function () {
-                $('#example').DataTable();
+                $('table.display').DataTable();
+            });
+        </script>
+
+
+        <!--delete courses-->
+        <script>
+            $(document).ready(function (e) {
+                $('#delete-courses-form').on('submit', function (event) {
+                    event.preventDefault();
+                    console.log("you have clicked on submit");
+                    let form = new FormData(this);
+
+//                   send post form to servlet
+                    $.ajax({
+                        url: "DeleteCourseServlet",
+                        type: 'POST',
+                        data: form,
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data);
+//                            if (data.trim() === "done") {
+                            swal("Delete courses successful!", "Move to home page...", "success")
+                                    .then((value) => {
+                                        window.location = "Home.jsp";
+                                    });
+//                            } else {
+//                                swal("Error!", "Something went wrong! Try again", "error");
+//                            }
+
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            swal("Error!", "Something went wrong! Try again", "error");
+                        },
+                        processData: false,
+                        contentType: false
+                    });
+                });
+            });
+        </script>
+        <!--update user's role-->
+        <script>
+            $(document).ready(function (e) {
+                $('#update-user-role-form').on('submit', function (event) {
+                    event.preventDefault();
+                    console.log("you have clicked on submit");
+                    let form = new FormData(this);
+
+//                   send post form to servlet
+                    $.ajax({
+                        url: "UserRoleServlet",
+                        type: 'POST',
+                        data: form,
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data);
+//                            if (data.trim() === "done") {
+                            swal("Grant access successful!", "Move to home page...", "success")
+                                    .then((value) => {
+                                        window.location = "Home.jsp";
+                                    });
+//                            } else {
+//                                swal("Error!", "Something went wrong! Try again", "error");
+//                            }
+
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            swal("Error!", "Something went wrong! Try again", "error");
+                        },
+                        processData: false,
+                        contentType: false
+                    });
+                });
+            });
+        </script>
+        
+        <!--add course for student-->
+        <script>
+            $(document).ready(function (e) {
+                $('#add-course-student-form').on('submit', function (event) {
+                    event.preventDefault();
+                    console.log("you have clicked on submit");
+                    let form = new FormData(this);
+
+//                   send post form to servlet
+                    $.ajax({
+                        url: "AddCourseStudentServlet",
+                        type: 'POST',
+                        data: form,
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data);
+                            if (data.trim() === "done") {
+                                swal("Add course successful!", "Move to home page...", "success")
+                                        .then((value) => {
+                                            window.location = "Home.jsp";
+                                        });
+                            } else {
+                                swal("Error!", "Something went wrong! Try again", "error");
+                            }
+
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            swal("Error!", "Something went wrong! Try again", "error");
+                        },
+                        processData: false,
+                        contentType: false
+                    });
+                });
             });
         </script>
     </body>

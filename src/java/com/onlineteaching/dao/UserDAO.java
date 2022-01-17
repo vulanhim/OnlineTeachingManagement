@@ -97,6 +97,21 @@ public class UserDAO {
         }
         return f;
     }
+    public boolean updateUserRole(int role, int userID) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.users set role=? where userID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setInt(1, role);
+            p.setInt(2, userID);
+
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
     public List<User> getUserByDepartmentID(int departmentID) {
         List<User> list = new ArrayList<>();
 
@@ -122,5 +137,45 @@ public class UserDAO {
         }
 
         return list;
+    }
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> list = new ArrayList<>();
+
+        try {
+            String query = "select * from OnlineTeaching.dbo.users";
+            Statement st = this.con.createStatement();
+            ResultSet set = st.executeQuery(query);
+            while (set.next()) {
+                int userID = set.getInt("userID");
+                String username = set.getString("username");
+                String name = set.getString("name");
+                String gender = set.getString("gender");
+                String IUCode = set.getString("IUCode");
+                int departmentID = set.getInt("departmentID");
+                String email = set.getString("email");
+                int role = set.getInt("role");
+
+                User user = new User(userID, username, name, gender, IUCode, departmentID, email, role);
+                list.add(user);
+            }
+        } catch (Exception e) {
+        }
+
+        return list;
+    }
+    public boolean addCourseForStudent(int userID, int courseID) {
+        boolean f = false;
+        try {
+            //user --> database
+            String query = "insert into OnlineTeaching.dbo.student(userID,courseID) values (?,?)";
+            PreparedStatement pstmt = this.con.prepareStatement(query);
+            pstmt.setInt(1, userID);
+            pstmt.setInt(2, courseID);
+            pstmt.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 }

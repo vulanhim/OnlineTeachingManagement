@@ -52,18 +52,18 @@
                 <li>
                     <div class="iocn-link">
                         <a href="Manage.jsp">
-                            <i class="fas fa-book"></i>
-                            <span class="link_name">Manage</span>
+                            <i class="fas fa-tasks"></i>
+                            <span class="link_name">Check</span>
                         </a>
                     </div>
                     <ul class="sub-menu">
-                        <li><a class="link_name" href="Manage.jsp">Manage</a></li>
+                        <li><a class="link_name" href="Manage.jsp">Check</a></li>
                     </ul>
                 </li>
                 <li>
                     <div class="iocn-link">
                         <a>
-                            <i class="fas fa-search"></i>
+                            <i class="fas fa-book"></i>
                             <span class="link_name">View Post</span>
                         </a>
                         <i class='bx bxs-chevron-down arrow' ></i>
@@ -71,8 +71,6 @@
                     <ul class="sub-menu">
                         <li><a class="link_name">View Post</a></li>
                         <li><a href="Search.jsp">by Instructor</a></li>
-<!--                        <li><a href="#">Login Form</a></li>
-                        <li><a href="#">Card Design</a></li>-->
                     </ul>
                 </li>
                 <li>

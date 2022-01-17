@@ -55,6 +55,17 @@ public class User {
         this.password = password;
         this.name = name;
     }
+
+    public User(int userID, String username, String name, String gender, String IUCode, int departmentID, String email, int role) {
+        this.userID = userID;
+        this.username = username;
+        this.name = name;
+        this.gender = gender;
+        this.IUCode = IUCode;
+        this.departmentID = departmentID;
+        this.email = email;
+        this.role = role;
+    }
     
     
     // getters and setters

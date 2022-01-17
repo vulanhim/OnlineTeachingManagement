@@ -56,7 +56,7 @@ public class CourseDAO {
         ArrayList<Course> list = new ArrayList<>();
 
         try {
-            String query = "select * from OnlineTeaching.dbo.courses";
+            String query = "select * from OnlineTeaching.dbo.courses where isDelete=0";
             Statement st = this.con.createStatement();
             ResultSet set = st.executeQuery(query);
             while (set.next()) {
@@ -84,5 +84,19 @@ public class CourseDAO {
         }
 
         return list;
+    }
+    public boolean deleteCourse(int semester, int schoolYear) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.courses set isDelete=1 where semester=? and schoolYear=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setInt(1, semester);
+            p.setInt(2, schoolYear);
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 }
