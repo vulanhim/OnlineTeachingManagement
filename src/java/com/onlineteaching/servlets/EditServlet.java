@@ -88,7 +88,7 @@ public class EditServlet extends HttpServlet {
                 }
                 if (Helper.saveFile(part.getInputStream(), path)) {
                     out.println("Profile updated");
-                    Message msg = new Message("Profile details updated", "success", "alert-success");
+                    Message msg = new Message("Update profile successful!", "success", "alert-success");
                     s.setAttribute("msg", msg);
 
                 } else {
@@ -102,8 +102,24 @@ public class EditServlet extends HttpServlet {
                 Message msg = new Message("Something went wrong..", "error", "alert-danger");
                 s.setAttribute("msg", msg);
             }
-
-            response.sendRedirect("Home.jsp");
+                int job = user.getRole();
+                switch (job) {
+                    case 0:
+                        response.sendRedirect("Home.jsp");
+                        break;
+                    case 1:
+                        response.sendRedirect("Manage.jsp");
+                        break;
+                    case 2: 
+                        response.sendRedirect("Student.jsp");
+                        break;
+                    case 3:
+                        response.sendRedirect("admin.jsp");
+                        break;
+                    default:
+                        response.sendRedirect("Home.jsp");
+                        break;
+                }
 
             out.println("</body>");
             out.println("</html>");

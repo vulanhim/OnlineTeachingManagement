@@ -56,7 +56,7 @@ public class EditPostServlet extends HttpServlet {
                 String path = request.getRealPath("/") + "slide" + File.separator + slideName;
                 if (Helper.saveFile(part.getInputStream(), path)) {
                     out.println("Post Updated!");
-                    Message msg = new Message("Post updated!", "success", "alert-success");
+                    Message msg = new Message("Update post successful!", "success", "alert-success");
                     s.setAttribute("msg", msg);
                 } else {
                     out.println("Not updated");

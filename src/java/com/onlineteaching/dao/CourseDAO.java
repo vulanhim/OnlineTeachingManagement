@@ -99,4 +99,47 @@ public class CourseDAO {
         }
         return f;
     }
+    public boolean deleteOneCourse(int courseID) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.courses set isDelete=1 where courseID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setInt(1, courseID);
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
+    
+    public boolean editCourse(int courseID, String courseName, int departmentID, String courseCode, String weekDay, String room, String instructor, int startSlot, int numbersOfSlots, String classID, int semester, int schoolYear, int group, int lab, int hasLab, int userID) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.courses set courseName=?,departmentID=?,courseCode=?,weekDay=?,room=?,instructor=?,startSlot=?,numbersOfSlots=?,classID=?,semester=?,schoolYear=?,groupClass=?,lab=?,labGroup=?,userID=? where courseID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setString(1, courseName);
+            p.setInt(2, departmentID);
+            p.setString(3, courseCode);
+            p.setString(4, weekDay);
+            p.setString(5, room);
+            p.setString(6, instructor);
+            p.setInt(7, startSlot);
+            p.setInt(8, numbersOfSlots);
+            p.setString(9, classID);
+            p.setInt(10, semester);
+            p.setInt(11, schoolYear);
+            p.setInt(12, group);
+            p.setInt(13, lab);
+            p.setInt(14, hasLab);
+            p.setInt(15, userID);
+            p.setInt(16, courseID);
+
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
 }

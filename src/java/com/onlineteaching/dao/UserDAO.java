@@ -45,7 +45,7 @@ public class UserDAO {
     public User getUserByUsernameAndPassword(String username, String password) {
         User user = null;
         try {
-            String query = "select * from OnlineTeaching.dbo.users where username=? and password=?";
+            String query = "select * from OnlineTeaching.dbo.users where username=? and password=? and isDelete=0";
             PreparedStatement pstmt = con.prepareStatement(query);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
@@ -116,7 +116,7 @@ public class UserDAO {
         List<User> list = new ArrayList<>();
 
         try {
-            String query = "select * from OnlineTeaching.dbo.users where departmentID=? and role=0";
+            String query = "select * from OnlineTeaching.dbo.users where departmentID=? and role=0 and isDelete=0";
             PreparedStatement pstmt = con.prepareStatement(query);
             pstmt.setInt(1, departmentID);
             ResultSet set = pstmt.executeQuery();
@@ -142,12 +142,13 @@ public class UserDAO {
         ArrayList<User> list = new ArrayList<>();
 
         try {
-            String query = "select * from OnlineTeaching.dbo.users";
+            String query = "select * from OnlineTeaching.dbo.users where isDelete=0";
             Statement st = this.con.createStatement();
             ResultSet set = st.executeQuery(query);
             while (set.next()) {
                 int userID = set.getInt("userID");
                 String username = set.getString("username");
+                String password = set.getString("password");
                 String name = set.getString("name");
                 String gender = set.getString("gender");
                 String IUCode = set.getString("IUCode");
@@ -155,7 +156,7 @@ public class UserDAO {
                 String email = set.getString("email");
                 int role = set.getInt("role");
 
-                User user = new User(userID, username, name, gender, IUCode, departmentID, email, role);
+                User user = new User(userID, username, password, name, gender, IUCode, departmentID, email, role);
                 list.add(user);
             }
         } catch (Exception e) {
@@ -172,6 +173,55 @@ public class UserDAO {
             pstmt.setInt(1, userID);
             pstmt.setInt(2, courseID);
             pstmt.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
+    public boolean deleteCourseForStudent(int userID, int courseID) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.student set isDelete=1 where userID=? and courseID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setInt(1, userID);
+            p.setInt(2, courseID);
+
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
+    public boolean deleteUser(int userID) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.users set isDelete=1 where userID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setInt(1, userID);
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
+    public boolean editUser(int userID, String username, String password, String name, String gender, String IUCode, int departmentID, String email) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.users set username=?,password=?,name=?,gender=?,IUCode=?,departmentID=?,email=? where userID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setString(1, username);
+            p.setString(2, password);
+            p.setString(3, name);
+            p.setString(4, gender);
+            p.setString(5, IUCode);
+            p.setInt(6, departmentID);
+            p.setString(7, email);
+            p.setInt(8, userID);
+
+            p.executeUpdate();
             f = true;
         } catch (Exception e) {
             e.printStackTrace();

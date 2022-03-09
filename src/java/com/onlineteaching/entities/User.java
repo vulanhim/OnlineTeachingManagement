@@ -56,9 +56,10 @@ public class User {
         this.name = name;
     }
 
-    public User(int userID, String username, String name, String gender, String IUCode, int departmentID, String email, int role) {
+    public User(int userID, String username, String password, String name, String gender, String IUCode, int departmentID, String email, int role) {
         this.userID = userID;
         this.username = username;
+        this.password = password;
         this.name = name;
         this.gender = gender;
         this.IUCode = IUCode;

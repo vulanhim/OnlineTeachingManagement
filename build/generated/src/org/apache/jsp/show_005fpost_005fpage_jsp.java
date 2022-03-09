@@ -107,12 +107,25 @@ public final class show_005fpost_005fpage_jsp extends org.apache.jasper.runtime.
       out.write("                <li>\n");
       out.write("                    <div class=\"iocn-link\">\n");
       out.write("                        <a href=\"Manage.jsp\">\n");
-      out.write("                            <i class=\"fas fa-book\"></i>\n");
-      out.write("                            <span class=\"link_name\">Manage</span>\n");
+      out.write("                            <i class=\"fas fa-tasks\"></i>\n");
+      out.write("                            <span class=\"link_name\">Check</span>\n");
       out.write("                        </a>\n");
       out.write("                    </div>\n");
       out.write("                    <ul class=\"sub-menu\">\n");
-      out.write("                        <li><a class=\"link_name\" href=\"Manage.jsp\">Manage</a></li>\n");
+      out.write("                        <li><a class=\"link_name\" href=\"Manage.jsp\">Check</a></li>\n");
+      out.write("                    </ul>\n");
+      out.write("                </li>\n");
+      out.write("                <li>\n");
+      out.write("                    <div class=\"iocn-link\">\n");
+      out.write("                        <a>\n");
+      out.write("                            <i class=\"fas fa-book\"></i>\n");
+      out.write("                            <span class=\"link_name\">View Post</span>\n");
+      out.write("                        </a>\n");
+      out.write("                        <i class='bx bxs-chevron-down arrow' ></i>\n");
+      out.write("                    </div>\n");
+      out.write("                    <ul class=\"sub-menu\">\n");
+      out.write("                        <li><a class=\"link_name\">View Post</a></li>\n");
+      out.write("                        <li><a href=\"Search.jsp\">by Instructor</a></li>\n");
       out.write("                    </ul>\n");
       out.write("                </li>\n");
       out.write("                <li>\n");
@@ -167,33 +180,154 @@ public final class show_005fpost_005fpage_jsp extends org.apache.jasper.runtime.
       out.write("                <!--main body of the page-->\n");
       out.write("                <main>\n");
       out.write("                    <div class=\"container\">\n");
-      out.write("\n");
-      out.write("                        <div class=\"card row mt-2\">\n");
-      out.write("                            <div class=\"card-header text-center\">\n");
-      out.write("                                <b>Course:</b> ");
+      out.write("                        <div class=\"row my-4\">\n");
+      out.write("                            <div class=\"col-md-8 offset-md-2\">\n");
+      out.write("                                <div class=\"card\">\n");
+      out.write("                                    <div class=\"card-body\">\n");
+      out.write("                                        <div class=\"row my-1\" style=\"padding-left: 15px; padding-right: 15px\">\n");
+      out.write("                                            <div class=\"col-md-7\" style=\"border: 1px solid #e2e2e2; padding: 15px\">\n");
+      out.write("                                                <div>\n");
+      out.write("                                                    <b>Course:</b> ");
       out.print(course.getCourseName());
       out.write("\n");
-      out.write("                                - <b>Course Code:</b> ");
+      out.write("                                                </div>\n");
+      out.write("                                                <div>\n");
+      out.write("                                                    <b>Course Code:</b> ");
       out.print(course.getCourseCode());
-      out.write(" group ");
+      out.write(" Group ");
       out.print(course.getGroup());
       out.write("\n");
-      out.write("                                ");
+      out.write("                                                    ");
 
-                                    if (course.getLab() == 1) {
-                                
+                                                        if (course.getLab() == 1) {
+                                                    
       out.write("\n");
-      out.write("                                 lab group ");
+      out.write("                                                    Lab group ");
       out.print(course.getHasLab());
       out.write("\n");
-      out.write("                                ");
+      out.write("                                                    ");
 
-                                    }
-                                
+                                                        }
+                                                    
       out.write("\n");
-      out.write("                                - <b>Instructor:</b> ");
+      out.write("                                                </div>\n");
+      out.write("                                                <div>\n");
+      out.write("                                                    <b>Instructor:</b> ");
       out.print(course.getInstructor());
       out.write("\n");
+      out.write("                                                </div>\n");
+      out.write("                                                <div>\n");
+      out.write("                                                    <b>Room:</b> ");
+      out.print(course.getRoom());
+      out.write("\n");
+      out.write("                                                    - <b>Class:</b> ");
+      out.print(course.getClassID());
+      out.write("\n");
+      out.write("                                                </div>\n");
+      out.write("                                                <div>\n");
+      out.write("                                                    <b>Week day:</b> ");
+      out.print(course.getWeekDay());
+      out.write("\n");
+      out.write("                                                </div>\n");
+      out.write("                                                <div>\n");
+      out.write("                                                    <b>Start slot:</b> ");
+      out.print(course.getStartSlot());
+      out.write("\n");
+      out.write("                                                    - <b>Numbers of slots:</b> ");
+      out.print(course.getNumbersOfSlots());
+      out.write("\n");
+      out.write("                                                </div>\n");
+      out.write("                                                <div>\n");
+      out.write("                                                    <b>Semester:</b> ");
+      out.print(course.getSemester());
+      out.write("\n");
+      out.write("                                                    - <b>School Year:</b>\n");
+      out.write("                                                    ");
+
+                                                        if (course.getSchoolYear() == 20212022) {
+                                                    
+      out.write("\n");
+      out.write("                                                    2021-2022\n");
+      out.write("                                                    ");
+
+                                                    } else {
+                                                    
+      out.write("\n");
+      out.write("                                                    ");
+      out.print(course.getSchoolYear());
+      out.write("\n");
+      out.write("                                                    ");
+
+                                                        }
+                                                    
+      out.write("\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                            <div style= \"padding: 15px\">\n");
+      out.write("                                                <div>\n");
+      out.write("                                                    Week ");
+      out.print(post.getpWeek());
+      out.write("\n");
+      out.write("                                                    <i style=\"font-size: 14px; float: right\">Posted on: ");
+      out.print(post.getpDate().toLocaleString());
+      out.write(" </i>\n");
+      out.write("                                                </div>\n");
+      out.write("                                                <hr>\n");
+      out.write("                                                <div style=\"font-size: 18px\">\n");
+      out.write("                                                    ");
+      out.print(post.getpContent());
+      out.write("\n");
+      out.write("                                                </div>\n");
+      out.write("                                            </div>\n");
+      out.write("                                        </div>\n");
+      out.write("                                    </div>\n");
+      out.write("                                    <div class=\"card-footer\">\n");
+      out.write("                                        ");
+
+                                            if (post.getIsCheck() == 1) {
+                                        
+      out.write("\n");
+      out.write("                                        <a href=\"#!\" class=\"btn btn-outline btn-sm\" style=\"float: left\">\n");
+      out.write("                                            <i class=\"fa fa-user-check\"></i>\n");
+      out.write("                                            by ");
+      out.print( post.getCheckBy());
+      out.write("\n");
+      out.write("                                        </a>\n");
+      out.write("                                        ");
+
+                                            }
+                                        
+      out.write("\n");
+      out.write("                                        <form id=\"check-post-form\" action=\"CheckPostServlet\" method=\"post\">\n");
+      out.write("                                            <tr>\n");
+      out.write("                                                <td><input name=\"postID\" type=\"hidden\" value=\"");
+      out.print( post.getPostID());
+      out.write("\" class=\"form-control\"/></td>\n");
+      out.write("                                            </tr>\n");
+      out.write("                                            <tr>\n");
+      out.write("                                                <td><input name=\"checkBy\" type=\"hidden\" value=\"");
+      out.print( user.getName());
+      out.write("\" class=\"form-control\"/></td>\n");
+      out.write("                                            </tr>\n");
+      out.write("                                            <button type=\"submit\" class=\"btn btn-dark btn-sm\" style=\"float: right; margin:1px\">\n");
+      out.write("                                                <i class=\"fas fa-check\"></i>\n");
+      out.write("                                                Check\n");
+      out.write("                                            </button>\n");
+      out.write("                                        </form>\n");
+      out.write("                                        <a target=\"_blank\" rel=\"noopener noreferrer\" class=\"btn btn-primary btn-sm\" style=\"float: right; margin:1px\" href=\"");
+      out.print(post.getLinkCourse());
+      out.write("\">\n");
+      out.write("                                            <i class=\"fas fa-sign-in-alt\"></i>\n");
+      out.write("                                            Join online class\n");
+      out.write("                                        </a>\n");
+      out.write("                                        <a class=\"btn btn-primary btn-sm\" style=\"float: right; margin:1px\" href=\"DownloadFileServlet?value=");
+      out.print( post.getSlide());
+      out.write("\">\n");
+      out.write("                                            <i class=\"fas fa-file-pdf\"></i>\n");
+      out.write("                                            Slide\n");
+      out.write("                                        </a>\n");
+      out.write("                                    </div>\n");
+      out.write("                                </div>\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
       out.write("                    </div>\n");
@@ -413,6 +547,39 @@ public final class show_005fpost_005fpage_jsp extends org.apache.jasper.runtime.
       out.write("                    }\n");
       out.write("                });\n");
       out.write("\n");
+      out.write("            });\n");
+      out.write("        </script>\n");
+      out.write("        <script>\n");
+      out.write("            $(document).ready(function (e) {\n");
+      out.write("                $('#check-post-form').on('submit', function (event) {\n");
+      out.write("                    event.preventDefault();\n");
+      out.write("                    console.log(\"you have clicked on submit\");\n");
+      out.write("                    let form = new FormData(this);\n");
+      out.write("\n");
+      out.write("//                   send post form to servlet\n");
+      out.write("                    $.ajax({\n");
+      out.write("                        url: \"CheckPostServlet\",\n");
+      out.write("                        type: 'POST',\n");
+      out.write("                        data: form,\n");
+      out.write("                        success: function (data, textStatus, jqXHR) {\n");
+      out.write("                            console.log(data);\n");
+      out.write("                            if (data.trim() === \"done\") {\n");
+      out.write("                                swal(\"Check post successful!\", \"Move to home page...\", \"success\")\n");
+      out.write("                                        .then((value) => {\n");
+      out.write("                                            window.location = \"Home.jsp\";\n");
+      out.write("                                        });\n");
+      out.write("                            } else {\n");
+      out.write("                                swal(\"Error!\", \"Something went wrong! Try again\", \"error\");\n");
+      out.write("                            }\n");
+      out.write("\n");
+      out.write("                        },\n");
+      out.write("                        error: function (jqXHR, textStatus, errorThrown) {\n");
+      out.write("                            swal(\"Error!\", \"Something went wrong! Try again\", \"error\");\n");
+      out.write("                        },\n");
+      out.write("                        processData: false,\n");
+      out.write("                        contentType: false\n");
+      out.write("                    });\n");
+      out.write("                });\n");
       out.write("            });\n");
       out.write("        </script>\n");
       out.write("    </body>\n");

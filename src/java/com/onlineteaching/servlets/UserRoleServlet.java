@@ -46,13 +46,11 @@ public class UserRoleServlet extends HttpServlet {
             int role = Integer.parseInt(request.getParameter("role"));
 
             UserDAO dao = new UserDAO(ConnectionProvider.getConnection());
-            boolean ans = dao.updateUserRole(role, userID);
-            if (ans) {
+            if (dao.updateUserRole(role, userID)) {
                 out.println("done");
             } else {
                 out.println("error");
             }
-            response.sendRedirect("Home.jsp");
         }
     }
 

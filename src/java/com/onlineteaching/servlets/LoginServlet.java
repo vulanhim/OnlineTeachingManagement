@@ -65,8 +65,14 @@ public class LoginServlet extends HttpServlet {
                 s.setAttribute("currentUser", u);
                 int job = u.getRole();
                 switch (job) {
+                    case 0:
+                        response.sendRedirect("Home.jsp");
+                        break;
                     case 1:
                         response.sendRedirect("Manage.jsp");
+                        break;
+                    case 2: 
+                        response.sendRedirect("Student.jsp");
                         break;
                     case 3:
                         response.sendRedirect("admin.jsp");

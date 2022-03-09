@@ -43,7 +43,7 @@
 
         <!--css-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/home.css?">
+        <link rel="stylesheet" href="css/home.css">
         <script src="https://kit.fontawesome.com/7c428afa8c.js" crossorigin="anonymous"></script>
         <link href='https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css' rel='stylesheet'>
     </head>
@@ -97,7 +97,7 @@
                     <ul class="sub-menu">
                         <li><a class="link_name">Student</a></li>
                         <li><a href="#!" data-bs-toggle="modal" data-bs-target="#add-course-student-modal">Add Course</a></li>
-                        <!--<li><a href="#!" data-bs-toggle="modal" data-bs-target="#delete-course-student-modal">Delete Course</a></li>-->
+                        <li><a href="#!" data-bs-toggle="modal" data-bs-target="#delete-course-student-modal">Delete Course</a></li>
                     </ul>
                 </li>
                 <li>
@@ -131,7 +131,7 @@
                     Message m = (Message) session.getAttribute("msg");
                     if (m != null) {
                 %>
-                <div class="alert <%=m.getCssClass()%> d-flex align-items-center" role="alert">
+                <div class="alert <%=m.getCssClass()%>" role="alert">
                     <%=m.getContent()%>
                 </div>
                 <%
@@ -145,21 +145,22 @@
                             <thead>
                                 <tr>
                                     <th scope="col">CourseID</th>
-                                    <th scope="col">CourseName</th>
+                                    <th scope="col">Course Name</th>
                                     <th scope="col">Department</th>
-                                    <th scope="col">CourseCode</th>
-                                    <th scope="col">WeekDay</th>
+                                    <th scope="col">Course Code</th>
+                                    <th scope="col">Week Day</th>
                                     <th scope="col">Room</th>
                                     <th scope="col">Instructor</th>
-                                    <th scope="col">StartSlot</th>
-                                    <th scope="col">NumbersOfSlots</th>
+                                    <th scope="col">Start Slot</th>
+                                    <th scope="col">Numbers Of Slots</th>
                                     <th scope="col">ClassID</th>
                                     <th scope="col">Semester</th>
-                                    <th scope="col">SchoolYear</th>
-                                    <th scope="col">GroupClass</th>
-                                    <th scope="col">Lab</th>
-                                    <th scope="col">LabGroup</th>
+                                    <th scope="col">School Year</th>
+                                    <th scope="col">Group</th>
+                                    <th scope="col">Class Type</th>
+                                    <th scope="col">Lab Group</th>
                                     <th scope="col">UserID</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -183,9 +184,60 @@
                                     <td><%=d.getSemester()%></td>
                                     <td><%=d.getSchoolYear()%></td>
                                     <td><%=d.getGroup()%></td>
-                                    <td><%=d.getLab()%></td>
-                                    <td><%=d.getHasLab()%></td>
+                                    <td>
+                                        <% if (d.getLab() == 0) {
+                                        %>
+                                        Theory
+                                        <%
+                                            }
+                                        %>
+                                        <% if (d.getLab() == 1) {
+                                        %>
+                                        Lab
+                                        <%
+                                            }
+                                        %>
+                                    </td>
+                                    <td>
+                                        <% if (d.getHasLab() == 0) {
+                                        %>
+                                        None
+                                        <%
+                                            }
+                                        %>
+                                        <% if (d.getHasLab() != 0) {
+                                        %>
+                                        <%=d.getHasLab()%>
+                                        <%
+                                            }
+                                        %>
+                                    </td>
                                     <td><%=d.getUserID()%></td>
+                                    <td>
+                                        <a class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editCourseModal"
+                                           data-bs-courseID="<%=d.getCourseID()%>"
+                                           data-bs-courseName="<%=d.getCourseName()%>"
+                                           data-bs-department="<%=d.getDepartmentID()%>"
+                                           data-bs-courseCode="<%=d.getCourseCode()%>"
+                                           data-bs-weekDay="<%=d.getWeekDay()%>"
+                                           data-bs-room="<%=d.getRoom()%>"
+                                           data-bs-instructor="<%=d.getInstructor()%>"
+                                           data-bs-startSlot="<%=d.getStartSlot()%>"
+                                           data-bs-numbersOfSlots="<%=d.getNumbersOfSlots()%>"
+                                           data-bs-classID="<%=d.getClassID()%>"
+                                           data-bs-semester="<%=d.getSemester()%>"
+                                           data-bs-schoolYear="<%=d.getSchoolYear()%>"
+                                           data-bs-group="<%=d.getGroup()%>"
+                                           data-bs-lab="<%=d.getLab()%>"
+                                           data-bs-hasLab="<%=d.getHasLab()%>"
+                                           data-bs-userID="<%=d.getUserID()%>"
+                                           >
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteOneCourseModal" data-bs-whatever="<%=d.getCourseID()%>">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                                 <%
                                     }
@@ -207,6 +259,7 @@
                                     <th scope="col">Department</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Role</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -249,6 +302,23 @@
                                         <%
                                             }
                                         %>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal" 
+                                           data-bs-userID="<%=u.getUserID()%>"
+                                           data-bs-username="<%=u.getUsername()%>"
+                                           data-bs-password="<%=u.getPassword()%>"
+                                           data-bs-name="<%=u.getName()%>"
+                                           data-bs-gender="<%=u.getGender()%>"
+                                           data-bs-IUCode="<%=u.getIUCode()%>"
+                                           data-bs-department="<%=u.getDepartmentID()%>"
+                                           data-bs-email="<%=u.getEmail()%>"
+                                           >
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-bs-whatever="<%=u.getUserID()%>">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 <%
@@ -542,7 +612,7 @@
                                             <div class="col-md-7">
                                                 <select class="form-control" aria-label="Default select example" name="role">
                                                     <option selected disabled>---[Select Role]---</option>
-                                                    <option value="0">Teacher</option>
+                                                    <option value="0">Instructor</option>
                                                     <option value="1">Faculty Secretary</option>
                                                     <option value="2">Student</option>
                                                     <option value="3">Admin</option>
@@ -607,8 +677,390 @@
 
         <!--end of add course for student modal-->
 
-        <!--profile modal-->
+        <!--delete course for student modal-->
 
+        <!-- Modal -->
+        <div class="modal fade" id="delete-course-student-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Course for Student</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="delete-course-student-form" action="DeleteCourseStudent" method="post">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">UserID</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="userID" value="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">CourseID</label>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" name="courseID" value="">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="container">
+                                <button type="submit" class="btn btn-dark" style="float: right">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end of delete course for student modal-->
+
+        <!--delete one course modal-->
+        <!-- Button trigger modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteOneCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="DeleteOneCourseServlet" method="post" enctype="multipart/form-data">
+                            Are you sure want to delete this course?<hr>
+                            <div class="mb-3" id="course-id-delete">
+                                <label for="recipient-name" class="col-form-label">CourseID:</label>
+                                <input type="text" class="form-control" name="courseID">
+                            </div>
+                            <div class="container text-center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-outline-primary">Yes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end of delete one course modal-->
+
+        <!--delete user modal-->
+        <!-- Button trigger modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="DeleteUserServlet" method="post" enctype="multipart/form-data">
+                            Are you sure want to delete this user?<hr>
+                            <div class="mb-3" id="user-id-delete">
+                                <label for="recipient-name" class="col-form-label">UserID:</label>
+                                <input type="text" class="form-control" name="userID">
+                            </div>
+                            <div class="container text-center">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-outline-primary">Yes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end of delete user modal-->
+
+        <!--edit course modal-->
+        <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Course</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-course-form" action="EditCourseServlet" method="post">
+                            <table class="table">
+                                <tr id="course-id-edit">
+                                    <td>
+                                        <div class="mb-3">
+                                            <label for="recipient-name" class="col-form-label">CourseID</label>
+                                            <input type="text" class="form-control" name="courseID">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Course Name</label>
+                                            <div class="a-col-md-7">
+                                                <input type="text" class="form-control" name="courseName">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Department ID</label>
+                                            <div class="b-col-md-7">
+                                                <input type="text" class="form-control" name="departmentID">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Course Code</label>
+                                            <div class="c-col-md-7">
+                                                <input type="text" class="form-control" name="courseCode">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Week Day</label>
+                                            <div class="d-col-md-7">
+                                                <input type="text" class="form-control" name="weekDay">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Room</label>
+                                            <div class="e-col-md-7">
+                                                <input type="text" class="form-control" name="room">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Instructor</label>
+                                            <div class="f-col-md-7">
+                                                <input type="text" class="form-control" name="instructor">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Start Slot</label>
+                                            <div class="g-col-md-7">
+                                                <input type="text" class="form-control" name="startSlot">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Numbers Of Slots</label>
+                                            <div class="h-col-md-7">
+                                                <input type="text" class="form-control" name="numbersOfSlots">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Class ID</label>
+                                            <div class="i-col-md-7">
+                                                <input type="text" class="form-control" name="classID">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Semester</label>
+                                            <div class="j-col-md-7">
+                                                <input type="text" class="form-control" name="semester">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">School Year</label>
+                                            <div class="k-col-md-7">
+                                                <input type="text" class="form-control" name="schoolYear">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Group</label>
+                                            <div class="l-col-md-7">
+                                                <input type="text" class="form-control" name="group">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Class Type</label>
+                                            <div class="m-col-md-7">
+                                                <input type="text" class="form-control" name="lab">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Lab Group</label>
+                                            <div class="n-col-md-7">
+                                                <input type="text" class="form-control" name="hasLab">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">User ID</label>
+                                            <div class="o-col-md-7">
+                                                <input type="text" class="form-control" name="userID">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="container">
+                                <button type="submit" class="btn btn-dark" style="float: right">Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end of edit post modal-->
+
+        <!--edit user modal-->
+        <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-course-form" action="EditUserServlet" method="post">
+                            <table class="table">
+                                <tr id="user-id-edit">
+                                    <td>
+                                        <div class="mb-3">
+                                            <label for="recipient-name" class="col-form-label">UserID</label>
+                                            <input type="text" class="form-control" name="userID">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Username</label>
+                                            <div class="a-col-md-7">
+                                                <input type="text" class="form-control" name="username">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Password <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i></label>
+                                            <div class="g-col-md-7">
+                                                <input type="password" class="form-control" name="password" id="id_password">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Name</label>
+                                            <div class="b-col-md-7">
+                                                <input type="text" class="form-control" name="name">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Gender</label>
+                                            <div class="c-col-md-7">
+                                                <input type="text" class="form-control" name="gender">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">IUCode</label>
+                                            <div class="d-col-md-7">
+                                                <input type="text" class="form-control" name="IUCode">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Department ID</label>
+                                            <div class="e-col-md-7">
+                                                <input type="text" class="form-control" name="departmentID">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group row">
+                                            <label class="col-md-5 col-form-label text-md-right">Email</label>
+                                            <div class="f-col-md-7">
+                                                <input type="text" class="form-control" name="email">
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="container">
+                                <button type="submit" class="btn btn-dark" style="float: right">Edit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end of edit user modal-->
+
+        <!--profile modal-->
         <!-- Modal -->
         <div class="modal fade" id="profileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -793,7 +1245,7 @@
                             if (data.trim() === "done") {
                                 swal("Add course successful!", "Move to home page...", "success")
                                         .then((value) => {
-                                            window.location = "Home.jsp";
+                                            window.location = "admin.jsp";
                                         });
                             } else {
                                 swal("Error!", "Something went wrong! Try again", "error");
@@ -861,14 +1313,14 @@
                         data: form,
                         success: function (data, textStatus, jqXHR) {
                             console.log(data);
-//                            if (data.trim() === "done") {
-                            swal("Delete courses successful!", "Move to home page...", "success")
-                                    .then((value) => {
-                                        window.location = "Home.jsp";
-                                    });
-//                            } else {
-//                                swal("Error!", "Something went wrong! Try again", "error");
-//                            }
+                            if (data.trim() === "done") {
+                                swal("Delete courses successful!", "Move to home page...", "success")
+                                        .then((value) => {
+                                            window.location = "admin.jsp";
+                                        });
+                            } else {
+                                swal("Error!", "Something went wrong! Try again", "error");
+                            }
 
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -895,14 +1347,14 @@
                         data: form,
                         success: function (data, textStatus, jqXHR) {
                             console.log(data);
-//                            if (data.trim() === "done") {
-                            swal("Grant access successful!", "Move to home page...", "success")
-                                    .then((value) => {
-                                        window.location = "Home.jsp";
-                                    });
-//                            } else {
-//                                swal("Error!", "Something went wrong! Try again", "error");
-//                            }
+                            if (data.trim() === "done") {
+                                swal("Grant access successful!", "Move to home page...", "success")
+                                        .then((value) => {
+                                            window.location = "admin.jsp";
+                                        });
+                            } else {
+                                swal("Error!", "Something went wrong! Try again", "error");
+                            }
 
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -914,7 +1366,7 @@
                 });
             });
         </script>
-        
+
         <!--add course for student-->
         <script>
             $(document).ready(function (e) {
@@ -931,10 +1383,7 @@
                         success: function (data, textStatus, jqXHR) {
                             console.log(data);
                             if (data.trim() === "done") {
-                                swal("Add course successful!", "Move to home page...", "success")
-                                        .then((value) => {
-                                            window.location = "Home.jsp";
-                                        });
+                                swal("Add course for student successful!", "Close modal to continue...", "success");
                             } else {
                                 swal("Error!", "Something went wrong! Try again", "error");
                             }
@@ -947,6 +1396,198 @@
                         contentType: false
                     });
                 });
+            });
+        </script>
+
+        <!--delete course for student-->
+        <script>
+            $(document).ready(function (e) {
+                $('#delete-course-student-form').on('submit', function (event) {
+                    event.preventDefault();
+                    console.log("you have clicked on submit");
+                    let form = new FormData(this);
+
+//                   send post form to servlet
+                    $.ajax({
+                        url: "DeleteCourseStudent",
+                        type: 'POST',
+                        data: form,
+                        success: function (data, textStatus, jqXHR) {
+                            console.log(data);
+                            if (data.trim() === "done") {
+                                swal("Delete student's course successful!", "Close modal to continue...", "success");
+                            } else {
+                                swal("Error!", "Something went wrong! Try again", "error");
+                            }
+
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            swal("Error!", "Something went wrong! Try again", "error");
+                        },
+                        processData: false,
+                        contentType: false
+                    });
+                });
+            });
+        </script>
+
+        <!--Delete one course--> 
+        <script>
+            $("#course-id-delete").hide();
+            var exampleModal1 = document.getElementById('deleteOneCourseModal')
+            exampleModal1.addEventListener('show.bs.modal', function (event) {
+                // Button that triggered the modal
+                var button1 = event.relatedTarget
+                // Extract info from data-bs-* attributes
+                var recipient1 = button1.getAttribute('data-bs-whatever')
+                // If necessary, you could initiate an AJAX request here
+                // and then do the updating in a callback.
+                //
+                // Update the modal's content.
+                var modalTitle1 = exampleModal1.querySelector('.modal-title')
+                var modalBodyInput1 = exampleModal1.querySelector('.modal-body input')
+
+                modalTitle1.textContent = 'Delete Course'
+                modalBodyInput1.value = recipient1
+            });
+        </script>
+
+        <!--Delete user--> 
+        <script>
+            $("#user-id-delete").hide();
+            var exampleModal2 = document.getElementById('deleteUserModal')
+            exampleModal2.addEventListener('show.bs.modal', function (event) {
+                // Button that triggered the modal
+                var button2 = event.relatedTarget
+                // Extract info from data-bs-* attributes
+                var recipient2 = button2.getAttribute('data-bs-whatever')
+                // If necessary, you could initiate an AJAX request here
+                // and then do the updating in a callback.
+                //
+                // Update the modal's content.
+                var modalTitle2 = exampleModal2.querySelector('.modal-title')
+                var modalBodyInput2 = exampleModal2.querySelector('.modal-body input')
+
+                modalTitle2.textContent = 'Delete User'
+                modalBodyInput2.value = recipient2
+            });
+        </script>
+
+        <!--Edit course-->
+        <script>
+            $("#course-id-edit").hide();
+            var exampleModal = document.getElementById('editCourseModal')
+            exampleModal.addEventListener('show.bs.modal', function (event) {
+                // Button that triggered the modal
+                var button = event.relatedTarget
+                // Extract info from data-bs-* attributes
+                var recipient = button.getAttribute('data-bs-courseID')
+                var recipient2 = button.getAttribute('data-bs-courseName')
+                var recipient3 = button.getAttribute('data-bs-department')
+                var recipient4 = button.getAttribute('data-bs-courseCode')
+                var recipient5 = button.getAttribute('data-bs-weekDay')
+                var recipient6 = button.getAttribute('data-bs-room')
+                var recipient7 = button.getAttribute('data-bs-instructor')
+                var recipient8 = button.getAttribute('data-bs-startSlot')
+                var recipient9 = button.getAttribute('data-bs-numbersOfSlots')
+                var recipient10 = button.getAttribute('data-bs-classID')
+                var recipient11 = button.getAttribute('data-bs-semester')
+                var recipient12 = button.getAttribute('data-bs-schoolYear')
+                var recipient13 = button.getAttribute('data-bs-group')
+                var recipient14 = button.getAttribute('data-bs-lab')
+                var recipient15 = button.getAttribute('data-bs-haslab')
+                var recipient16 = button.getAttribute('data-bs-userID')
+                // If necessary, you could initiate an AJAX request here
+                // and then do the updating in a callback.
+                //
+                // Update the modal's content.
+                var modalTitle = exampleModal.querySelector('.modal-title')
+                var modalBodyInput = exampleModal.querySelector('.modal-body input')
+                var modalBodyInput2 = exampleModal.querySelector('.modal-body .a-col-md-7 input')
+                var modalBodyInput3 = exampleModal.querySelector('.modal-body .b-col-md-7 input')
+                var modalBodyInput4 = exampleModal.querySelector('.modal-body .c-col-md-7 input')
+                var modalBodyInput5 = exampleModal.querySelector('.modal-body .d-col-md-7 input')
+                var modalBodyInput6 = exampleModal.querySelector('.modal-body .e-col-md-7 input')
+                var modalBodyInput7 = exampleModal.querySelector('.modal-body .f-col-md-7 input')
+                var modalBodyInput8 = exampleModal.querySelector('.modal-body .g-col-md-7 input')
+                var modalBodyInput9 = exampleModal.querySelector('.modal-body .h-col-md-7 input')
+                var modalBodyInput10 = exampleModal.querySelector('.modal-body .i-col-md-7 input')
+                var modalBodyInput11 = exampleModal.querySelector('.modal-body .j-col-md-7 input')
+                var modalBodyInput12 = exampleModal.querySelector('.modal-body .k-col-md-7 input')
+                var modalBodyInput13 = exampleModal.querySelector('.modal-body .l-col-md-7 input')
+                var modalBodyInput14 = exampleModal.querySelector('.modal-body .m-col-md-7 input')
+                var modalBodyInput15 = exampleModal.querySelector('.modal-body .n-col-md-7 input')
+                var modalBodyInput16 = exampleModal.querySelector('.modal-body .o-col-md-7 input')
+
+                modalTitle.textContent = 'Edit Course'
+                modalBodyInput.value = recipient
+                modalBodyInput2.value = recipient2
+                modalBodyInput3.value = recipient3
+                modalBodyInput4.value = recipient4
+                modalBodyInput5.value = recipient5
+                modalBodyInput6.value = recipient6
+                modalBodyInput7.value = recipient7
+                modalBodyInput8.value = recipient8
+                modalBodyInput9.value = recipient9
+                modalBodyInput10.value = recipient10
+                modalBodyInput11.value = recipient11
+                modalBodyInput12.value = recipient12
+                modalBodyInput13.value = recipient13
+                modalBodyInput14.value = recipient14
+                modalBodyInput15.value = recipient15
+                modalBodyInput16.value = recipient16
+            });
+        </script>
+        <!--Edit user-->
+        <script>
+            $("#user-id-edit").hide();
+            var exampleModal3 = document.getElementById('editUserModal')
+            exampleModal3.addEventListener('show.bs.modal', function (event) {
+                // Button that triggered the modal
+                var button = event.relatedTarget
+                // Extract info from data-bs-* attributes
+                var recipient = button.getAttribute('data-bs-userID')
+                var recipient2 = button.getAttribute('data-bs-username')
+                var recipient3 = button.getAttribute('data-bs-name')
+                var recipient4 = button.getAttribute('data-bs-gender')
+                var recipient5 = button.getAttribute('data-bs-IUCode')
+                var recipient6 = button.getAttribute('data-bs-department')
+                var recipient7 = button.getAttribute('data-bs-email')
+                var recipient8 = button.getAttribute('data-bs-password')
+                // If necessary, you could initiate an AJAX request here
+                // and then do the updating in a callback.
+                //
+                // Update the modal's content.
+                var modalTitle = exampleModal3.querySelector('.modal-title')
+                var modalBodyInput = exampleModal3.querySelector('.modal-body input')
+                var modalBodyInput2 = exampleModal3.querySelector('.modal-body .a-col-md-7 input')
+                var modalBodyInput3 = exampleModal3.querySelector('.modal-body .b-col-md-7 input')
+                var modalBodyInput4 = exampleModal3.querySelector('.modal-body .c-col-md-7 input')
+                var modalBodyInput5 = exampleModal3.querySelector('.modal-body .d-col-md-7 input')
+                var modalBodyInput6 = exampleModal3.querySelector('.modal-body .e-col-md-7 input')
+                var modalBodyInput7 = exampleModal3.querySelector('.modal-body .f-col-md-7 input')
+                var modalBodyInput8 = exampleModal3.querySelector('.modal-body .g-col-md-7 input')
+                modalTitle.textContent = 'Edit User'
+                modalBodyInput.value = recipient
+                modalBodyInput2.value = recipient2
+                modalBodyInput3.value = recipient3
+                modalBodyInput4.value = recipient4
+                modalBodyInput5.value = recipient5
+                modalBodyInput6.value = recipient6
+                modalBodyInput7.value = recipient7
+                modalBodyInput8.value = recipient8
+            });
+        </script>
+        <script>
+            const togglePassword = document.querySelector('#togglePassword');
+            const password = document.querySelector('#id_password');
+
+            togglePassword.addEventListener('click', function (e) {
+                // toggle the type attribute
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                // toggle the eye slash icon
+                this.classList.toggle('fa-eye-slash');
             });
         </script>
     </body>

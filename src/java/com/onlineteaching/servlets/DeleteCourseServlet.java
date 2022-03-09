@@ -41,16 +41,15 @@ public class DeleteCourseServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             int semester = Integer.parseInt(request.getParameter("semester"));
             int schoolYear = Integer.parseInt(request.getParameter("schoolYear"));
-            
+            HttpSession s = request.getSession();
             CourseDAO dao = new CourseDAO(ConnectionProvider.getConnection());
             boolean ans = dao.deleteCourse(semester,schoolYear);
-            if(ans){
-                out.println("done");
-            }
-            else{
+            if (ans) {
+                    out.println("done");
+                    
+            } else {
                 out.println("error");
             }
-            response.sendRedirect("Home.jsp");
         }
     }
 

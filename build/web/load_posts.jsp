@@ -55,7 +55,7 @@
                 <a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePostModal" data-bs-whatever="<%=p.getPostID()%>" style="float: right; margin:1px">
                     <i class="fa fa-trash-alt"></i>
                 </a>
-                <a class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editPostModal" data-bs-whatever="<%=p.getPostID()%>" style="float: right; margin:1px">
+                <a class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editPostModal" data-bs-whatever="<%=p.getPostID()%>" data-bs-content="<%=p.getpContent()%>" data-bs-linkcourse="<%=p.getLinkCourse()%>" style="float: right; margin:1px">
                     <i class="fa fa-edit"></i>
                     Edit
                 </a>
@@ -91,7 +91,7 @@
                         <label for="message-text" class="col-form-label">Content:</label>
                         <textarea class="form-control" name="pContent"></textarea>
                     </div>
-                    <div class="mb-3">
+                    <div class="a-mb-3">
                         <label for="message-text" class="col-form-label">Online class link:</label>
                         <input type="text" class="form-control" name="linkCourse">
                     </div>
@@ -146,15 +146,20 @@
         var button = event.relatedTarget
         // Extract info from data-bs-* attributes
         var recipient = button.getAttribute('data-bs-whatever')
+        var recipient2 = button.getAttribute('data-bs-content')
+        var recipient3 = button.getAttribute('data-bs-linkcourse')
         // If necessary, you could initiate an AJAX request here
         // and then do the updating in a callback.
         //
         // Update the modal's content.
         var modalTitle = exampleModal.querySelector('.modal-title')
         var modalBodyInput = exampleModal.querySelector('.modal-body input')
-
+        var modalBodyInput2 = exampleModal.querySelector('.modal-body textarea')
+        var modalBodyInput3 = exampleModal.querySelector('.modal-body .a-mb-3 input')
         modalTitle.textContent = 'Edit Post'
         modalBodyInput.value = recipient
+        modalBodyInput2.value = recipient2
+        modalBodyInput3.value = recipient3
     });
 </script>
 

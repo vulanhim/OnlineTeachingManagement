@@ -254,6 +254,11 @@ background-color: #1d1b31;
 .swal-button:not([disabled]):hover{
 background-color: #11101d;
 }
+.alert {
+  margin: auto;
+  text-align: center;
+  width: 25%;
+}
 @media (max-width: 420px) {
     .sidebar.close .nav-links li .sub-menu{
         display: none;

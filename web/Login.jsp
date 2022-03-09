@@ -79,7 +79,7 @@
                                     }
                                 %>
 
-                                <div class="text"><a href="#">Forgot password?</a></div>
+                                <!--<div class="text"><a href="#">Forgot password?</a></div>-->
                                 <div class="button input-box">
                                     <input type="submit" value="Login">
                                 </div>

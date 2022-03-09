@@ -46,7 +46,7 @@ public class DeletePostServlet extends HttpServlet {
             boolean ans = dao.deletePostByPostID(postID);
             if(ans){
                 out.println("Post Deleted!");
-                    Message msg = new Message("Post deleted!", "success", "alert-success");
+                    Message msg = new Message("Delete post successful!", "success", "alert-success");
                     s.setAttribute("msg", msg);
             }
             else{
