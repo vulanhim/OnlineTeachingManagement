@@ -264,16 +264,16 @@
         <script>
             let arrow = document.querySelectorAll(".arrow");
             for (var i = 0; i < arrow.length; i++) {
-            arrow[i].addEventListener("click", (e) => {
-            let arrowParent = e.target.parentElement.parentElement; //selecting main parent of arrow
-            arrowParent.classList.toggle("showMenu");
-            });
+                arrow[i].addEventListener("click", (e) => {
+                    let arrowParent = e.target.parentElement.parentElement; //selecting main parent of arrow
+                    arrowParent.classList.toggle("showMenu");
+                });
             }
             let sidebar = document.querySelector(".sidebar");
             let sidebarBtn = document.querySelector(".bx-menu");
             console.log(sidebarBtn);
             sidebarBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
+                sidebar.classList.toggle("close");
             });
         </script>
 
@@ -286,54 +286,54 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
         <script>
             $(document).ready(function () {
-            let editStatus = false;
-            $('#edit-profile-btn').click(function () {
-            if (editStatus === false) {
-            $("#profile-details").hide();
-            $("#profile-edit").show();
-            editStatus = true;
-            $(this).text("Back");
-            } else {
-            $("#profile-details").show();
-            $("#profile-edit").hide();
-            editStatus = false;
-            $(this).text("Edit");
-            }
-            });
-            $('#close-profile-btn').click(function () {
-            if (editStatus === true) {
-            $("#profile-details").show();
-            $("#profile-edit").hide();
-            $('#edit-profile-btn').text("Edit");
-            editStatus = false;
-            }
-            });
+                let editStatus = false;
+                $('#edit-profile-btn').click(function () {
+                    if (editStatus === false) {
+                        $("#profile-details").hide();
+                        $("#profile-edit").show();
+                        editStatus = true;
+                        $(this).text("Back");
+                    } else {
+                        $("#profile-details").show();
+                        $("#profile-edit").hide();
+                        editStatus = false;
+                        $(this).text("Edit");
+                    }
+                });
+                $('#close-profile-btn').click(function () {
+                    if (editStatus === true) {
+                        $("#profile-details").show();
+                        $("#profile-edit").hide();
+                        $('#edit-profile-btn').text("Edit");
+                        editStatus = false;
+                    }
+                });
             });
         </script>
 
         <!--loading post using ajax-->
         <script>
             function getPosts(courseID, userID, departmentID, temp) {
-            $("#loader").show();
-            $(".c-link").removeClass('active');
-            $(".c-link").css({"background-color": "white", "font-weight": "400"});
-            $.ajax({
-            url: "load_posts_sec.jsp",
+                $("#loader").show();
+                $(".c-link").removeClass('active');
+                $(".c-link").css({"background-color": "white", "font-weight": "400"});
+                $.ajax({
+                    url: "load_posts_sec.jsp",
                     data: {courseID: courseID, userID: userID, departmentID: departmentID},
                     success: function (data, textStatus, jqXHR) {
-                    console.log(data);
-                    $("#loader").hide();
-                    $('#post-container').show();
-                    $('#post-container').html(data);
-                    $(temp).addClass('text-black active');
-                    $(temp).css({"background-color": "#d2d1d6", "font-weight": "600"});
+                        console.log(data);
+                        $("#loader").hide();
+                        $('#post-container').show();
+                        $('#post-container').html(data);
+                        $(temp).addClass('text-black active');
+                        $(temp).css({"background-color": "#d2d1d6", "font-weight": "600"});
                     }
-            });
+                });
             }
             $(document).ready(function (e) {
-            $("#loader").hide();
-            $('#post-container').hide();
-            getPosts(0, 0, <%= user.getDepartmentID()%>, );
+                $("#loader").hide();
+                $('#post-container').hide();
+                getPosts(0, 0, <%= user.getDepartmentID()%>, );
             });
         </script>
     </body>

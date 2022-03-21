@@ -19,7 +19,22 @@
     <div class="col-md-6 mt-2">
         <div class="card">
             <div class="card-header" style="background: #d2d1d6;">
+
                 <div style="float: left">
+                    <%
+                        if (p.getIsActive() == 1) {
+                    %>
+                    <i class="fas fa-circle" style="color: green;"></i>
+                    <%
+                        }
+                    %>
+                    <%
+                        if (p.getIsActive() == 0) {
+                    %>
+                    <i class="fas fa-circle" style="color: gray;"></i>
+                    <%
+                        }
+                    %>
                     <b>Week <%= p.getpWeek()%></b>
                 </div>
                 <div style="float: right">

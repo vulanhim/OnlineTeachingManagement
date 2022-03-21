@@ -20,6 +20,24 @@
         <div class="card">
             <div class="card-header" style="background: #d2d1d6;">
                 <div style="float: left">
+                    <%
+                        if (p.getIsActive() == 1) {
+                    %>
+                    <a data-bs-toggle="modal" data-bs-target="#off-post-modal" data-bs-whatever="<%=p.getPostID()%>" style="cursor: pointer">
+                        <i class="fas fa-circle" style="color: green;"></i>
+                    </a>
+                    <%
+                        }
+                    %>
+                    <%
+                        if (p.getIsActive() == 0) {
+                    %>
+                    <a data-bs-toggle="modal" data-bs-target="#active-post-modal" data-bs-whatever="<%=p.getPostID()%>" style="cursor: pointer">
+                        <i class="fas fa-circle" style="color: gray;"></i>
+                    </a>
+                    <%
+                        }
+                    %>
                     <b>Week <%= p.getpWeek()%></b>
                 </div>
                 <div style="float: right">
@@ -138,6 +156,63 @@
     </div>
 </div>
 <!--end of delete modal-->
+
+<!--active post modal-->
+
+<!-- Modal -->
+<div class="modal fade" id="active-post-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="active-post-form" action="ActivePostServlet" method="post" enctype="multipart/form-data">
+                    Start the class?<hr>
+                    <div class="mb-3" id="post-id-active">
+                        <label for="recipient-name" class="col-form-label">PostID:</label>
+                        <input type="text" class="form-control" name="postID">
+                    </div>
+                    <div class="container text-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-outline-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end of active post modal-->
+
+<!--off post modal-->
+
+<!-- Modal -->
+<div class="modal fade" id="off-post-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="off-post-form" action="OffPostServlet" method="post" enctype="multipart/form-data">
+                    Off the class?<hr>
+                    <div class="mb-3" id="post-id-off">
+                        <label for="recipient-name" class="col-form-label">PostID:</label>
+                        <input type="text" class="form-control" name="postID">
+                    </div>
+                    <div class="container text-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-outline-primary">Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end of active post modal-->
+
 <script>
     $("#post-id-update").hide();
     var exampleModal = document.getElementById('editPostModal')
@@ -164,7 +239,7 @@
 </script>
 
 <script>
-    $("#post-id-delete").hide();
+    $("#post-id-active").hide();
     var exampleModal1 = document.getElementById('deletePostModal')
     exampleModal1.addEventListener('show.bs.modal', function (event) {
         // Button that triggered the modal
@@ -180,6 +255,108 @@
 
         modalTitle1.textContent = 'Delete Post'
         modalBodyInput1.value = recipient1
+    });
+</script>
+
+<script>
+    $("#post-id-off").hide();
+    var exampleModal2 = document.getElementById('active-post-modal')
+    exampleModal2.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button1 = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        var recipient1 = button1.getAttribute('data-bs-whatever')
+        // If necessary, you could initiate an AJAX request here
+        // and then do the updating in a callback.
+        //
+        // Update the modal's content.
+        var modalBodyInput1 = exampleModal2.querySelector('.modal-body input')
+
+        modalBodyInput1.value = recipient1
+    });
+</script>
+
+<script>
+    $("#post-id-delete").hide();
+    var exampleModal3 = document.getElementById('off-post-modal')
+    exampleModal3.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button1 = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        var recipient1 = button1.getAttribute('data-bs-whatever')
+        // If necessary, you could initiate an AJAX request here
+        // and then do the updating in a callback.
+        //
+        // Update the modal's content.
+        var modalBodyInput1 = exampleModal3.querySelector('.modal-body input')
+
+        modalBodyInput1.value = recipient1
+    });
+</script>
+<script>
+    $(document).ready(function (e) {
+        $('#active-post-form').on('submit', function (event) {
+            event.preventDefault();
+            console.log("you have clicked on submit");
+            let form = new FormData(this);
+
+//                   send post form to servlet
+            $.ajax({
+                url: "ActivePostServlet",
+                type: 'POST',
+                data: form,
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    if (data.trim() === "done") {
+                        swal("Class is started!", "", "success")
+                                .then((value) => {
+                                    window.location = "Home.jsp";
+                                });
+                    } else {
+                        swal("Error!", "Something went wrong! Try again", "error");
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    swal("Error!", "Something went wrong! Try again", "error");
+                },
+                processData: false,
+                contentType: false
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function (e) {
+        $('#off-post-form').on('submit', function (event) {
+            event.preventDefault();
+            console.log("you have clicked on submit");
+            let form = new FormData(this);
+
+//                   send post form to servlet
+            $.ajax({
+                url: "OffPostServlet",
+                type: 'POST',
+                data: form,
+                success: function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    if (data.trim() === "done") {
+                        swal("Class is off!", "", "success")
+                                .then((value) => {
+                                    window.location = "Home.jsp";
+                                });
+                    } else {
+                        swal("Error!", "Something went wrong! Try again", "error");
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    swal("Error!", "Something went wrong! Try again", "error");
+                },
+                processData: false,
+                contentType: false
+            });
+        });
     });
 </script>
 

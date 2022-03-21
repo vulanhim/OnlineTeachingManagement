@@ -38,8 +38,24 @@
                         %>
                     </b>
                 </div>
-                <div style="float: right">
-                    <%= d.getCourseByCourseID(p.getCourseID()).getInstructor()%>
+                <div>
+                    <%
+                        if (p.getIsActive() == 1) {
+                    %>
+                    <i class="fas fa-circle" style="color: green; float: left"></i>
+                    <%
+                        }
+                    %>
+                    <%
+                        if (p.getIsActive() == 0) {
+                    %>
+                    <i class="fas fa-circle" style="color: gray; float: left"></i>
+                    <%
+                        }
+                    %>
+                    <a style="float: right">
+                        <%= d.getCourseByCourseID(p.getCourseID()).getInstructor()%>
+                    </a>
                 </div>
             </div>
             <div class="card-body" style="background: #f8f9fa;">
@@ -53,16 +69,6 @@
                 </div>
             </div>
             <div class="card-footer">
-                <%
-                    if (p.getIsCheck() == 1) {
-                %>
-                <a href="#!" class="btn btn-outline btn-sm" style="float: left">
-                    <i class="fa fa-user-check"></i>
-                    by <%= p.getCheckBy()%>
-                </a>
-                <%
-                    }
-                %>
                 <form action="show_post_page.jsp" method="post">
                     <tr>
                         <td><input name="postID" type="hidden" value="<%= p.getPostID()%>" class="form-control"/></td>
@@ -75,12 +81,35 @@
             </div>
         </div>
     </div>
+    <script>
+        function showNotification() {
+            const notification = new Notification("Class has started!", {
+                body: '<%= d.getCourseByCourseID(p.getCourseID()).getCourseName()%> - <%= d.getCourseByCourseID(p.getCourseID()).getInstructor()%>'
+                        });
+                        notification.onclick = (e) => {
+                            window.open('show_post_page.jsp?postID=<%= p.getPostID()%>','_blank');
+                            notification.close();
+                        };
+                        setTimeout(() => {
+                            notification.close()
+                        }, 4000);
+                    }
+                    console.log(Notification.permission);
+                    if (Notification.permission === "granted" && <%= p.getIsActive()%> === 1) {
+                        showNotification();
+                    } else if (Notification.permission !== "denied") {
+                        Notification.requestPermission().then(permission => {
+                            if (permission === "granted" && <%= p.getIsActive()%> === 1) {
+                                showNotification();
+                            }
+                        });
+                    }
+    </script>
     <%
         }
-
-
     %>
 </div>
+
 
 
 

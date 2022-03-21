@@ -124,7 +124,8 @@ public class PostDAO {
                 String checkBy = set.getString("checkBy");
                 String linkCourse = set.getString("linkCourse");
                 String slide = set.getString("slide");
-                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
+                int isActive = set.getInt("isActive");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide, isActive);
                 list.add(post);
             }
         } catch (Exception e) {
@@ -149,7 +150,9 @@ public class PostDAO {
                 String checkBy = set.getString("checkBy");
                 String linkCourse = set.getString("linkCourse");
                 String slide = set.getString("slide");
-                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
+                int isActive = set.getInt("isActive");
+
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide, isActive);
                 list.add(post);
             }
         } catch (Exception e) {
@@ -174,7 +177,9 @@ public class PostDAO {
                 String checkBy = set.getString("checkBy");
                 String linkCourse = set.getString("linkCourse");
                 String slide = set.getString("slide");
-                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
+                int isActive = set.getInt("isActive");
+
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide, isActive);
                 list.add(post);
             }
         } catch (Exception e) {
@@ -240,7 +245,7 @@ public class PostDAO {
         List<Post> list = new ArrayList<>();
         //fetch all the posts of user
         try {
-            PreparedStatement p = con.prepareStatement("select postID, OnlineTeaching.dbo.post.courseID, pDate, pWeek, pContent, isCheck, OnlineTeaching.dbo.post.userID, checkBy, linkCourse, slide from OnlineTeaching.dbo.post left join OnlineTeaching.dbo.courses on OnlineTeaching.dbo.courses.courseID = OnlineTeaching.dbo.post.courseID left join OnlineTeaching.dbo.department on OnlineTeaching.dbo.department.departmentID = OnlineTeaching.dbo.courses.departmentID where OnlineTeaching.dbo.courses.departmentID = ? and OnlineTeaching.dbo.post.isDelete = 0 and isCheck = 0 order by postID ");
+            PreparedStatement p = con.prepareStatement("select postID, OnlineTeaching.dbo.post.courseID, pDate, pWeek, pContent, isCheck, OnlineTeaching.dbo.post.userID, checkBy, linkCourse, slide, isActive from OnlineTeaching.dbo.post left join OnlineTeaching.dbo.courses on OnlineTeaching.dbo.courses.courseID = OnlineTeaching.dbo.post.courseID left join OnlineTeaching.dbo.department on OnlineTeaching.dbo.department.departmentID = OnlineTeaching.dbo.courses.departmentID where OnlineTeaching.dbo.courses.departmentID = ? and OnlineTeaching.dbo.post.isDelete = 0 and isCheck = 0 order by postID ");
             p.setInt(1, departmentID);
             ResultSet set = p.executeQuery();
             while (set.next()) {
@@ -254,7 +259,8 @@ public class PostDAO {
                 String checkBy = set.getString("checkBy");
                 String linkCourse = set.getString("linkCourse");
                 String slide = set.getString("slide");
-                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
+                int isActive = set.getInt("isActive");
+                Post post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide, isActive);
                 list.add(post);
             }
         } catch (Exception e) {
@@ -303,7 +309,7 @@ public class PostDAO {
             PreparedStatement p = this.con.prepareStatement(q);
             p.setInt(1, postID);
             ResultSet set = p.executeQuery();
-            if(set.next()){
+            if (set.next()) {
                 int courseID = set.getInt("courseID");
                 Timestamp pDate = set.getTimestamp("pDate");
                 int pWeek = set.getInt("pWeek");
@@ -313,13 +319,15 @@ public class PostDAO {
                 String checkBy = set.getString("checkBy");
                 String linkCourse = set.getString("linkCourse");
                 String slide = set.getString("slide");
-                post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide);
+                int isActive = set.getInt("isActive");
+                post = new Post(postID, courseID, pDate, pWeek, pContent, isCheck, userID, checkBy, linkCourse, slide, isActive);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return post;
     }
+
     public boolean checkPost(int postID, String checkBy) {
         boolean f = false;
         try {
@@ -334,6 +342,7 @@ public class PostDAO {
         }
         return f;
     }
+
     public List<Course> getCourseForStudentByUserID(int userID) {
         List<Course> list = new ArrayList<>();
 
@@ -367,5 +376,31 @@ public class PostDAO {
         }
 
         return list;
+    }
+    public boolean activePost(int postID) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.post set isActive=1 where postID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setInt(1, postID);
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
+    }
+    public boolean inactivePost(int postID) {
+        boolean f = false;
+        try {
+            String query = "update OnlineTeaching.dbo.post set isActive=0 where postID=?";
+            PreparedStatement p = con.prepareStatement(query);
+            p.setInt(1, postID);
+            p.executeUpdate();
+            f = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
 }

@@ -979,7 +979,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr id="username-edit">
                                     <td>
                                         <div class="form-group row">
                                             <label class="col-md-5 col-form-label text-md-right">Username</label>
@@ -1541,6 +1541,7 @@
         <!--Edit user-->
         <script>
             $("#user-id-edit").hide();
+            $("#username-edit").hide();
             var exampleModal3 = document.getElementById('editUserModal')
             exampleModal3.addEventListener('show.bs.modal', function (event) {
                 // Button that triggered the modal

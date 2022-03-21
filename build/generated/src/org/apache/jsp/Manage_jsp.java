@@ -65,6 +65,10 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
         response.sendRedirect("Login.jsp");
     } else if (user.getRole() == 0) {
         response.sendRedirect("Home.jsp");
+    } else if (user.getRole() == 2) {
+        response.sendRedirect("Student.jsp");
+    } else if (user.getRole() == 3) {
+        response.sendRedirect("admin.jsp");
     }
 
 
@@ -81,7 +85,7 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("        <!--css-->\n");
       out.write("        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3\" crossorigin=\"anonymous\">\n");
-      out.write("        <link rel=\"stylesheet\" href=\"css/home.css?\">\n");
+      out.write("        <link rel=\"stylesheet\" href=\"css/home.css\">\n");
       out.write("        <script src=\"https://kit.fontawesome.com/7c428afa8c.js\" crossorigin=\"anonymous\"></script>\n");
       out.write("    </head>\n");
       out.write("    <body>\n");
@@ -97,27 +101,25 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                <li>\n");
       out.write("                    <div class=\"iocn-link\">\n");
       out.write("                        <a href=\"Manage.jsp\">\n");
-      out.write("                            <i class=\"fas fa-book\"></i>\n");
-      out.write("                            <span class=\"link_name\">Manage</span>\n");
+      out.write("                            <i class=\"fas fa-tasks\"></i>\n");
+      out.write("                            <span class=\"link_name\">Check</span>\n");
       out.write("                        </a>\n");
       out.write("                    </div>\n");
       out.write("                    <ul class=\"sub-menu\">\n");
-      out.write("                        <li><a class=\"link_name\" href=\"Manage.jsp\">Manage</a></li>\n");
+      out.write("                        <li><a class=\"link_name\" href=\"Manage.jsp\">Check</a></li>\n");
       out.write("                    </ul>\n");
       out.write("                </li>\n");
       out.write("                <li>\n");
       out.write("                    <div class=\"iocn-link\">\n");
       out.write("                        <a>\n");
-      out.write("                            <i class=\"fas fa-search\"></i>\n");
-      out.write("                            <span class=\"link_name\">Search</span>\n");
+      out.write("                            <i class=\"fas fa-book\"></i>\n");
+      out.write("                            <span class=\"link_name\">View Post</span>\n");
       out.write("                        </a>\n");
       out.write("                        <i class='bx bxs-chevron-down arrow' ></i>\n");
       out.write("                    </div>\n");
       out.write("                    <ul class=\"sub-menu\">\n");
-      out.write("                        <li><a class=\"link_name\">Search</a></li>\n");
+      out.write("                        <li><a class=\"link_name\">View Post</a></li>\n");
       out.write("                        <li><a href=\"Search.jsp\">by Instructor</a></li>\n");
-      out.write("                        <li><a href=\"#\">Login Form</a></li>\n");
-      out.write("                        <li><a href=\"#\">Card Design</a></li>\n");
       out.write("                    </ul>\n");
       out.write("                </li>\n");
       out.write("                <li>\n");
@@ -163,7 +165,7 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                <div class=\"alert ");
       out.print(m.getCssClass());
-      out.write(" d-flex align-items-center\" role=\"alert\">\n");
+      out.write("\" role=\"alert\">\n");
       out.write("                    ");
       out.print(m.getContent());
       out.write("\n");
@@ -373,7 +375,7 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            let arrow = document.querySelectorAll(\".arrow\");\n");
       out.write("            for (var i = 0; i < arrow.length; i++) {\n");
       out.write("                arrow[i].addEventListener(\"click\", (e) => {\n");
-      out.write("                    let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow\n");
+      out.write("                    let arrowParent = e.target.parentElement.parentElement; //selecting main parent of arrow\n");
       out.write("                    arrowParent.classList.toggle(\"showMenu\");\n");
       out.write("                });\n");
       out.write("            }\n");
@@ -416,7 +418,6 @@ public final class Manage_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                        editStatus = false;\n");
       out.write("                    }\n");
       out.write("                });\n");
-      out.write("\n");
       out.write("            });\n");
       out.write("        </script>\n");
       out.write("\n");

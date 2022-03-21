@@ -24,11 +24,12 @@ public class Post {
     private int isDelete;
     private String linkCourse;
     private String slide;
+    private int isActive;
 
     public Post() {
     }
 
-    public Post(int postID, int courseID, Timestamp pDate, int pWeek, String pContent, int isCheck, int userID, String checkBy, String linkCourse, String slide) {
+    public Post(int postID, int courseID, Timestamp pDate, int pWeek, String pContent, int isCheck, int userID, String checkBy, String linkCourse, String slide, int isActive) {
         this.postID = postID;
         this.courseID = courseID;
         this.pDate = pDate;
@@ -39,6 +40,8 @@ public class Post {
         this.checkBy = checkBy;
         this.linkCourse = linkCourse;
         this.slide = slide;
+        this.isActive = isActive;
+        
     }
 
     public Post(int courseID, int pWeek, String pContent, int userID, String linkCourse, String slide) {
@@ -136,6 +139,13 @@ public class Post {
 
     public void setSlide(String slide) {
         this.slide = slide;
+    }
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
     
     
